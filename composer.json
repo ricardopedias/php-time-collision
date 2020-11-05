@@ -1,7 +1,7 @@
 {
-    "name": "ricardopedias/php-business-hours",
+    "name": "ricardopedias/php-time-collision",
     "type": "library",
-    "description": "Biblioteca para calculos de horário comercial com PHP",
+    "description": "Biblioteca para cálculos de colisão horários com PHP",
     "keywords": [
         "helpers",
         "library"
@@ -14,9 +14,9 @@
         }
     ],
     "support": {
-        "docs": "https://github.com/ricardopedias/php-business-hours",
-        "issues": "https://github.com/ricardopedias/php-business-hours/issues",
-        "source": "https://github.com/ricardopedias/php-business-hours"
+        "docs": "https://github.com/ricardopedias/php-time-collision",
+        "issues": "https://github.com/ricardopedias/php-time-collision/issues",
+        "source": "https://github.com/ricardopedias/php-time-collision"
     },
     "license": "MIT",
     "require": {
@@ -35,7 +35,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Business\\": "src/"
+            "Time\\": "src/"
         }
     },
     "autoload-dev": {

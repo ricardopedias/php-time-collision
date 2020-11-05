@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Business;
+namespace Time;
 
 use DateTime;
 
-class Hours
+class Collision
 {
     public const BIT_UNUSED  = -1;
     public const BIT_ALLOWED = 0;

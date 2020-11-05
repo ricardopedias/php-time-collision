@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Business\Hours;
+use Time\Collision;
 use DateTime;
 use PHPUnit\Framework\TestCase as PhpUnitTestCase;
 
@@ -36,7 +36,7 @@ class TestCase extends PhpUnitTestCase
         $this->start = microtime(true);
     }
 
-    protected function benchmark(Hours $object)
+    protected function benchmark(Collision $object)
     {
         echo "-----------------------------------------------------\n";
         echo "BENCHMARK:\n";
@@ -63,7 +63,7 @@ class TestCase extends PhpUnitTestCase
         return $result;
     }
 
-    public function timeline(Hours $object): void
+    public function timeline(Collision $object): void
     {
         $filledTime   = [];
         $minutes      = [];
@@ -83,9 +83,9 @@ class TestCase extends PhpUnitTestCase
         foreach($object->range() as $minute => $bit) {
 
             switch($bit){
-                case Hours::BIT_UNUSED: $signal = $unused; break;
-                case Hours::BIT_ALLOWED: $signal = $allowed; break;
-                case Hours::BIT_FILLED: $signal = $filled; break;
+                case Collision::BIT_UNUSED: $signal = $unused; break;
+                case Collision::BIT_ALLOWED: $signal = $allowed; break;
+                case Collision::BIT_FILLED: $signal = $filled; break;
             }
             $minutes[$minute] = str_pad("$minute", 2, "0", STR_PAD_LEFT);
             $filledTime[$minute] = $signal . " ";
