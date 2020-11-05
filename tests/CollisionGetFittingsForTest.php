@@ -6,13 +6,14 @@ namespace Tests;
 
 use Time\Collision;
 use DateTime;
+use Time\Minutes;
 
-class GetFittingsForTest extends TestCase
+class CollisionGetFittingsForTest extends TestCase
 {
     /** @test */
     public function getFittings()
     {
-        $object = new Collision($this->dateStart, $this->dateEnd);
+        $object = new Collision(new Minutes($this->dateStart, $this->dateEnd));
         $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
         $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
 
