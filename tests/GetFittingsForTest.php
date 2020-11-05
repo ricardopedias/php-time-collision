@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Business\Hours;
+use Time\Collision;
 use DateTime;
 
 class GetFittingsForTest extends TestCase
@@ -12,7 +12,7 @@ class GetFittingsForTest extends TestCase
     /** @test */
     public function getFittings()
     {
-        $object = new Hours($this->dateStart, $this->dateEnd);
+        $object = new Collision($this->dateStart, $this->dateEnd);
         $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
         $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
 
@@ -37,7 +37,7 @@ class GetFittingsForTest extends TestCase
 
         // periodo 1: insere do 25 ao 30... 
         // ignora o restante até 34 - porque não faz parte dos ranges liberados
-        // $result = $this->period('25..30', Hours::BIT_FILLED); 
+        // $result = $this->period('25..30', Collision::BIT_FILLED); 
             
         //$this->assertEquals($result, $object->filled());
 
