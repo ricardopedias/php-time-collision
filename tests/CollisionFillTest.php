@@ -6,13 +6,14 @@ namespace Tests;
 
 use DateTime;
 use Time\Collision;
+use Time\Minutes;
 
-class FillTest extends TestCase
+class CollisionFillTest extends TestCase
 {
     /** @test */
     public function fillCropped()
     {
-        $object = new Collision($this->dateStart, $this->dateEnd);
+        $object = new Collision(new Minutes($this->dateStart, $this->dateEnd));
         $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
         $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
 
@@ -20,7 +21,7 @@ class FillTest extends TestCase
 
         // periodo 1: insere do 25 ao 30... 
         // ignora o restante até 34 - porque não faz parte dos ranges liberados
-        $result = $this->period('25..30', Collision::BIT_FILLED); 
+        $result = $this->period('25..30', Minutes::FILLED); 
         $this->assertEquals($result, $object->filled());
 
         // $this->benchmark($object);
@@ -29,7 +30,7 @@ class FillTest extends TestCase
     /** @test */
     public function fillCumulative()
     {
-        $object = new Collision($this->dateStart, $this->dateEnd);
+        $object = new Collision(new Minutes($this->dateStart, $this->dateEnd));
         $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
         $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
 
@@ -38,14 +39,14 @@ class FillTest extends TestCase
         // periodo 1: insere do 25 ao 30 - o que cabe
         // ignora o que não faz parte dos ranges liberados e guarda os minutos de 30 a 34 = 4 minutos
         // periodo 2: insere os 4 minutos guardados = 35 ao 39
-        $result = $this->period('25..30', Collision::BIT_FILLED) + $this->period('35..39', Collision::BIT_FILLED); 
+        $result = $this->period('25..30', Minutes::FILLED) + $this->period('35..39', Minutes::FILLED); 
         $this->assertEquals($result, $object->filled());
     }
 
     /** @test */
     public function noFillInsideRange()
     {
-        $object = new Collision($this->dateStart, $this->dateEnd);
+        $object = new Collision(new Minutes($this->dateStart, $this->dateEnd));
         $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
         $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
 
@@ -57,7 +58,7 @@ class FillTest extends TestCase
     /** @test */
     public function noFillStartBeforeRange()
     {
-        $object = new Collision($this->dateStart, $this->dateEnd);
+        $object = new Collision(new Minutes($this->dateStart, $this->dateEnd));
         $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
         $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
 
@@ -76,7 +77,7 @@ class FillTest extends TestCase
     /** @test */
     public function noFillEndAfterRange()
     {
-        $object = new Collision($this->dateStart, $this->dateEnd);
+        $object = new Collision(new Minutes($this->dateStart, $this->dateEnd));
         $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
         $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
 
@@ -95,7 +96,7 @@ class FillTest extends TestCase
     /** @test */
     public function noFillBeforeRange()
     {
-        $object = new Collision($this->dateStart, $this->dateEnd);
+        $object = new Collision(new Minutes($this->dateStart, $this->dateEnd));
         $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
         $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
 
@@ -117,7 +118,7 @@ class FillTest extends TestCase
     /** @test */
     public function noFillAfterRange()
     {
-        $object = new Collision($this->dateStart, $this->dateEnd);
+        $object = new Collision(new Minutes($this->dateStart, $this->dateEnd));
         $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
         $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
 
