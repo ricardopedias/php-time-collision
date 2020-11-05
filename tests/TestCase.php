@@ -7,6 +7,7 @@ namespace Tests;
 use Time\Collision;
 use DateTime;
 use PHPUnit\Framework\TestCase as PhpUnitTestCase;
+use Time\Minutes;
 
 class TestCase extends PhpUnitTestCase
 {
@@ -83,9 +84,9 @@ class TestCase extends PhpUnitTestCase
         foreach($object->range() as $minute => $bit) {
 
             switch($bit){
-                case Collision::BIT_UNUSED: $signal = $unused; break;
-                case Collision::BIT_ALLOWED: $signal = $allowed; break;
-                case Collision::BIT_FILLED: $signal = $filled; break;
+                case Minutes::UNUSED: $signal = $unused; break;
+                case Minutes::ALLOWED: $signal = $allowed; break;
+                case Minutes::FILLED: $signal = $filled; break;
             }
             $minutes[$minute] = str_pad("$minute", 2, "0", STR_PAD_LEFT);
             $filledTime[$minute] = $signal . " ";
