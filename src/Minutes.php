@@ -19,7 +19,10 @@ class Minutes
     /** Término do período */
     private Datetime $end;
 
-    /** Período completo */
+    /** 
+     * Período completo 
+     * @var array<int>
+     */
     private array $rangeVector = [];
 
     public function __construct(DateTime $start, Datetime $end)
@@ -32,7 +35,7 @@ class Minutes
 
     /**
      * Devolve o range total de minutos.
-     * @return array
+     * @return array<int>
      */
     public function range(int $status = self::ALL): array
     {
@@ -41,7 +44,7 @@ class Minutes
         }
 
         $onlyStatus = [];
-        foreach($this->rangeVector as $minute => $currentStatus) {
+        foreach ($this->rangeVector as $minute => $currentStatus) {
             if ($status === $currentStatus) {
                 $onlyStatus[$minute] = $currentStatus;
             }
@@ -105,7 +108,7 @@ class Minutes
             }
 
             // Se todos os minutos foram setados
-            if ($settedCount > $settedLimit+1) {
+            if ($settedCount > $settedLimit + 1) {
                 break;
             }
 

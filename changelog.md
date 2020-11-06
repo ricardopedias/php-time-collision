@@ -11,42 +11,24 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 Nada implementado ainda.
 
-## \[0.4.0] - 2020-08-27
+## \[0.3.0] - 2020-11-06
 
 ### Added
 
--   Criação de métodos para cópia de diretórios e arquivos
--   Criação de métodos para movimentação de diretórios e arquivos
-
-## \[0.3.0] - 2020-08-24
-
-### Added
-
--   Criação do método para exclusão segura de diretórios
-
-## \[0.2.0] - 2020-08-22
-
-### Added
-
--   Criação de diretórios vazios para testes
--   Adicionado argumento para definir níveis ao dirname
+-   Atualização do changelog.md
 
 ### Fixed
 
--   Correção no autoload do arquivo de helpers
+-   Padronização às regras das PSRs 1, 1 e 12
+-   Correção das informações no arquivo readme.md
 
-## \[0.1.1] - 2020-08-19
+## \[0.2.0] - 2020-11-05
 
 ### Added
 
--   Configuração para Travis Ci.
+-   Refatoração para prover composição
 
-### Fixed
-
--   Verificação de diretório
--   Correção na configuração do phpunit
-
-## \[0.1.0] - 2020-08-19
+## \[0.1.0] - 2020-11-03
 
 ### Added
 
@@ -55,10 +37,7 @@ Nada implementado ainda.
 
 ## Releases
 
--   Unreleased <https://github.com/ricardopedias/php-reliability/compare/v0.4.0...HEAD>
--   0.4.0 <https://github.com/ricardopedias/php-reliability/compare/v0.3.0...v0.4.0>
--   0.3.0 <https://github.com/ricardopedias/php-reliability/compare/v0.2.0...v0.3.0>
--   0.2.0 <https://github.com/ricardopedias/php-reliability/compare/v0.1.2...v0.2.0>
--   0.1.2 <https://github.com/ricardopedias/php-reliability/compare/v0.1.1...v0.1.2>
--   0.1.1 <https://github.com/ricardopedias/php-reliability/compare/v0.1.0...v0.1.1>
--   0.1.0 <https://github.com/ricardopedias/php-reliability/releases/tag/v0.1.0>
+-   Unreleased <https://github.com/ricardopedias/php-reliability/compare/v0.3.0...HEAD>
+-   0.3.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.2.0...v0.3.0>
+-   0.2.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.1.0...v0.2.0>
+-   0.1.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.1.0>
