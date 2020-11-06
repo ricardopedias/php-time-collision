@@ -8,7 +8,7 @@ use Time\Collision;
 use DateTime;
 use Time\Minutes;
 
-class CollisionSetUsable extends TestCase
+class CollisionSetUsableTest extends TestCase
 {
     /** @test */
     public function setUsableOne()

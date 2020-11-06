@@ -53,7 +53,7 @@ class Collision
     /**
      * Utiliza o período especificado.
      * Por padrão, as horas que colidirem com minutos não 'usáveis' são perdidos.
-     * Caso o parâmetro $cumulative for true, os minutos são distribuídos para 
+     * Caso o parâmetro $cumulative for true, os minutos são distribuídos para
      * as lacunas seguintes até acabarem.
      * @param \DateTime $start
      * @param \DateTime $end
@@ -71,6 +71,7 @@ class Collision
 
     /**
      * Obtém as lacunas onde o período se encaixa
+     * @return array<int, array<int>>
      */
     public function getFittingsFor(int $amountMinutes): array
     {
@@ -79,7 +80,7 @@ class Collision
 
     /**
      * Devolve o range total de minutos.
-     * @return array
+     * @return array<int>
      */
     public function range(): array
     {
@@ -88,7 +89,7 @@ class Collision
 
     /**
      * Devolve os horários bloqueados para uso.
-     * @return array
+     * @return array<int>
      */
     public function unused(): array
     {
@@ -97,7 +98,7 @@ class Collision
 
     /**
      * Devolve os horários que podem ser usados.
-     * @return array
+     * @return array<int>
      */
     public function allowed(): array
     {
@@ -106,7 +107,7 @@ class Collision
 
     /**
      * Devolve os horários usados dentro do horário comercial.
-     * @return array
+     * @return array<int>
      */
     public function filled(): array
     {
