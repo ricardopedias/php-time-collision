@@ -8,35 +8,46 @@ use DateTime;
 
 class Chunks
 {
-    private $range = [];
+    /** @var array<int> */
+    private array $range = [];
 
+    /**
+     * @param array<int> $range
+     */
     public function __construct(array $range)
     {
         $this->range = $range;
     }
 
-    public function fittings(int $minutes)
+    /**
+     * @return array<int, array<int>>
+     */
+    public function fittings(int $minutes): array
     {
         return $this->chunkFittings($this->range, $minutes);
     }
 
     /**
-     * Método recursivo. Cada iteração extrai um pedaço 
+     * Método recursivo. Cada iteração extrai um pedaço
      * contendo uma sequência de minutos disponíveis
+     * @param array<int> $range
+     * @param int $minutes
+     * @param array<int, array<int>> $result
+     * @return array<int, array<int>>
      */
-    private function chunkFittings(array $range, int $minutes, array &$result = [])
+    private function chunkFittings(array $range, int $minutes, array &$result = []): array
     {
         $chunk  = [];
         $hasAllowed = false;
         
-        foreach($range as $minute => $bit) {
+        foreach ($range as $minute => $bit) {
             // Apenas um pedaço é devolvido
-            if (isset($chunk[$minute-1]) === false && $chunk !== []) {
+            if (isset($chunk[$minute - 1]) === false && $chunk !== []) {
                 break;
             }
 
             $isChunck = $bit === Minutes::ALLOWED // é um horário vago
-                && isset($range[$minute-1]) === true; // é uma sequência;
+                && isset($range[$minute - 1]) === true; // é uma sequência;
 
             if ($isChunck === true) {
                 $chunk[$minute] = $bit;
@@ -55,9 +66,9 @@ class Chunks
             $result[$startMinute] = [$startMinute, $endMinute];
         }
 
-        // Extrai os itens já analisados 
+        // Extrai os itens já analisados
         $startRange = key($range);
-        for($minute = $startRange; $minute <= $endMinute; $minute++) {
+        for ($minute = $startRange; $minute <= $endMinute; $minute++) {
             unset($range[$minute]);
         }
 
