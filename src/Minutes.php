@@ -35,7 +35,7 @@ class Minutes
 
     /**
      * Devolve o range total de minutos.
-     * @return array<int>
+     * @return array<int, int>
      */
     public function range(int $status = self::ALL): array
     {
