@@ -13,10 +13,12 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 -   Refatoração do construtor de chunks para usar um objeto Minutes
 -   Criação de um teste de unidade específico para marcações
+-   Criação de documentação com a regra de negócio sobre a timeline de minutos
 
 ### Fixed
 
 -   Classe Chunks ignorava o primeiro pedaço quando o minuto inicial e o inicio do range eram iguais
+-   Inconsistência ao marcar os minutos iniciais no método Minutes::markCumulative
 
 ## \[0.3.0] - 2020-11-06
 

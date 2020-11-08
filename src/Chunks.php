@@ -30,7 +30,7 @@ class Chunks
     /**
      * Método recursivo. Cada iteração extrai um pedaço do período
      * contendo uma sequência de minutos disponíveis
-     * @param array<int> $range
+     * @param array<int, int> $range
      * @param int $minutes
      * @param array<int, array<int>> $result
      * @return array<int, array<int>>
