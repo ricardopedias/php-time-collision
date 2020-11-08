@@ -7,7 +7,7 @@ namespace Tests;
 use DateTime;
 use Time\Minutes;
 
-class MinutesMarkTest extends TestCase
+class MinutesAllowTest extends TestCase
 {
     public function rangeProvider()
     {
@@ -61,6 +61,14 @@ class MinutesMarkTest extends TestCase
                 new DateTime('2020-11-01 12:31:00'), // 31 minutos corridos
                 new DateTime('2020-11-01 13:01:00'), // 61 minutos corridos
                 '31..61' // Começa no minuto 1, libera de 31 a 61 minutos
+            ],
+            // NÃO É POSSEL LIBERAR UM PERÍODO VOLTANDO PARA O PASSADO
+            [
+                new DateTime('2020-11-01 12:00:00'),
+                new DateTime('2020-11-01 13:00:00'),
+                new DateTime('2020-11-01 12:30:00'), // Momento inicial
+                new DateTime('2020-11-01 12:00:00'), // Tenta voltar 30 minutos ao passado
+                '0..0'
             ],
         ];
     }

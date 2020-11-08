@@ -53,6 +53,10 @@ class TestCase extends PhpUnitTestCase
 
     protected function period(string $notation, int $value)
     {
+        if ($notation === '0..0') {
+            return [];
+        }
+
         $index = explode("..", $notation);
         $start = (int)$index[0];
         $end   = (int)$index[1];

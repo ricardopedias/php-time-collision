@@ -11,7 +11,7 @@ use Time\Minutes;
 class CollisionFillTest extends TestCase
 {
     /** @test */
-    public function fillCropped()
+    public function fill()
     {
         $object = new Collision(new Minutes($this->dateStart, $this->dateEnd));
         $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
@@ -23,8 +23,6 @@ class CollisionFillTest extends TestCase
         // ignora o restante até 34 - porque não faz parte dos ranges liberados
         $result = $this->period('25..30', Minutes::FILLED); 
         $this->assertEquals($result, $object->filled());
-
-        // $this->benchmark($object);
     }
 
     /** @test */
@@ -34,106 +32,11 @@ class CollisionFillTest extends TestCase
         $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
         $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
 
+        // Precisa de 10 minutos (contando o minuto 25)
         $object->fill(new DateTime('2020-11-01 12:25:00'), new DateTime('2020-11-01 12:34:00'), true);
 
-        // periodo 1: insere do 25 ao 30 - o que cabe
-        // ignora o que não faz parte dos ranges liberados e guarda os minutos de 30 a 34 = 4 minutos
-        // periodo 2: insere os 4 minutos guardados = 35 ao 39
-        $result = $this->period('25..30', Minutes::FILLED) + $this->period('35..39', Minutes::FILLED); 
+        $result = $this->period('25..30', Minutes::FILLED) // + 6 minutos (contando o 25)
+            + $this->period('35..38', Minutes::FILLED); // + 4 minutos (contando o 35)
         $this->assertEquals($result, $object->filled());
-    }
-
-    /** @test */
-    public function noFillInsideRange()
-    {
-        $object = new Collision(new Minutes($this->dateStart, $this->dateEnd));
-        $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
-        $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
-
-        // Tenta preencher fora do período disponível
-        $object->fill(new DateTime('2020-11-01 12:41:00'), new DateTime('2020-11-01 12:50:00'));
-        $this->assertEquals([], $object->filled());
-    }
-
-    /** @test */
-    public function noFillStartBeforeRange()
-    {
-        $object = new Collision(new Minutes($this->dateStart, $this->dateEnd));
-        $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
-        $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
-
-        // Tenta preencher fora do período disponível
-        $start = clone $this->dateStart;
-        $start->modify('-1 hour');
-
-        // só para conferir os horários
-        $this->assertEquals('11:00', $start->format('H:i'));
-        $this->assertEquals('12:00', $this->dateStart->format('H:i'));
-
-        $object->fill($start, new DateTime('2020-11-01 12:50:00'));
-        $this->assertEquals([], $object->filled());
-    }
-
-    /** @test */
-    public function noFillEndAfterRange()
-    {
-        $object = new Collision(new Minutes($this->dateStart, $this->dateEnd));
-        $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
-        $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
-
-        // Tenta preencher fora do período disponível
-        $end = clone $this->dateEnd;
-        $end->modify('+1 hour');
-
-        // só para conferir os horários
-        $this->assertEquals('14:00', $end->format('H:i'));
-        $this->assertEquals('13:00', $this->dateEnd->format('H:i'));
-
-        $object->fill(new DateTime('2020-11-01 12:50:00'), $end);
-        $this->assertEquals([], $object->filled());
-    }
-
-    /** @test */
-    public function noFillBeforeRange()
-    {
-        $object = new Collision(new Minutes($this->dateStart, $this->dateEnd));
-        $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
-        $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
-
-        // Tenta preencher fora do período disponível
-        $start = clone $this->dateStart;
-        $start->modify('-2 hour');
-
-        $end = clone $this->dateEnd;
-        $end->modify('-2 hour');
-
-        // só para conferir os horários
-        $this->assertEquals('10:00', $start->format('H:i'));
-        $this->assertEquals('11:00', $end->format('H:i'));
-
-        $object->fill($start, $end);
-        $this->assertEquals([], $object->filled());
-    }
-
-    /** @test */
-    public function noFillAfterRange()
-    {
-        $object = new Collision(new Minutes($this->dateStart, $this->dateEnd));
-        $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
-        $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
-
-        // Tenta preencher fora do período disponível
-        $start = clone $this->dateStart;
-        $start->modify('+2 hour');
-
-        $end = clone $this->dateEnd;
-        $end->modify('+2 hour');
-
-        // só para conferir os horários
-        $this->assertEquals('14:00', $start->format('H:i'));
-        $this->assertEquals('15:00', $end->format('H:i'));
-
-        $object->fill($start, $end);
-        $this->assertEquals([], $object->filled());
     }
 }

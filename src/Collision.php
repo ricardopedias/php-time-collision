@@ -84,7 +84,7 @@ class Collision
      */
     public function range(): array
     {
-        return $this->minutes()->range();
+        return $this->minutes()->range(Minutes::ALL);
     }
 
     /**
