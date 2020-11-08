@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Time;
 
-use DateTime;
-
+/** 
+ * Esta classe é responsável pela extração de lacunas dentro
+ * de um range de minutos.
+*/
 class Chunks
 {
     /** @var array<int> */
@@ -14,12 +16,13 @@ class Chunks
     /**
      * @param array<int> $range
      */
-    public function __construct(array $range)
+    public function __construct(Minutes $minutes)
     {
-        $this->range = $range;
+        $this->range = $minutes->range();
     }
 
     /**
+     * Obtém as lacunas disponiveis para a quantidade de minutos especificada.
      * @return array<int, array<int>>
      */
     public function fittings(int $minutes): array
@@ -28,7 +31,7 @@ class Chunks
     }
 
     /**
-     * Método recursivo. Cada iteração extrai um pedaço
+     * Método recursivo. Cada iteração extrai um pedaço do período
      * contendo uma sequência de minutos disponíveis
      * @param array<int> $range
      * @param int $minutes

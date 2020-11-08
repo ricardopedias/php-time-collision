@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Time\Collision;
 use DateTime;
 use Time\Chunks;
 use Time\Minutes;
@@ -18,7 +17,7 @@ class ChunksFittingsTest extends TestCase
         $minutes->mark(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00'), Minutes::ALLOWED); // periodo 1
         $minutes->mark(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00'), Minutes::ALLOWED); // periodo 2
 
-        $object = new Chunks($minutes->range());
+        $object = new Chunks($minutes);
 
         $this->assertEquals([
             20 => [ 20, 30 ]
