@@ -34,7 +34,7 @@ class Collision
     public function chunks(): Chunks
     {
         if ($this->chunksObject === null) {
-            $this->chunksObject = new Chunks($this->minutes()->range());
+            $this->chunksObject = new Chunks($this->minutes());
         }
         return $this->chunksObject;
     }
