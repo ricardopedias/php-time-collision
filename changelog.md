@@ -9,7 +9,14 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ## \[Unreleased]
 
-Nada implementado ainda.
+### Added
+
+-   Refatoração do construtor de chunks para usar um objeto Minutes
+-   Criação de um teste de unidade específico para marcações
+
+### Fixed
+
+-   Classe Chunks ignorava o primeiro pedaço quando o minuto inicial e o inicio do range eram iguais
 
 ## \[0.3.0] - 2020-11-06
 

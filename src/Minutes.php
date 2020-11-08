@@ -19,8 +19,8 @@ class Minutes
     /** Término do período */
     private Datetime $end;
 
-    /** 
-     * Período completo 
+    /**
+     * Período completo
      * @var array<int>
      */
     private array $rangeVector = [];
@@ -58,21 +58,28 @@ class Minutes
      */
     public function mark(DateTime $start, Datetime $end, int $status = self::ALLOWED): void
     {
+        // Inicio deve estar dentro do range
         if ($start < $this->start) {
             $start = $this->start;
         }
 
+        // Término deve estar dentro do range
         if ($end > $this->end) {
             $end = $this->end;
         }
 
         $startIn = $this->beetwen($this->start, $start);
+        // Se o inicio for 0, deve contar o minuto 1
+        $startIn = $startIn === 0 ? 1 : $startIn;
+
         $endIn = $this->beetwen($this->start, $end);
 
         // Se não houver minutos, não há nada a fazer
-        if ($startIn === 0 || $endIn === 0) {
+        if ($endIn === 0) {
             return;
         }
+
+        
 
         for ($x = $startIn; $x <= $endIn; $x++) {
             if ($status === self::ALLOWED || $this->rangeVector[$x] !== self::UNUSED) {

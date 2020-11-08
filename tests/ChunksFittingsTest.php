@@ -10,26 +10,172 @@ use Time\Minutes;
 
 class ChunksFittingsTest extends TestCase
 {
-    /** @test */
-    public function getFittings()
+    public function rangeProvider()
     {
-        $minutes = new Minutes($this->dateStart, $this->dateEnd);
-        $minutes->mark(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00'), Minutes::ALLOWED); // periodo 1
-        $minutes->mark(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00'), Minutes::ALLOWED); // periodo 2
+        return [
+            // LIBERADOS NO MEIO DO RANGE
+            [
+                // range
+                [
+                    new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
+                    new DateTime('2020-11-01 13:00:00'),
+                ],
+                // allloweds
+                [
+                    [new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')],
+                    [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')],
+                ],
+                // minutes required
+                [
+                    5 => [
+                        // results
+                        20 => [ 20, 30 ],
+                        35 => [ 35, 40 ],
+                    ],
+                    10 => [
+                        // results
+                        20 => [ 20, 30 ]
+                    ],
+                    15 => [
+                        // results
+                        // ...
+                    ]
+                ]
+            ],
+            // 1 PERIODO LIBERADO NO INICIO DO RANGE
+            [
+                // range
+                [
+                    new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
+                    new DateTime('2020-11-01 13:00:00'),
+                ],
+                // allloweds
+                [
+                    [new DateTime('2020-11-01 12:00:00'), new DateTime('2020-11-01 12:30:00')],
+                ],
+                // minutes required
+                [
+                    5 => [
+                        // results
+                        1 => [ 1, 30 ],
+                    ],
+                    20 => [
+                        // results
+                        1 => [ 1, 30 ],
+                    ],
+                    35 => [
+                        // results
+                        // ...
+                    ]
+                ]
+            ],
+            // 2 PERIODOS, O PRIMEIRO LIBERADO NO INICIO DO RANGE
+            [
+                // range
+                [
+                    new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
+                    new DateTime('2020-11-01 13:00:00'),
+                ],
+                // allloweds
+                [
+                    [new DateTime('2020-11-01 12:00:00'), new DateTime('2020-11-01 12:30:00')],
+                    [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')],
+                ],
+                // minutes required
+                [
+                    5 => [
+                        // results
+                        1 => [ 1, 30 ],
+                        35 => [ 35, 40 ],
+                    ],
+                    20 => [
+                        // results
+                        1 => [ 1, 30 ],
+                    ],
+                    35 => [
+                        // results
+                        // ...
+                    ]
+                ]
+            ],
+            // 1 PERIODO LIBERADO NO TÉRMINO DO RANGE
+            [
+                // range
+                [
+                    new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
+                    new DateTime('2020-11-01 13:00:00'),
+                ],
+                // allloweds
+                [
+                    [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00')],
+                ],
+                // minutes required
+                [
+                    5 => [
+                        // results
+                        35 => [ 35, 60 ]
+                    ],
+                    20 => [
+                        // results
+                        35 => [ 35, 60 ],
+                    ],
+                    25 => [
+                        // results
+                        35 => [ 35, 60 ],
+                    ],
+                    30 => [
+                        // results
+                        // ...
+                    ],
+                ]
+            ],
+            // 2 PERIODOS, O SEGUNDO LIBERADO NO TÉRMINO DO RANGE
+            [
+                // range
+                [
+                    new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
+                    new DateTime('2020-11-01 13:00:00'),
+                ],
+                // allloweds
+                [
+                    [new DateTime('2020-11-01 12:00:00'), new DateTime('2020-11-01 12:31:00')],
+                    [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00')],
+                ],
+                // minutes required
+                [
+                    30 => [
+                        // results
+                        1 => [ 1, 31 ]
+                    ],
+                    20 => [
+                        // results
+                        1 => [ 1, 31 ],
+                        35 => [ 35, 60 ],
+                    ],
+                    25 => [
+                        // results
+                        1 => [ 1, 31 ],
+                        35 => [ 35, 60 ],
+                    ],
+                ]
+            ],
+        ];
+    }
 
-        $object = new Chunks($minutes);
+    /** @test 
+      * @dataProvider rangeProvider
+     */
+    public function fittings($range, $alloweds, $requireds)
+    {
+        $rangeObject = new Minutes($range[0], $range[1]);
+        foreach ($alloweds as $period) {
+            $rangeObject->mark($period[0], $period[1], Minutes::ALLOWED);
+        }
 
-        $this->assertEquals([
-            20 => [ 20, 30 ]
-        ], $object->fittings(10));
+        $object = new Chunks($rangeObject);
 
-        $this->assertEquals([
-            20 => [ 20, 30 ],
-            35 => [ 35, 40 ],
-        ], $object->fittings(5));
-
-        $this->assertEquals([
-            // array vazio
-        ], $object->fittings(15));
+        foreach ($requireds as $minutes => $result) {
+            $this->assertEquals($result, $object->fittings($minutes));
+        }
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Time;
 
-/** 
+/**
  * Esta classe é responsável pela extração de lacunas dentro
  * de um range de minutos.
 */
@@ -13,9 +13,6 @@ class Chunks
     /** @var array<int> */
     private array $range = [];
 
-    /**
-     * @param array<int> $range
-     */
     public function __construct(Minutes $minutes)
     {
         $this->range = $minutes->range();
@@ -44,13 +41,15 @@ class Chunks
         $hasAllowed = false;
         
         foreach ($range as $minute => $bit) {
-            // Apenas um pedaço é devolvido
-            if (isset($chunk[$minute - 1]) === false && $chunk !== []) {
+            $isSecondChunk = $chunk !== [] // existe um ou mais minutos armazenados
+                && isset($chunk[$minute - 1]) === false; // o minuto atual não é uma sequência do anterior
+            if ($isSecondChunk === true) {
+                // Apenas um pedaço deve ser devolvido por vez
                 break;
             }
 
             $isChunck = $bit === Minutes::ALLOWED // é um horário vago
-                && isset($range[$minute - 1]) === true; // é uma sequência;
+                && ($minute === 1 || isset($range[$minute - 1]) === true); // é uma sequência;
 
             if ($isChunck === true) {
                 $chunk[$minute] = $bit;
