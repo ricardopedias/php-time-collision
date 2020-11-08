@@ -55,12 +55,11 @@ class MinutesRangeInfoTest extends TestCase
         $minutes->mark(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00'), Minutes::ALLOWED);
         $minutes->mark(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00'), Minutes::ALLOWED);
 
+        // Precisa de 10 minutos (contando o minuto 25)
         $minutes->markCumulative(new DateTime('2020-11-01 12:25:00'), new DateTime('2020-11-01 12:34:00'), Minutes::FILLED);
 
-        // periodo 1: insere do 25 ao 30 - o que cabe
-        // ignora o que não faz parte dos ranges liberados e guarda os minutos de 30 a 34 = 4 minutos
-        // periodo 2: insere os 4 minutos guardados = 35 ao 39
-        $result = $this->period('25..30', Minutes::FILLED) + $this->period('35..39', Minutes::FILLED); 
+        $result = $this->period('25..30', Minutes::FILLED) // + 6 minutos (contando o 25)
+            + $this->period('35..38', Minutes::FILLED); // + 4 minutos (contando o 35)
         $this->assertEquals($result, $minutes->range(Minutes::FILLED));
     }
 }

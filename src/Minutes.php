@@ -54,6 +54,10 @@ class Minutes
 
     /**
      * Marca os minutos com o status especificado.
+     * Possibilidades para $status são:
+     *  Minutes::ALLOWED
+     *  Minutes::FILLED
+     *  Minutes::UNUSED
      * @return void
      */
     public function mark(DateTime $start, Datetime $end, int $status = self::ALLOWED): void
@@ -69,7 +73,7 @@ class Minutes
         }
 
         $startIn = $this->beetwen($this->start, $start);
-        // Se o inicio for 0, deve contar o minuto 1
+        // Se o minuto inicial do datetime for 0, deve contar a partir do minuto 1
         $startIn = $startIn === 0 ? 1 : $startIn;
 
         $endIn = $this->beetwen($this->start, $end);
@@ -78,8 +82,6 @@ class Minutes
         if ($endIn === 0) {
             return;
         }
-
-        
 
         for ($x = $startIn; $x <= $endIn; $x++) {
             if ($status === self::ALLOWED || $this->rangeVector[$x] !== self::UNUSED) {
@@ -91,6 +93,11 @@ class Minutes
     /**
      * Marca os minutos com o status especificado.
      * de forma acumulativa.
+     * Possibilidades para $status são:
+     *  Minutes::ALLOWED
+     *  Minutes::FILLED
+     *  Minutes::UNUSED
+     * @return void
      */
     public function markCumulative(DateTime $start, Datetime $end, int $status = self::ALLOWED): void
     {
@@ -103,7 +110,8 @@ class Minutes
         }
 
         $startIn = $this->beetwen($this->start, $start);
-        // $endIn = $this->beetwen($this->start, $end);
+        // Se o minuto inicial do datetime for 0, deve contar a partir do minuto 1
+        $startIn = $startIn === 0 ? 1 : $startIn;
 
         $settedCount = 0;
         $settedLimit = $this->beetwen($start, $end);
@@ -115,7 +123,7 @@ class Minutes
             }
 
             // Se todos os minutos foram setados
-            if ($settedCount > $settedLimit + 1) {
+            if ($settedCount > $settedLimit) {
                 break;
             }
 
@@ -129,6 +137,11 @@ class Minutes
 
     private function beetwen(DateTime $start, Datetime $end): int
     {
+        // Voltar para o passado é impossível
+        if ($end < $start) {
+            return 0;
+        }
+
         $amount = $start->diff($end);
 
         $minutes  = $amount->days * 24 * 60;
