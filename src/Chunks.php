@@ -31,7 +31,7 @@ class Chunks
 
     /**
      * Obtém os breakpoints para o inicio de novos dias dentro do range.
-     * @return array<int, array<DateTime>>
+     * @return array<int, DateTime>
      */
     public function days(): array
     {

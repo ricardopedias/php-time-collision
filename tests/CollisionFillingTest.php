@@ -22,7 +22,7 @@ class CollisionFillingTest extends TestCase
         // periodo 1: insere do 25 ao 30... 
         // ignora o restante até 34 - porque não faz parte dos ranges liberados
         $result = $this->period('25..30', Minutes::FILLED); 
-        $this->assertEquals($result, $object->filled());
+        $this->assertEquals($result, $object->minutes()->filled());
     }
 
     /** @test */
@@ -37,6 +37,6 @@ class CollisionFillingTest extends TestCase
 
         $result = $this->period('25..30', Minutes::FILLED) // + 6 minutos (contando o 25)
             + $this->period('35..38', Minutes::FILLED); // + 4 minutos (contando o 35)
-        $this->assertEquals($result, $object->filled());
+        $this->assertEquals($result, $object->minutes()->filled());
     }
 }

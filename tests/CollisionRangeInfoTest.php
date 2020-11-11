@@ -17,7 +17,7 @@ class CollisionRangeInfoTest extends TestCase
 
         $result = $this->period('1..14', Minutes::UNUSED) 
             + $this->period('32..60', Minutes::UNUSED);
-        $this->assertEquals($result, $object->unused());
+        $this->assertEquals($result, $object->minutes()->unused());
     }
 
     /** @test */
@@ -27,6 +27,6 @@ class CollisionRangeInfoTest extends TestCase
         $object->allowPeriod('12:15', '12:31');
 
         $result = $this->period('15..31', Minutes::ALLOWED);
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
     }
 }

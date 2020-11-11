@@ -6,12 +6,11 @@ namespace Tests;
 
 use Time\Collision;
 use DateTime;
-use Time\Minutes;
 
-class CollisionGetFittingsForTest extends TestCase
+class CollisionFittingsForTest extends TestCase
 {
     /** @test */
-    public function getFittingsFor()
+    public function fittingsFor()
     {
         $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');
         $object->allowPeriod('12:20', '12:30')
@@ -19,15 +18,15 @@ class CollisionGetFittingsForTest extends TestCase
 
         $this->assertEquals([
             20 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ]
-        ], $object->getFittingsFor(10));
+        ], $object->fittingsFor(10));
 
         $this->assertEquals([
             20 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ],
             35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00') ],
-        ], $object->getFittingsFor(5));
+        ], $object->fittingsFor(5));
 
         $this->assertEquals([
             // array vazio
-        ], $object->getFittingsFor(15));
+        ], $object->fittingsFor(15));
     }
 }

@@ -35,14 +35,14 @@ class CollisionAllowanceTest extends TestCase
         $end = $start + 30;
         $result += $this->period("{$start}..{$end}", 0);
         
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
     }
 
     /** @test */
     public function defaultAllDaysWithoutPeriods()
     {
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $this->assertEquals([], $object->allowed());
+        $this->assertEquals([], $object->minutes()->allowed());
     }
 
     /** @test */
@@ -57,7 +57,7 @@ class CollisionAllowanceTest extends TestCase
         $end = $start + 60;
         $result = $this->period("{$start}..{$end}", 0);
 
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
     }
 
     /** @test */
@@ -72,7 +72,7 @@ class CollisionAllowanceTest extends TestCase
         $end = $start + 60;
         $result = $this->period("{$start}..{$end}", 0);
 
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
     }
 
     /** @test */
@@ -85,7 +85,7 @@ class CollisionAllowanceTest extends TestCase
             + $this->period('15..31', Minutes::ALLOWED)
             + $this->period('32..60', Minutes::UNUSED);
         
-        $this->assertEquals($result, $object->range());
+        $this->assertEquals($result, $object->minutes()->range());
     }
 
     /** @test */
@@ -101,7 +101,7 @@ class CollisionAllowanceTest extends TestCase
             + $this->period('35..50', Minutes::ALLOWED)
             + $this->period('51..60', Minutes::UNUSED);
         
-        $this->assertEquals($result, $object->range());
+        $this->assertEquals($result, $object->minutes()->range());
     }
 
     /** @test */
@@ -119,7 +119,7 @@ class CollisionAllowanceTest extends TestCase
             + $this->period('41..49', Minutes::UNUSED)
             + $this->period('50..60', Minutes::ALLOWED);
         
-        $this->assertEquals($result, $object->range());
+        $this->assertEquals($result, $object->minutes()->range());
     }
 
     /** @test */
@@ -140,7 +140,7 @@ class CollisionAllowanceTest extends TestCase
         $end = $start + 30;
         $result += $this->period("{$start}..{$end}", 0);
 
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
     }
 
     /** @test */
