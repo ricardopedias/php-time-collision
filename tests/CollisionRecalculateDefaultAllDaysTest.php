@@ -6,22 +6,14 @@ namespace Tests;
 
 use DateTime;
 use Time\Collision;
-use Time\Day;
-use Time\Minutes;
-
-// defaultAllDays
-// allowDay
-// allowPeriod
-// allowDate
-// São 16 possibilidades para testar
+use Time\WeekDay;
 
 class CollisionRecalculateDefaultAllDaysTest extends TestCase
 {
     /** @test */
-    public function defaultDaysToAllowAllDays()
+    public function defaultToAllDays()
     {
-        // Primeiro cálculo
-        // Libera todos os dias
+        // DEFAULT
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
         $object->allowPeriod('08:00', '09:00');
 
@@ -42,8 +34,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         
         $this->assertEquals($result, $object->allowed());
 
-        // Setar todos os dias força o recálculo de minutos
-        // Mas continua liberando todos os dias
+        // + ALL DAYS
         $object->allowAllDays();
 
         // das 8 as 9 do primeiro dia
@@ -65,10 +56,9 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
     }
 
     /** @test */
-    public function defaultDaysToDay()
+    public function defaultToDay()
     {
-        // Primeiro cálculo
-        // Libera todos os dias
+        // DEFAULT
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
         $object->allowPeriod('08:00', '09:00');
 
@@ -89,9 +79,8 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         
         $this->assertEquals($result, $object->allowed());
 
-        // Setar um dia força o recálculo de minutos
-        // Libera apenas a Segunda-feira
-        $object->allowDay(Day::MONDAY);
+        // + DAY
+        $object->allowDay(WeekDay::MONDAY);
 
         // das 8 as 9 do segundo dia
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00'));
@@ -102,10 +91,9 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
     }
 
     /** @test */
-    public function defaultDaysToPeriod()
+    public function defaultToPeriod()
     {
-        // Primeiro cálculo
-        // Libera todos os dias
+        // DEFAULT
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
         $object->allowPeriod('08:00', '09:00');
 
@@ -126,8 +114,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         
         $this->assertEquals($result, $object->allowed());
 
-        // Setar um dia força o recálculo de minutos
-        // Libera apenas a Segunda-feira
+        // + PERIOD
         $object->allowPeriod('10:00', '11:00');
 
         // das 8 as 9 do primeiro dia
@@ -159,10 +146,9 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
     }
 
     /** @test */
-    public function defaultDaysToDate()
+    public function defaultToDate()
     {
-        // Primeiro cálculo
-        // Libera todos os dias
+        // DEFAULT
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
         $object->allowPeriod('08:00', '09:00');
 
@@ -183,8 +169,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         
         $this->assertEquals($result, $object->allowed());
 
-        // Setar uma data força o recálculo de minutos
-        // Libera apenas a Terça-feira
+        // + DATE
         $object->allowDate('2020-11-03');
 
         // das 8 as 9 do segundo dia

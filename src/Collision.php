@@ -16,7 +16,7 @@ class Collision
 
     private DateTime $rangeEnd;
 
-    private array $days = [];
+    private array $weekDays = [];
 
     private array $dates = [];
 
@@ -26,9 +26,7 @@ class Collision
 
     private array $defaultPeriods = [];
 
-    private bool $useDefaultDays = false;
-
-    private bool $useDefaultPeriods = false;
+    private bool $useDefaultWeekDays = false;
 
     private ?Minutes $minutesObject = null;
 
@@ -58,20 +56,16 @@ class Collision
      * Os dias são definidos de 0 a 7, sendo que '0' corresponde ao Domingo 
      * '6' correponde a Sábado e '7' significa a semana toda.
      * @param int $day Um dia da semana. Ex: Week::MONDAY
-     * @return \Time\Day
+     * @return \Time\WeekDay
      */
-    public function allowDay(int $day = Day::MONDAY): Day
+    public function allowDay(int $day = WeekDay::MONDAY): WeekDay
     {
-        if ($day < 0 || $day > 7) {
-            throw new InvalidDayException("The day must be 0 to 7, or use Week::???");
-        }
-
         $this->clearCollisions();
 
-        $dayObject = new Day($day);
-        $this->days[$day] = $dayObject;
+        $dayObject = new WeekDay($day);
+        $this->weekDays[$day] = $dayObject;
 
-        return $this->days[$day];
+        return $this->weekDays[$day];
     }
 
     /**
@@ -92,22 +86,14 @@ class Collision
      * Os dias marcados como utilizáveis receberão os períodos definidos aqui.
      * @param string $startTime Ex: 08:35
      * @param string $endTime Ex: 09:50
-     * @return \Time\Day
+     * @return \Time\Collision
      */
     public function allowPeriod(string $startTime, string $endTime): self
     {
         $this->clearCollisions();
 
-        try {
-            $start = new DateTime("2020-01-10 {$startTime}");
-            $end = new DateTime("2020-01-10 {$endTime}");
-        } catch(Exception $e) {
-            throw new InvalidTimeException($e->getMessage());
-        }
-
-        if ($start > $end) {
-            throw new InvalidTimeException('The end time must be greater than the start time of the period');
-        }
+        // Apenas para validar o período
+        (new WeekDay(WeekDay::MONDAY))->withPeriod($startTime, $endTime);
 
         $this->defaultPeriods[] = [$startTime, $endTime];
         return $this;
@@ -213,21 +199,21 @@ class Collision
 
     private function populateMinutesCollisions()
     {
-        // Se nenhum dia tiver sido setado, libera a semana toda
-        // se uma data tiver sido setada, ignora
-        if ($this->days === [] && $this->dates === []) {
+        // Se nenhum dia ou data explícita tiver sido setada, 
+        // libera a semana toda
+        if ($this->weekDays === [] && $this->dates === []) {
             $this->allowAllDays();
-            $this->useDefaultDays = true;
+            $this->useDefaultWeekDays = true;
         }
 
         // Setagem de datas específicas
         foreach ($this->dates as $date) {
             $weekDay = (int)$date->format('w');
 
-            if (isset($this->days[$weekDay]) === false) {
+            if (isset($this->weekDays[$weekDay]) === false) {
                 $this->allowDay($weekDay);
             }
-            $this->markDayAllowed($this->days[$weekDay], $date);
+            $this->markDayAllowed($this->weekDays[$weekDay], $date);
         }
 
         // Obtém os dias contidos no período
@@ -236,12 +222,12 @@ class Collision
             $weekDay = (int)$day->format('w');
 
             // preenche somente dias da semana liberados
-            if (isset($this->days[$weekDay]) === true) {
+            if (isset($this->weekDays[$weekDay]) === true) {
 
                 $current = clone $this->rangeStart;
                 $current->modify("+ {$minute} minutes");
 
-                $this->markDayAllowed($this->days[$weekDay], $current);
+                $this->markDayAllowed($this->weekDays[$weekDay], $current);
 
                 foreach ($this->fills as $times) {
                     $this->markFilled($times[0], $times[1]);
@@ -256,7 +242,7 @@ class Collision
         return $this->minutes();
     }
 
-    private function defaultPeriodsIfNot(Day $day)
+    private function defaultPeriodsIfNot(WeekDay $day)
     {
         $day->removeDefaults();
 
@@ -272,15 +258,15 @@ class Collision
      */
     private function clearCollisions(): void
     {
-        if ($this->useDefaultDays === true) {
-            $this->useDefaultDays = false;
-            $this->days = [];
+        if ($this->useDefaultWeekDays === true) {
+            $this->useDefaultWeekDays = false;
+            $this->weekDays = [];
         }
 
         $this->minutesObject = null;
     }
 
-    private function markDayAllowed(Day $dayObject, DateTime $day): void
+    private function markDayAllowed(WeekDay $dayObject, DateTime $day): void
     {
         $this->defaultPeriodsIfNot($dayObject);
 
