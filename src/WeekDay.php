@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Time;
 
 use Closure;
+use DateTime;
+use Exception;
+use Time\Exceptions\InvalidDayException;
+use Time\Exceptions\InvalidTimeException;
 
-class Day
+class WeekDay
 {
     public const SUNDAY    = 0;
     public const MONDAY    = 1;
@@ -23,13 +27,27 @@ class Day
 
     public function __construct(int $day)
     {
+        if ($day < 0 || $day > 7) {
+            throw new InvalidDayException("The day must be 0 to 7, or use Week::???");
+        }
+        
         $this->day = $day;
     }
 
-    public function withPeriod(string $start, string $end, bool $default = false): self
+    public function withPeriod(string $startTime, string $endTime, bool $default = false): self
     {
-        // TODO verificar sintaxe HH:MM
-        $this->periods[] = [$start, $end, $default];
+        try {
+            $start = new DateTime("2020-01-10 {$startTime}");
+            $end = new DateTime("2020-01-10 {$endTime}");
+        } catch(Exception $e) {
+            throw new InvalidTimeException($e->getMessage());
+        }
+
+        if ($start > $end) {
+            throw new InvalidTimeException('The end time must be greater than the start time of the period');
+        }
+        
+        $this->periods[] = [$startTime, $endTime, $default];
         return $this;
     }
 
