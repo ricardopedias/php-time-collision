@@ -23,6 +23,7 @@ class WeekDay
 
     private int $day = self::MONDAY;
 
+    /** @var array<int, array> */
     private array $periods = [];
 
     public function __construct(int $day)
@@ -39,7 +40,7 @@ class WeekDay
         try {
             $start = new DateTime("2020-01-10 {$startTime}");
             $end = new DateTime("2020-01-10 {$endTime}");
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             throw new InvalidTimeException($e->getMessage());
         }
 
@@ -51,10 +52,16 @@ class WeekDay
         return $this;
     }
 
+    /**
+     * Especifica uma lista de períodos a serem usados neste dia.
+     * @param array<int, array> $periods
+     * @param bool $default
+     * @return \Time\WeekDay
+     */
     public function withPeriods(array $periods, bool $default = false): self
     {
         $this->periods = [];
-        foreach($periods as $item) {
+        foreach ($periods as $item) {
             $this->withPeriod($item[0], $item[1], $default);
         }
         
@@ -63,7 +70,7 @@ class WeekDay
 
     public function removeDefaults(): self
     {
-        foreach($this->periods as $index => $item) {
+        foreach ($this->periods as $index => $item) {
             if ($item[2] === true) {
                 unset($this->periods[$index]);
             }
@@ -77,6 +84,9 @@ class WeekDay
         return $this->day;
     }
 
+    /**
+     * @return array<int, array>
+     */
     public function periods(): array
     {
         return $this->periods;

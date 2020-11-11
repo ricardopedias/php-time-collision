@@ -40,7 +40,7 @@ class Chunks
         $days = [];
         $days[1] = clone $walk;
 
-        $iterations = count($this->range)/60/24; /// dias disponiveis no range
+        $iterations = count($this->range) / 60 / 24; /// dias disponiveis no range
 
         while ($iterations > 1) {
             $walk->modify('next day');
@@ -57,7 +57,7 @@ class Chunks
 
     /**
      * Obtém as lacunas disponiveis para a quantidade de minutos especificada.
-     * @return array<int, array<DateTime>>
+     * @return array<int, array>
      */
     public function fittings(int $minutes): array
     {

@@ -10,7 +10,7 @@ class Collision extends Settings
 {
     /**
      * Obtém as lacunas onde o período se encaixa
-     * @return array<int, array<int>>
+     * @return array<int, array>
      */
     public function fittingsFor(int $amountMinutes): array
     {
@@ -19,7 +19,7 @@ class Collision extends Settings
 
     protected function populateAlgorithm(): void
     {
-        // Se nenhum dia ou data explícita tiver sido setada, 
+        // Se nenhum dia ou data explícita tiver sido setada,
         // libera a semana toda
         if ($this->weekDays === [] && $this->dates === []) {
             $this->allowAllDays();
@@ -43,7 +43,6 @@ class Collision extends Settings
 
             // preenche somente dias da semana liberados
             if (isset($this->weekDays[$weekDay]) === true) {
-
                 $current = clone $this->rangeStart;
                 $current->modify("+ {$minute} minutes");
 
@@ -61,12 +60,12 @@ class Collision extends Settings
     }
 
     /**
-     * Especifica os períodos que serão usados para o 
+     * Especifica os períodos que serão usados para o
      * dia da semana especificado.
      * Caso não tenha sido setado em WeekDay::withPeriod()
      * usará o padrão setado com Collision::allowPeriod.
      */
-    private function defaultPeriodsIfNot(WeekDay $day)
+    private function defaultPeriodsIfNot(WeekDay $day): void
     {
         $day->removeDefaults();
 
@@ -86,7 +85,7 @@ class Collision extends Settings
         $this->defaultPeriodsIfNot($dayObject);
 
         $periods = $dayObject->periods();
-        foreach($periods as $times) {
+        foreach ($periods as $times) {
             $periodStart = explode(':', $times[0]);
             $open = clone $day;
             $open->setTime((int)$periodStart[0], (int)$periodStart[1]);
@@ -101,8 +100,8 @@ class Collision extends Settings
 
     /**
      * Marca efetivamente o período especificado como preenchido.
-     * @param string $start
-     * @param string $end
+     * @param \DateTime $start
+     * @param \DateTime $end
      * @param bool $cumulative
      */
     private function markFilled(DateTime $start, DateTime $end, bool $cumulative = false): void
