@@ -48,6 +48,7 @@
     "scripts":{
         "test":"vendor/bin/phpunit --testdox $1",
         "psr": "vendor/bin/phpcs --standard=PSR1,PSR2,PSR12 src",
+        "fixer": "vendor/bin/phpcbf --standard=PSR1,PSR2,PSR12 src",
         "analyse" : "vendor/bin/phpstan analyse src --level 8"
     }
 }
