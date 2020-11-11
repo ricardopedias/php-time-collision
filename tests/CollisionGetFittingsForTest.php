@@ -11,19 +11,19 @@ use Time\Minutes;
 class CollisionGetFittingsForTest extends TestCase
 {
     /** @test */
-    public function getFittings()
+    public function getFittingsFor()
     {
-        $object = new Collision(new Minutes($this->dateStart, $this->dateEnd));
-        $object->setUsable(new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')); // periodo 1
-        $object->setUsable(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')); // periodo 2
+        $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');
+        $object->allowPeriod('12:20', '12:30')
+               ->allowPeriod('12:35', '12:40');
 
         $this->assertEquals([
-            20 => [ 20, 30 ]
+            20 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ]
         ], $object->getFittingsFor(10));
 
         $this->assertEquals([
-            20 => [ 20, 30 ],
-            35 => [ 35, 40 ],
+            20 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ],
+            35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00') ],
         ], $object->getFittingsFor(5));
 
         $this->assertEquals([
