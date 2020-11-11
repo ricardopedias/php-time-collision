@@ -30,7 +30,17 @@ class Minutes
         $this->start = $start;
         $this->end   = $end;
         
-        $this->rangeVector  = array_fill(1, $this->beetwen($start, $end), self::UNUSED);
+        $this->rangeVector = array_fill(1, $this->beetwen($start, $end), self::UNUSED);
+    }
+
+    public function startRange(): DateTime
+    {
+        return $this->start;
+    }
+
+    public function endRange(): DateTime
+    {
+        return $this->end;
     }
 
     /**
@@ -135,7 +145,12 @@ class Minutes
         }
     }
 
-    private function beetwen(DateTime $start, Datetime $end): int
+    public function chunks(): Chunks
+    {
+        return new Chunks($this);
+    }
+
+    public function beetwen(DateTime $start, Datetime $end): int
     {
         // Voltar para o passado é impossível
         if ($end < $start) {
