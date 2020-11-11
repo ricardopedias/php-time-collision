@@ -14,14 +14,19 @@ abstract class Settings
 
     protected DateTime $rangeEnd;
 
+    /** @var array<int, \Time\WeekDay> */
     protected array $weekDays = [];
 
+    /** @var array<int, \DateTime> */
     protected array $dates = [];
 
+    /** @var array<int, array> */
     protected array $fills = [];
 
+    /** @var array<int, array> */
     protected array $cumulativeFills = [];
 
+    /** @var array<int, array> */
     protected array $defaultPeriods = [];
 
     protected bool $useDefaultWeekDays = false;
@@ -68,7 +73,7 @@ abstract class Settings
 
     /**
      * Marca todos os dias da semana como utilizáveis.
-     * @return \Time\Collision
+     * @return self
      */
     public function allowAllDays(): self
     {
@@ -84,7 +89,7 @@ abstract class Settings
      * Os dias marcados como utilizáveis receberão os períodos definidos aqui.
      * @param string $startTime Ex: 08:35
      * @param string $endTime Ex: 09:50
-     * @return \Time\Collision
+     * @return self
      */
     public function allowPeriod(string $startTime, string $endTime): self
     {
@@ -152,7 +157,7 @@ abstract class Settings
 
     public function minutes(): Minutes
     {
-        if ($this->minutesObject === null) {
+        if ($this->minutesObject !== null) {
             $this->minutesObject = new Minutes(
                 $this->rangeStart,
                 $this->rangeEnd
@@ -160,6 +165,7 @@ abstract class Settings
             $this->populateAlgorithm();
         }
 
+        /** @phpstan-ignore-next-line */
         return $this->minutesObject;
     }
 
