@@ -105,4 +105,20 @@ class TestCase extends PhpUnitTestCase
         echo "{$filled} = Horário preenchido\n";
         echo "{$allowed} = Horário disponível\n";
     }
+
+    public function minutesBeetwen(DateTime $start, Datetime $end): int
+    {
+        // Voltar para o passado é impossível
+        if ($end < $start) {
+            return 0;
+        }
+
+        $amount = $start->diff($end);
+
+        $minutes  = $amount->days * 24 * 60;
+        $minutes += $amount->h * 60;
+        $minutes += $amount->i;
+
+        return $minutes;
+    }
 }
