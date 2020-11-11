@@ -6,7 +6,7 @@ namespace Tests;
 
 use DateTime;
 use Time\Collision;
-use Time\Day;
+use Time\WeekDay;
 use Time\Exceptions\InvalidDateTimeException;
 use Time\Exceptions\InvalidDayException;
 use Time\Exceptions\InvalidTimeException;
@@ -50,7 +50,7 @@ class CollisionAllowanceTest extends TestCase
     {
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
         $object->allowPeriod('08:00', '09:00');
-        $object->allowDay(Day::MONDAY);
+        $object->allowDay(WeekDay::MONDAY);
 
         // das 8 as 9 do segundo dia: Segunda-feira
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00'));
@@ -64,7 +64,7 @@ class CollisionAllowanceTest extends TestCase
     public function allowOneDayWithPeriod()
     {
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $object->allowDay(Day::MONDAY)
+        $object->allowDay(WeekDay::MONDAY)
             ->withPeriod('08:00', '09:00');
 
         // das 8 as 9 do segundo dia: Segunda-feira
@@ -127,7 +127,7 @@ class CollisionAllowanceTest extends TestCase
     {
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
         $object->allowPeriod('08:00', '09:00');
-        $object->allowDay(Day::MONDAY);
+        $object->allowDay(WeekDay::MONDAY);
         $object->allowDate('2020-11-03');
 
         // das 8 as 9 do segundo dia: Segunda-feira
