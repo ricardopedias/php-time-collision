@@ -29,12 +29,12 @@ class ChunksFittingsTest extends TestCase
                 [
                     5 => [
                         // results
-                        20 => [ 20, 30 ],
-                        35 => [ 35, 40 ],
+                        20 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ],
+                        35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00') ],
                     ],
                     10 => [
                         // results
-                        20 => [ 20, 30 ]
+                        20 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ]
                     ],
                     15 => [
                         // results
@@ -57,11 +57,11 @@ class ChunksFittingsTest extends TestCase
                 [
                     5 => [
                         // results
-                        1 => [ 1, 30 ],
+                        1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
                     ],
                     20 => [
                         // results
-                        1 => [ 1, 30 ],
+                        1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
                     ],
                     35 => [
                         // results
@@ -85,12 +85,12 @@ class ChunksFittingsTest extends TestCase
                 [
                     5 => [
                         // results
-                        1 => [ 1, 30 ],
-                        35 => [ 35, 40 ],
+                        1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
+                        35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00') ],
                     ],
                     20 => [
                         // results
-                        1 => [ 1, 30 ],
+                        1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
                     ],
                     35 => [
                         // results
@@ -113,15 +113,15 @@ class ChunksFittingsTest extends TestCase
                 [
                     5 => [
                         // results
-                        35 => [ 35, 60 ]
+                        35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ]
                     ],
                     20 => [
                         // results
-                        35 => [ 35, 60 ],
+                        35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
                     ],
                     25 => [
                         // results
-                        35 => [ 35, 60 ],
+                        35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
                     ],
                     30 => [
                         // results
@@ -145,17 +145,17 @@ class ChunksFittingsTest extends TestCase
                 [
                     30 => [
                         // results
-                        1 => [ 1, 31 ]
+                        1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:31:00') ]
                     ],
                     20 => [
                         // results
-                        1 => [ 1, 31 ],
-                        35 => [ 35, 60 ],
+                        1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:31:00') ],
+                        35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
                     ],
                     25 => [
                         // results
-                        1 => [ 1, 31 ],
-                        35 => [ 35, 60 ],
+                        1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:31:00') ],
+                        35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
                     ],
                 ]
             ],
