@@ -32,7 +32,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $end = $start + 30;
         $result += $this->period("{$start}..{$end}", 0);
         
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
 
         // + ALL DAYS
         $object->allowAllDays();
@@ -52,7 +52,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $end = $start + 30;
         $result += $this->period("{$start}..{$end}", 0);
         
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
     }
 
     /** @test */
@@ -77,7 +77,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $end = $start + 30;
         $result += $this->period("{$start}..{$end}", 0);
         
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
 
         // + DAY
         $object->allowDay(WeekDay::MONDAY);
@@ -87,7 +87,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $end = $start + 60;
         $result = $this->period("{$start}..{$end}", 0);
         
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
     }
 
     /** @test */
@@ -112,7 +112,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $end = $start + 30;
         $result += $this->period("{$start}..{$end}", 0);
         
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
 
         // + PERIOD
         $object->allowPeriod('10:00', '11:00');
@@ -142,7 +142,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $end = $start + 30;
         $result += $this->period("{$start}..{$end}", 0);
         
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
     }
 
     /** @test */
@@ -167,7 +167,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $end = $start + 30;
         $result += $this->period("{$start}..{$end}", 0);
         
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
 
         // + DATE
         $object->allowDate('2020-11-03');
@@ -177,6 +177,6 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $end = $start + 30;
         $result = $this->period("{$start}..{$end}", 0);
 
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
     }
 }

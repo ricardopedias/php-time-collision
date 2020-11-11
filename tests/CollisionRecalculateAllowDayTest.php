@@ -23,7 +23,7 @@ class CollisionRecalculateAllowDayTest extends TestCase
         $end = $start + 60;
         $result = $this->period("{$start}..{$end}", 0);
         
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
 
         // + ALL DAYS
         $object->allowAllDays();
@@ -43,7 +43,7 @@ class CollisionRecalculateAllowDayTest extends TestCase
         $end = $start + 30;
         $result += $this->period("{$start}..{$end}", 0);
         
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
     }
 
     /** @test */
@@ -58,7 +58,7 @@ class CollisionRecalculateAllowDayTest extends TestCase
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00'));
         $end = $start + 60;
         $result = $this->period("{$start}..{$end}", 0);
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
 
         // + DAY
         $object->allowDay(WeekDay::TUESDAY);
@@ -73,7 +73,7 @@ class CollisionRecalculateAllowDayTest extends TestCase
         $end = $start + 30;
         $result += $this->period("{$start}..{$end}", 0);
 
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
     }
 
     /** @test */
@@ -88,7 +88,7 @@ class CollisionRecalculateAllowDayTest extends TestCase
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00'));
         $end = $start + 60;
         $result = $this->period("{$start}..{$end}", 0);
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
 
         // + PERIOD
         $object->allowPeriod('10:00', '11:00');
@@ -103,7 +103,7 @@ class CollisionRecalculateAllowDayTest extends TestCase
         $end = $start + 60;
         $result += $this->period("{$start}..{$end}", 0);
 
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
     }
 
     /** @test */
@@ -118,7 +118,7 @@ class CollisionRecalculateAllowDayTest extends TestCase
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00'));
         $end = $start + 60;
         $result = $this->period("{$start}..{$end}", 0);
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
 
         // + DATE
         $object->allowDate('2020-11-03');
@@ -133,6 +133,6 @@ class CollisionRecalculateAllowDayTest extends TestCase
         $end = $start + 30;
         $result += $this->period("{$start}..{$end}", 0);
 
-        $this->assertEquals($result, $object->allowed());
+        $this->assertEquals($result, $object->minutes()->allowed());
     }
 }

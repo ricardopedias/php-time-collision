@@ -63,6 +63,33 @@ class Minutes
     }
 
     /**
+     * Devolve os minutos bloqueados para uso.
+     * @return array<int>
+     */
+    public function unused(): array
+    {
+        return $this->range(Minutes::UNUSED);
+    }
+
+    /**
+     * Devolve os minutos que podem ser usados.
+     * @return array<int>
+     */
+    public function allowed(): array
+    {
+        return $this->range(Minutes::ALLOWED);
+    }
+
+    /**
+     * Devolve os minutos usados dentro do horário comercial.
+     * @return array<int>
+     */
+    public function filled(): array
+    {
+        return $this->range(Minutes::FILLED);
+    }
+
+    /**
      * Marca os minutos com o status especificado.
      * Possibilidades para $status são:
      *  Minutes::ALLOWED
