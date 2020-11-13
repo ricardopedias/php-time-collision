@@ -33,11 +33,20 @@ abstract class Settings
 
     protected ?Minutes $minutesObject = null;
 
-    public function __construct(string $start, string $end)
+    public function __construct(string $start, ?string $end = null)
     {
         try {
             $start = new DateTime($start);
-            $end   = new DateTime($end);
+
+            if ($end === null) {
+                $customEnd = clone $start;
+                $customEnd->setTime(23,59);
+            }
+
+            $end = $end === null 
+                ? $customEnd
+                : new DateTime($end);
+
         } catch (Exception $e) {
             throw new InvalidDateTimeException($e->getMessage());
         }
@@ -48,6 +57,10 @@ abstract class Settings
 
         if ($end->format('H:i') === '00:00') {
             $end->modify('+ 24 hours');
+        }
+
+        if ($end->format('H:i') === '23:59') {
+            $end->modify('+ 1 minute');
         }
 
         $this->rangeStart = $start;
@@ -157,7 +170,7 @@ abstract class Settings
 
     public function minutes(): Minutes
     {
-        if ($this->minutesObject !== null) {
+        if ($this->minutesObject === null) {
             $this->minutesObject = new Minutes(
                 $this->rangeStart,
                 $this->rangeEnd
