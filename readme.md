@@ -12,6 +12,43 @@ PHP Time Collision é uma biblioteca para lidar com colisão temporal, podendo a
 
 Sinta-se à vontade para conferir o [changelog](https://github.com/ricardopedias/php-time-collision/blob/master/changelog.md), os [releases](https://github.com/ricardopedias/php-time-collision/releases) e a [licença](https://github.com/ricardopedias/php-time-collision/blob/master/license.md).
 
+## Como usar
+
+Existem várias formas de trabalhar com colisões de tempo dentro da biblioteca. 
+Um exemplo simples é explicado a seguir:
+
+```php
+// Gera um range de 24 horas no dia 10/01/2020
+$object = new Collision('2020-01-10');
+
+// Libera dois períodos dentro do range
+$object->allowPeriod('13:00', '14:00');
+$object->allowPeriod('15:00', '18:00');
+
+// Obtém os períodos onde 01h30m pode se encaixar
+$fittings = $object->fittingsFor(90);
+```
+
+O resultado será um array contendo todos os períodos disponíveis onde
+1h30m podem ser alocados.
+No exemplo acima, a variável *"$fittings"* terá o seguinte conteúdo:
+
+```
+[
+    900 => [
+        0 => DateTime("2020-01-10 15:00:00"),
+        1 => DateTime("2020-01-10 18:00:00")
+    ]
+]
+```
+
+Ou seja, apenas o período das 15:00 às 18:00 podem alocar 01h30m, sendo:
+
+1. O índice **900** é o número de minutos desde o início do range até atingir o inicio do período;
+2. Os dois valores correspondem ao início e o fim dos períodos, ou seja, das 15:00 às 18:00.
+
+Para mais informações, consulte a [Documentação da Biblioteca](docs/api.md) para descobrir outras funcionalidades.
+
 ## Características
 
 -   Feito para o PHP 7 ou superior;
@@ -19,10 +56,6 @@ Sinta-se à vontade para conferir o [changelog](https://github.com/ricardopedias
 -   Bem documentado e amigável para IDEs;
 -   Feito para TDD (Test Driven Development);
 -   Feito com :heart: & :coffee:.
-
-## Como usar
-
-...
 
 ## Créditos 
 
