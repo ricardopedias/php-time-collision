@@ -11,17 +11,34 @@ use Time\Exceptions\InvalidDateTimeException;
 class CollisionConstructorTest extends TestCase
 {
     /** @test */
-    public function constructorFull()
+    public function constructorDate()
+    {
+        // Constrói o dia inteiro 2020-11-01 00:00:00 -> 2020-11-02 00:00:00
+        $object = new Collision('2020-11-01', '2020-11-01');
+        $this->assertCount(60*24, $object->minutes()->range()); // 1440 minutos
+    }
+
+    /** @test */
+    public function constructorPartialDate()
+    {
+        // Constrói o dia inteiro 2020-11-01 00:00:00 -> 2020-11-02 00:00:00
+        $object = new Collision('2020-11-01');
+        $this->assertCount(60*24, $object->minutes()->range()); // 1440 minutos
+    }
+
+    /** @test */
+    public function constructorWithMinutes()
     {
         $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');
         $this->assertCount(60, $object->minutes()->range()); // 60 minutos
     }
 
     /** @test */
-    public function constructorDate()
+    public function constructorPartialWithMinutes()
     {
-        $object = new Collision('2020-11-01', '2020-11-01');
-        $this->assertCount(60*24, $object->minutes()->range()); // 1440 minutos
+        // Constrói o restante do dia 2020-11-01 23:00:00 -> 2020-11-02 00:00:00
+        $object = new Collision('2020-11-01 23:00:00');
+        $this->assertCount(60, $object->minutes()->range()); // 1440 - 60 minutos
     }
 
     /** @test */
