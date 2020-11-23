@@ -8,14 +8,13 @@
 [![Follow](https://img.shields.io/github/followers/ricardopedias?label=Siga%20no%20GitHUB&style=social)](https://github.com/ricardopedias)
 [![Twitter](https://img.shields.io/twitter/follow/ricardopedias?label=Siga%20no%20Twitter)](https://twitter.com/ricardopedias)
 
-PHP Time Collision é uma biblioteca para lidar com colisão temporal, podendo atribuir horários livres em um período especificado. Útil especialmente para gerenciamento de horários em agendas, onde é preciso encaixar um determinado tempo em um horário disponível.
+PHP Time Collision é uma biblioteca para lidar com colisão temporal, podendo identificar horários livres em um período especificado. Útil especialmente para gerenciamento de horários em agendas, onde é preciso encaixar um determinado tempo em um horário disponível.
 
 Sinta-se à vontade para conferir o [changelog](https://github.com/ricardopedias/php-time-collision/blob/master/changelog.md), os [releases](https://github.com/ricardopedias/php-time-collision/releases) e a [licença](https://github.com/ricardopedias/php-time-collision/blob/master/license.md).
 
 ## Como usar
 
-Existem várias formas de trabalhar com colisões de tempo dentro da biblioteca. 
-Um exemplo simples é explicado a seguir:
+Existem várias formas de trabalhar com colisões de tempo dentro da biblioteca e podem ser conferidas na [documentação](docs/index.md). Um exemplo simples é explicado a seguir:
 
 ```php
 // Gera um range de 24 horas no dia 10/01/2020
@@ -45,9 +44,9 @@ No exemplo acima, a variável *"$fittings"* terá o seguinte conteúdo:
 Ou seja, apenas o período das 15:00 às 18:00 podem alocar 01h30m, sendo:
 
 1. O índice **900** é o número de minutos desde o início do range até atingir o inicio do período;
-2. Os dois valores correspondem ao início e o fim dos períodos, ou seja, das 15:00 às 18:00.
+2. O valor, constituído de um array com dois elementos, corresponde ao início e ao fim dos períodos, ou seja, das 15:00 às 18:00.
 
-Para mais informações, consulte a [Documentação da Biblioteca](docs/api.md) para descobrir outras funcionalidades.
+Para mais informações, consulte a [Documentação da Biblioteca](docs/index.md) para descobrir outras funcionalidades.
 
 ## Características
 
