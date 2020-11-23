@@ -105,7 +105,7 @@ $object->allowDay(WeekDay::WEDNESDAY)
     ->withPeriod('08:00', '12:00');
 
 // Libera um período diferente para o Sábado
-$object->allowDay(WeekDay::STURDAY)
+$object->allowDay(WeekDay::SATURDAY)
     ->withPeriod('08:00', '11:00')
     ->withPeriod('12:00', '15:00');
 ```
