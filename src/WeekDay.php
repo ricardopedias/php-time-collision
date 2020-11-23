@@ -18,7 +18,7 @@ class WeekDay
     public const WEDNESDAY = 3;
     public const THURSDAY  = 4;
     public const FRIDAY    = 5;
-    public const STURDAY   = 6;
+    public const SATURDAY  = 6;
     public const ALL_DAYS  = 7;
 
     private int $day = self::MONDAY;
