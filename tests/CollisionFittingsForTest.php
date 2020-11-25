@@ -17,12 +17,12 @@ class CollisionFittingsForTest extends TestCase
                ->allowPeriod('12:35', '12:40');
 
         $this->assertEquals([
-            20 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ]
+            19 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ]
         ], $object->fittingsFor(10));
 
         $this->assertEquals([
-            20 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ],
-            35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00') ],
+            19 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ],
+            34 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00') ],
         ], $object->fittingsFor(5));
 
         $this->assertEquals([
