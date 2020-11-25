@@ -30,8 +30,10 @@ class MinutesFillCumulativeTest extends TestCase
                     [new DateTime('2020-11-01 12:25:00'), new DateTime('2020-11-01 12:32:00')],
                 ],
                 // result
-                $this->period('25..30', Minutes::FILLED) // libera até 12:30
-                + $this->period('35..36', Minutes::FILLED), // e continua de 12:35
+                $this->makeRange(
+                    '24..29', // libera até 12:30
+                    '34..35' // e continua de 12:35
+                )
                 // function($minutes) {
                 //     var_dump($minutes->range(Minutes::FILLED));
                 //     die;
@@ -56,7 +58,7 @@ class MinutesFillCumulativeTest extends TestCase
                     [new DateTime('2020-11-01 12:41:00'), new DateTime('2020-11-01 12:50:00')],
                 ],
                 // result
-                $this->period('0..0', Minutes::FILLED) // não preenche nada
+                $this->makeRange('0..0') // não preenche nada
             ],
 
             // FORA DO RANGE:  NÃO PREENCHE A PARTE QUE ESTIVER ANTES DO INICIO DO RANGE
@@ -78,7 +80,7 @@ class MinutesFillCumulativeTest extends TestCase
                 ],
                 // result
                 // Ignora das 11:00 às 11:59, sobrando 10 minutos
-                $this->period('20..30', Minutes::FILLED), // libera até 12:30
+                $this->makeRange('19..29'), // libera até 12:30
                 // function($minutes) {
                 //     var_dump($minutes->range(Minutes::FILLED), $this->period('20..30', Minutes::FILLED));
                 //     die;
@@ -104,7 +106,7 @@ class MinutesFillCumulativeTest extends TestCase
                 ],
                 // result
                 // Ignora das 13:01 às 13:10, sobrando 10 minutos
-                $this->period('35..40', Minutes::FILLED),
+                $this->makeRange('34..39'),
                 // function($minutes) {
                 //     var_dump($minutes->range(Minutes::FILLED), $this->period('30..40', Minutes::FILLED));
                 //     die;

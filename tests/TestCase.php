@@ -7,6 +7,7 @@ namespace Tests;
 use Time\Collision;
 use DateTime;
 use PHPUnit\Framework\TestCase as PhpUnitTestCase;
+use SplFixedArray;
 use Time\Minutes;
 
 class TestCase extends PhpUnitTestCase
@@ -66,6 +67,21 @@ class TestCase extends PhpUnitTestCase
             $result[$x] = $value;
         }
         return $result;
+    }
+
+    protected function makeRange(string ...$periods): SplFixedArray
+    {
+        $list = [];
+        foreach($periods as $range) {
+            $list += $this->period($range, 9);
+        }
+        
+        return SplFixedArray::fromArray(array_keys($list));
+    }
+
+    protected function printCli($variable)
+    {
+        fwrite(STDERR, print_r($variable, TRUE));
     }
 
     public function timeline(Collision $object): void

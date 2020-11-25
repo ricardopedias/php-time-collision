@@ -18,19 +18,22 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $object->allowPeriod('08:00', '09:00');
 
         // das 8 as 9 do primeiro dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00'));
-        $end = $start + 60;
-        $result = $this->period("{$start}..{$end}", 0);
+        $start1 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00')) - 1;
+        $end1 = $start1 + 60;
 
         // das 8 as 9 do segundo dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00'));
-        $end = $start + 60;
-        $result += $this->period("{$start}..{$end}", 0);
+        $start2 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
+        $end2 = $start2 + 60;
 
         // das 8 as 8:30 do terceiro dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00'));
-        $end = $start + 30;
-        $result += $this->period("{$start}..{$end}", 0);
+        $start3 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00')) - 1;
+        $end3 = $start3 + 30;
+
+        $result = $this->makeRange(
+            "{$start1}..{$end1}",
+            "{$start2}..{$end2}",
+            "{$start3}..{$end3}",
+        );
         
         $this->assertEquals($result, $object->minutes()->allowed());
 
@@ -38,19 +41,22 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $object->allowAllDays();
 
         // das 8 as 9 do primeiro dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00'));
-        $end = $start + 60;
-        $result = $this->period("{$start}..{$end}", 0);
+        $start4 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00')) - 1;
+        $end4 = $start4 + 60;
 
         // das 8 as 9 do segundo dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00'));
-        $end = $start + 60;
-        $result += $this->period("{$start}..{$end}", 0);
+        $start5 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
+        $end5 = $start5 + 60;
 
         // das 8 as 8:30 do terceiro dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00'));
-        $end = $start + 30;
-        $result += $this->period("{$start}..{$end}", 0);
+        $start6 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00')) - 1;
+        $end6 = $start6 + 30;
+
+        $result = $this->makeRange(
+            "{$start4}..{$end4}", 
+            "{$start5}..{$end5}", 
+            "{$start6}..{$end6}", 
+        );
         
         $this->assertEquals($result, $object->minutes()->allowed());
     }
@@ -63,29 +69,32 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $object->allowPeriod('08:00', '09:00');
 
         // das 8 as 9 do primeiro dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00'));
-        $end = $start + 60;
-        $result = $this->period("{$start}..{$end}", 0);
+        $start1 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00')) - 1;
+        $end1 = $start1 + 60;
 
         // das 8 as 9 do segundo dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00'));
-        $end = $start + 60;
-        $result += $this->period("{$start}..{$end}", 0);
+        $start2 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
+        $end2 = $start2 + 60;
 
         // das 8 as 8:30 do terceiro dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00'));
-        $end = $start + 30;
-        $result += $this->period("{$start}..{$end}", 0);
+        $start3 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00')) - 1;
+        $end3 = $start3 + 30;
+
+        $result = $this->makeRange(
+            "{$start1}..{$end1}",
+            "{$start2}..{$end2}",
+            "{$start3}..{$end3}",
+        );
         
         $this->assertEquals($result, $object->minutes()->allowed());
 
-        // + DAY
+        // libera apenas a segunda-feira
         $object->allowDay(WeekDay::MONDAY);
 
         // das 8 as 9 do segundo dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00'));
+        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
         $end = $start + 60;
-        $result = $this->period("{$start}..{$end}", 0);
+        $result = $this->makeRange("{$start}..{$end}");
         
         $this->assertEquals($result, $object->minutes()->allowed());
     }
@@ -98,49 +107,55 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $object->allowPeriod('08:00', '09:00');
 
         // das 8 as 9 do primeiro dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00'));
-        $end = $start + 60;
-        $result = $this->period("{$start}..{$end}", 0);
+        $start1 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00')) - 1;
+        $end1 = $start1 + 60;
 
         // das 8 as 9 do segundo dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00'));
-        $end = $start + 60;
-        $result += $this->period("{$start}..{$end}", 0);
+        $start2 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
+        $end2 = $start2 + 60;
 
         // das 8 as 8:30 do terceiro dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00'));
-        $end = $start + 30;
-        $result += $this->period("{$start}..{$end}", 0);
+        $start3 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00')) - 1;
+        $end3 = $start3 + 30;
         
+        $result = $this->makeRange(
+            "{$start1}..{$end1}",
+            "{$start2}..{$end2}",
+            "{$start3}..{$end3}",
+        );
+
         $this->assertEquals($result, $object->minutes()->allowed());
 
         // + PERIOD
         $object->allowPeriod('10:00', '11:00');
 
         // das 8 as 9 do primeiro dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00'));
-        $end = $start + 60;
-        $result = $this->period("{$start}..{$end}", 0);
+        $start4 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00')) - 1;
+        $end4 = $start4 + 60;
 
         // das 10 as 11 do primeiro dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 10:00:00'));
-        $end = $start + 60;
-        $result += $this->period("{$start}..{$end}", 0);
+        $start5 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 10:00:00')) - 1;
+        $end5 = $start5 + 60;
 
         // das 8 as 9 do segundo dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00'));
-        $end = $start + 60;
-        $result += $this->period("{$start}..{$end}", 0);
+        $start6 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
+        $end6 = $start6 + 60;
 
         // das 10 as 11 do segundo dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 10:00:00'));
-        $end = $start + 60;
-        $result += $this->period("{$start}..{$end}", 0);
+        $start7 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 10:00:00')) - 1;
+        $end7 = $start7 + 60;
 
         // das 8 as 8:30 do terceiro dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00'));
-        $end = $start + 30;
-        $result += $this->period("{$start}..{$end}", 0);
+        $start8 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00')) - 1;
+        $end8 = $start8 + 30;
+
+        $result = $this->makeRange(
+            "{$start4}..{$end4}",
+            "{$start5}..{$end5}",
+            "{$start6}..{$end6}",
+            "{$start7}..{$end7}",
+            "{$start8}..{$end8}",
+        );
         
         $this->assertEquals($result, $object->minutes()->allowed());
     }
@@ -153,29 +168,93 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $object->allowPeriod('08:00', '09:00');
 
         // das 8 as 9 do primeiro dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00'));
-        $end = $start + 60;
-        $result = $this->period("{$start}..{$end}", 0);
+        $start1 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00')) - 1;
+        $end1 = $start1 + 60;
 
         // das 8 as 9 do segundo dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00'));
-        $end = $start + 60;
-        $result += $this->period("{$start}..{$end}", 0);
+        $start2 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
+        $end2 = $start2 + 60;
 
         // das 8 as 8:30 do terceiro dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00'));
-        $end = $start + 30;
-        $result += $this->period("{$start}..{$end}", 0);
+        $start3 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00')) - 1;
+        $end3 = $start3 + 30;
+
+        // por padrão, todos os dias do range estáo liberados
+        $result = $this->makeRange(
+            "{$start1}..{$end1}",
+            "{$start2}..{$end2}",
+            "{$start3}..{$end3}",
+        );
         
         $this->assertEquals($result, $object->minutes()->allowed());
 
-        // + DATE
+        // determina um dia específico
         $object->allowDate('2020-11-03');
 
         // das 8 as 9 do segundo dia
-        $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00'));
-        $end = $start + 30;
-        $result = $this->period("{$start}..{$end}", 0);
+        $start4 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00')) - 1;
+        $end4 = $start4 + 30;
+
+        // somente o dia determinado conta 
+        $result = $this->makeRange(
+            "{$start4}..{$end4}",
+        );
+
+        $this->assertEquals($result, $object->minutes()->allowed());
+    }
+
+    /** @test */
+    public function defaultToDayPlusDate()
+    {
+        // DEFAULT
+        $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
+        $object->allowPeriod('08:00', '09:00');
+
+        // das 8 as 9 do primeiro dia - Domingo
+        $start1 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00')) - 1;
+        $end1 = $start1 + 60;
+
+        // das 8 as 9 do segundo dia - Segunda-feira
+        $start2 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
+        $end2 = $start2 + 60;
+
+        // das 8 as 8:30 do terceiro dia - Terça-feira
+        $start3 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00')) - 1;
+        $end3 = $start3 + 30;
+
+        // por padrão, todos os dias do range estáo liberados
+        $result = $this->makeRange(
+            "{$start1}..{$end1}",
+            "{$start2}..{$end2}",
+            "{$start3}..{$end3}",
+        );
+        
+        $this->assertEquals($result, $object->minutes()->allowed());
+
+        // Libera as Segundas-feiras
+        $object->allowDay(WeekDay::MONDAY);
+
+        // Somente a Segunda-feira é contada
+        $result = $this->makeRange(
+            "{$start1}..{$end1}",
+        );
+
+        // libera um dia específico - Terça-feira
+        $object->allowDate('2020-11-03');
+
+        // das 8 as 9 do segundo dia - Segunda-feira
+        $start4 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
+        $end4 = $start4 + 60;
+
+        // das 8 as 8h30 do terceiro dia - Terça-feira
+        $start5 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00')) - 1;
+        $end5 = $start5 + 30;
+
+        // somente o dia determinado conta 
+        $result = $this->makeRange(
+            "{$start4}..{$end4}",
+            "{$start5}..{$end5}",
+        );
 
         $this->assertEquals($result, $object->minutes()->allowed());
     }

@@ -29,7 +29,7 @@ class MinutesFillTest extends TestCase
                     [new DateTime('2020-11-01 12:25:00'), new DateTime('2020-11-01 12:34:00')],
                 ],
                 // result
-                $this->period('25..30', Minutes::FILLED) // Só libera até 12:30
+                $this->makeRange('24..29') // Só libera até 12:30
             ],
 
             // NÃO PREENCHE, QUANDO DENTRO DO RANGE
@@ -50,7 +50,7 @@ class MinutesFillTest extends TestCase
                     [new DateTime('2020-11-01 12:41:00'), new DateTime('2020-11-01 12:50:00')],
                 ],
                 // result
-                $this->period('0..0', Minutes::FILLED) // não preenche nada
+                $this->makeRange('0..0') // não preenche nada
             ],
 
             // NÃO PREENCHE A PARTE QUE ESTIVER ANTES DO INICIO DO RANGE
@@ -72,7 +72,7 @@ class MinutesFillTest extends TestCase
                 ],
                 // result
                 // Ignora das 11:00 às 12:00
-                $this->period('20..30', Minutes::FILLED) + $this->period('35..40', Minutes::FILLED)
+                $this->makeRange('19..29', '34..39')
             ],
 
             // NÃO PREENCHE ANTES DO INICIO DO RANGE
@@ -94,7 +94,7 @@ class MinutesFillTest extends TestCase
                 ],
                 // result
                 // Ignora antes das 12:00
-                $this->period('0..0', Minutes::FILLED)
+                $this->makeRange('0..0')
             ],
 
             // NÃO PREENCHE A PARTE QUE ESTIVER DEPOIS DO TÉRMINO DO RANGE
@@ -116,7 +116,7 @@ class MinutesFillTest extends TestCase
                 ],
                 // result
                 // Ignora das 13:00 às 14:00
-                $this->period('35..40', Minutes::FILLED)
+                $this->makeRange('34..39')
             ],
 
             // NÃO PREENCHE DEPOIS DO TÉRMINO DO RANGE
@@ -138,7 +138,7 @@ class MinutesFillTest extends TestCase
                 ],
                 // result
                 // Ignora das 13:00 às 14:00
-                $this->period('0..0', Minutes::FILLED)
+                $this->makeRange('0..0')
             ],
         ];
     }

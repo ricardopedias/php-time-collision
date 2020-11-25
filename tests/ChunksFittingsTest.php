@@ -27,138 +27,138 @@ class ChunksFittingsTest extends TestCase
                 ],
                 // minutes required
                 [
-                    5 => [
+                    5 => [ // inserir 5 minutos
                         // results
-                        20 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ],
-                        35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00') ],
+                        19 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ],
+                        34 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00') ],
                     ],
-                    10 => [
+                    10 => [ // inserir 10 minutos
                         // results
-                        20 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ]
+                        19 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ]
                     ],
-                    15 => [
+                    15 => [ // inserir 15 minutos
                         // results
                         // ...
                     ]
                 ]
             ],
-            // 1 PERIODO LIBERADO NO INICIO DO RANGE
-            [
-                // range
-                [
-                    new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
-                    new DateTime('2020-11-01 13:00:00'),
-                ],
-                // allloweds
-                [
-                    [new DateTime('2020-11-01 12:00:00'), new DateTime('2020-11-01 12:30:00')],
-                ],
-                // minutes required
-                [
-                    5 => [
-                        // results
-                        1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
-                    ],
-                    20 => [
-                        // results
-                        1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
-                    ],
-                    35 => [
-                        // results
-                        // ...
-                    ]
-                ]
-            ],
-            // 2 PERIODOS, O PRIMEIRO LIBERADO NO INICIO DO RANGE
-            [
-                // range
-                [
-                    new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
-                    new DateTime('2020-11-01 13:00:00'),
-                ],
-                // allloweds
-                [
-                    [new DateTime('2020-11-01 12:00:00'), new DateTime('2020-11-01 12:30:00')],
-                    [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')],
-                ],
-                // minutes required
-                [
-                    5 => [
-                        // results
-                        1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
-                        35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00') ],
-                    ],
-                    20 => [
-                        // results
-                        1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
-                    ],
-                    35 => [
-                        // results
-                        // ...
-                    ]
-                ]
-            ],
-            // 1 PERIODO LIBERADO NO TÉRMINO DO RANGE
-            [
-                // range
-                [
-                    new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
-                    new DateTime('2020-11-01 13:00:00'),
-                ],
-                // allloweds
-                [
-                    [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00')],
-                ],
-                // minutes required
-                [
-                    5 => [
-                        // results
-                        35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ]
-                    ],
-                    20 => [
-                        // results
-                        35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
-                    ],
-                    25 => [
-                        // results
-                        35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
-                    ],
-                    30 => [
-                        // results
-                        // ...
-                    ],
-                ]
-            ],
-            // 2 PERIODOS, O SEGUNDO LIBERADO NO TÉRMINO DO RANGE
-            [
-                // range
-                [
-                    new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
-                    new DateTime('2020-11-01 13:00:00'),
-                ],
-                // allloweds
-                [
-                    [new DateTime('2020-11-01 12:00:00'), new DateTime('2020-11-01 12:31:00')],
-                    [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00')],
-                ],
-                // minutes required
-                [
-                    30 => [
-                        // results
-                        1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:31:00') ]
-                    ],
-                    20 => [
-                        // results
-                        1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:31:00') ],
-                        35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
-                    ],
-                    25 => [
-                        // results
-                        1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:31:00') ],
-                        35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
-                    ],
-                ]
-            ],
+            // // 1 PERIODO LIBERADO NO INICIO DO RANGE
+            // [
+            //     // range
+            //     [
+            //         new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
+            //         new DateTime('2020-11-01 13:00:00'),
+            //     ],
+            //     // allloweds
+            //     [
+            //         [new DateTime('2020-11-01 12:00:00'), new DateTime('2020-11-01 12:30:00')],
+            //     ],
+            //     // minutes required
+            //     [
+            //         5 => [
+            //             // results
+            //             1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
+            //         ],
+            //         20 => [
+            //             // results
+            //             1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
+            //         ],
+            //         35 => [
+            //             // results
+            //             // ...
+            //         ]
+            //     ]
+            // ],
+            // // 2 PERIODOS, O PRIMEIRO LIBERADO NO INICIO DO RANGE
+            // [
+            //     // range
+            //     [
+            //         new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
+            //         new DateTime('2020-11-01 13:00:00'),
+            //     ],
+            //     // allloweds
+            //     [
+            //         [new DateTime('2020-11-01 12:00:00'), new DateTime('2020-11-01 12:30:00')],
+            //         [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')],
+            //     ],
+            //     // minutes required
+            //     [
+            //         5 => [
+            //             // results
+            //             1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
+            //             35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00') ],
+            //         ],
+            //         20 => [
+            //             // results
+            //             1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
+            //         ],
+            //         35 => [
+            //             // results
+            //             // ...
+            //         ]
+            //     ]
+            // ],
+            // // 1 PERIODO LIBERADO NO TÉRMINO DO RANGE
+            // [
+            //     // range
+            //     [
+            //         new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
+            //         new DateTime('2020-11-01 13:00:00'),
+            //     ],
+            //     // allloweds
+            //     [
+            //         [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00')],
+            //     ],
+            //     // minutes required
+            //     [
+            //         5 => [
+            //             // results
+            //             35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ]
+            //         ],
+            //         20 => [
+            //             // results
+            //             35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
+            //         ],
+            //         25 => [
+            //             // results
+            //             35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
+            //         ],
+            //         30 => [
+            //             // results
+            //             // ...
+            //         ],
+            //     ]
+            // ],
+            // // 2 PERIODOS, O SEGUNDO LIBERADO NO TÉRMINO DO RANGE
+            // [
+            //     // range
+            //     [
+            //         new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
+            //         new DateTime('2020-11-01 13:00:00'),
+            //     ],
+            //     // allloweds
+            //     [
+            //         [new DateTime('2020-11-01 12:00:00'), new DateTime('2020-11-01 12:31:00')],
+            //         [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00')],
+            //     ],
+            //     // minutes required
+            //     [
+            //         30 => [
+            //             // results
+            //             1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:31:00') ]
+            //         ],
+            //         20 => [
+            //             // results
+            //             1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:31:00') ],
+            //             35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
+            //         ],
+            //         25 => [
+            //             // results
+            //             1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:31:00') ],
+            //             35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
+            //         ],
+            //     ]
+            // ],
         ];
     }
 
