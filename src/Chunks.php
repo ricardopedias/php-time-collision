@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Time;
 
 use DateTime;
+use SplFixedArray;
 
 /**
  * Esta classe é responsável pela extração de lacunas dentro
@@ -12,8 +13,8 @@ use DateTime;
 */
 class Chunks
 {
-    /** @var array<int> */
-    private array $range = [];
+    /** @var SplFixedArray<int> */
+    private SplFixedArray $range;
 
     private DateTime $start;
 
@@ -40,7 +41,7 @@ class Chunks
         $days = [];
         $days[1] = clone $walk;
 
-        $iterations = count($this->range) / 60 / 24; /// dias disponiveis no range
+        $iterations = $this->range->getSize() / 60 / 24; /// dias disponiveis no range
 
         while ($iterations > 1) {
             $walk->modify('next day');
@@ -67,28 +68,35 @@ class Chunks
     /**
      * Método recursivo. Cada iteração extrai um pedaço do período
      * contendo uma sequência de minutos disponíveis
-     * @param array<int, int> $range
+     * @param SplFixedArray<int, int|null> $range
      * @param int $minutes
+     * @param int $index
      * @param array<int, array<int>> $result
      * @return array<int, array<int>>
      */
-    private function chunkFittings(array $range, int $minutes, array &$result = []): array
+    private function chunkFittings(SplFixedArray $range, int $minutes, int &$startIndex = 0, array &$result = []): array
     {
         $chunk  = [];
+        $forwardIndex = $startIndex;
         $hasAllowed = false;
         
-        foreach ($range as $minute => $bit) {
+        for ($index = $startIndex; $index < $range->getSize(); $index++) {
+
+            $minute = $index;
+            $bit    = $range[$index];
+
             $isSecondChunk = $chunk !== [] // existe um ou mais minutos armazenados
                 && isset($chunk[$minute - 1]) === false; // o minuto atual não é uma sequência do anterior
             if ($isSecondChunk === true) {
                 // Apenas um pedaço deve ser devolvido por vez
+                $forwardIndex = $index;
                 break;
             }
 
-            $isChunck = $bit === Minutes::ALLOWED // é um horário vago
-                && ($minute === 1 || isset($range[$minute - 1]) === true); // é uma sequência;
+            $isChunk = $bit === Minutes::ALLOWED // é um horário vago
+                && ($minute === 0 || isset($range[$minute]) === true); // é uma sequência;
 
-            if ($isChunck === true) {
+            if ($isChunk === true) {
                 $chunk[$minute] = $bit;
                 $hasAllowed = true;
             }
@@ -103,19 +111,14 @@ class Chunks
         $endMinute   = (int)array_key_last($chunk);
         if ($minutes <= ($endMinute - $startMinute)) {
             $result[$startMinute] = [
-                $this->getDateTime($startMinute),
-                $this->getDateTime($endMinute)
+                // +1 porque os indices dos minutos são a partir de zero
+                $this->getDateTime($startMinute + 1), 
+                $this->getDateTime($endMinute + 1)
             ];
         }
 
-        // Extrai os itens já analisados
-        $startRange = key($range);
-        for ($minute = $startRange; $minute <= $endMinute; $minute++) {
-            unset($range[$minute]);
-        }
-
         // Busca por outros pedaços
-        $this->chunkFittings($range, $minutes, $result);
+        $this->chunkFittings($range, $minutes, $forwardIndex, $result);
         
         return $result;
     }
