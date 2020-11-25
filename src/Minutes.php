@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Time;
 
 use DateTime;
+use SplFixedArray;
 
 class Minutes
 {
@@ -21,16 +22,17 @@ class Minutes
 
     /**
      * Período completo
-     * @var array<int>
+     * @var SplFixedArray<int>
      */
-    private array $rangeVector = [];
+    private SplFixedArray $rangeVector;
 
     public function __construct(DateTime $start, Datetime $end)
     {
         $this->start = $start;
         $this->end   = $end;
         
-        $this->rangeVector = array_fill(1, $this->beetwen($start, $end), self::UNUSED);
+        $vector = array_fill(0, $this->beetwen($start, $end), self::UNUSED);
+        $this->rangeVector = SplFixedArray::fromArray($vector);
     }
 
     public function startRange(): DateTime
@@ -44,47 +46,47 @@ class Minutes
     }
 
     /**
-     * Devolve o range total de minutos.
-     * @return array<int, int>
+     * Devolve o range total de minutos, começando com zero.
+     * @return SplFixedArray<int, int>
      */
-    public function range(int $status = self::ALL): array
+    public function range(int $status = self::ALL): SplFixedArray
     {
         if ($status === self::ALL) {
             return $this->rangeVector;
         }
 
         $onlyStatus = [];
-        foreach ($this->rangeVector as $minute => $currentStatus) {
+        foreach ($this->rangeVector as $index => $currentStatus) {
             if ($status === $currentStatus) {
-                $onlyStatus[$minute] = $currentStatus;
+                $onlyStatus[] = $index;
             }
         }
-        return $onlyStatus;
+        return SplFixedArray::fromArray($onlyStatus);
     }
 
     /**
      * Devolve os minutos bloqueados para uso.
-     * @return array<int>
+     * @return SplFixedArray<int>
      */
-    public function unused(): array
+    public function unused(): SplFixedArray
     {
         return $this->range(Minutes::UNUSED);
     }
 
     /**
      * Devolve os minutos que podem ser usados.
-     * @return array<int>
+     * @return SplFixedArray<int>
      */
-    public function allowed(): array
+    public function allowed(): SplFixedArray
     {
         return $this->range(Minutes::ALLOWED);
     }
 
     /**
      * Devolve os minutos usados dentro do horário comercial.
-     * @return array<int>
+     * @return SplFixedArray<int>
      */
-    public function filled(): array
+    public function filled(): SplFixedArray
     {
         return $this->range(Minutes::FILLED);
     }
@@ -109,18 +111,19 @@ class Minutes
             $end = $this->end;
         }
 
-        $startIn = $this->beetwen($this->start, $start);
-        // Se o minuto inicial do datetime for 0, deve contar a partir do minuto 1
-        $startIn = $startIn === 0 ? 1 : $startIn;
-
-        $endIn = $this->beetwen($this->start, $end);
+        $startIn = $this->beetwen($this->start, $start) - 1;
+        $endIn   = $this->beetwen($this->start, $end) - 1;
 
         // Se não houver minutos, não há nada a fazer
-        if ($endIn === 0) {
+        if ($endIn === -1) {
             return;
         }
 
         for ($x = $startIn; $x <= $endIn; $x++) {
+            if (isset($this->rangeVector[$x]) === false) {
+                continue;
+            }
+
             if ($status === self::ALLOWED || $this->rangeVector[$x] !== self::UNUSED) {
                 $this->rangeVector[$x] = $status;
             }
@@ -146,14 +149,13 @@ class Minutes
             $end = $this->end;
         }
 
-        $startIn = $this->beetwen($this->start, $start);
-        // Se o minuto inicial do datetime for 0, deve contar a partir do minuto 1
-        $startIn = $startIn === 0 ? 1 : $startIn;
-
         $settedCount = 0;
         $settedLimit = $this->beetwen($start, $end);
+        $startIn     = $this->beetwen($this->start, $start);
         
-        foreach ($this->rangeVector as $minute => $currentBit) {
+        foreach ($this->rangeVector as $index => $currentBit) {
+            
+            $minute = $index + 1;
             // Minutos anteriores serão ignorados
             if ($minute < $startIn) {
                 continue;
@@ -166,7 +168,7 @@ class Minutes
 
             // Marca o minuto no range geral
             if ($status === self::ALLOWED || $currentBit !== self::UNUSED) {
-                $this->rangeVector[$minute] = $status;
+                $this->rangeVector[$index] = $status;
                 $settedCount++;
             }
         }

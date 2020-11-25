@@ -17,8 +17,14 @@ abstract class Settings
     /** @var array<int, \Time\WeekDay> */
     protected array $weekDays = [];
 
-    /** @var array<int, \DateTime> */
+    /** @var array<int> */
+    protected array $disabledWeekDays = [];
+
+    /** @var array<int, \Time\Day> */
     protected array $dates = [];
+
+    /** @var array<int, \Time\Day> */
+    protected array $disabledDates = [];
 
     /** @var array<int, array> */
     protected array $fills = [];
@@ -85,6 +91,24 @@ abstract class Settings
     }
 
     /**
+     * Marca um determinado dia da semana como não-utilizável.
+     * Os dias são definidos de 0 a 7, sendo que '0' corresponde ao Domingo
+     * '6' correponde a Sábado e '7' significa a semana toda.
+     * @param int $day Um dia da semana. Ex: Week::MONDAY
+     * @return self
+     */
+    public function disableDay(int $day = WeekDay::MONDAY): self
+    {
+        $this->clearCollisions();
+
+        // valida o dia especificado
+        new WeekDay($day);
+
+        $this->disabledWeekDays[] = $day;
+        return $this;
+    }
+
+    /**
      * Marca todos os dias da semana como utilizáveis.
      * @return self
      */
@@ -118,18 +142,32 @@ abstract class Settings
     /**
      * Marca um dia específico como utilizável.
      * @param string $date Um dia específico. Ex: 2020-10-01
+     * @return \Time\Day
      */
-    public function allowDate(string $date): self
+    public function allowDate(string $date): Day
     {
         $this->clearCollisions();
 
-        try {
-            $date = new DateTime($date);
-        } catch (Exception $e) {
-            throw new InvalidDateTimeException($e->getMessage());
-        }
+        $dayObject = new Day($date);
+        $index = $dayObject->dayString();
+        $this->dates[$index] = $dayObject;
 
-        $this->dates[] = $date;
+        return $this->dates[$index];
+    }
+
+    /**
+     * Marca um dia específico como não-utilizável.
+     * @param string $date Um dia específico. Ex: 2020-10-01
+     * @return self
+     */
+    public function disableDate(string $date): self
+    {
+        $this->clearCollisions();
+
+        $dayObject = new Day($date);
+        $index = $dayObject->dayString();
+        $this->disabledDates[$index] = $dayObject;
+
         return $this;
     }
 
