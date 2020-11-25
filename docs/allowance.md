@@ -25,7 +25,7 @@ Tudo o que não estiver dentro desses períodos será considerado como "horário
 
 ## 2.2. Definindo os dias da semana
 
-Além de manipular períodos de tempo, muitas vezes é necessário definir os dias específicos que eles serão liberados, tornando alguns dias disponíveis e outros não.
+Além de especificar períodos de tempo, muitas vezes é necessário definir os dias onde eles estarão liberados, tornando alguns dias disponíveis e outros não.
 
 Por padrão, como mostrado no exemplo anterior, todos os dias da semana são entendidos como "utilizáveis". Mas existem casos, na vida real, onde não será interessante usar os finais de semana. 
 
@@ -62,7 +62,7 @@ Nos exemplos anteriores, os dois períodos estarão disponíveis apenas para os 
 
 ## 2.3. Definindo dias explicitamente
 
-Além de configurar dias da semana, em muitos casos será preciso definir dias especiais, que deverão ou não ser liberados.
+Além dos dias da semana, em muitos casos, será preciso definir dias especiais, que serão ou não liberados.
 
 Na vida real isso pode ser aplicado em duas situações:
 

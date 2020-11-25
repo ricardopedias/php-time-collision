@@ -2,7 +2,7 @@
 
 ## 1.1. O que é um range
 
-A primeira coisa a fazer é definir um range, ou seja, o início e o fim do período onde serão manipuladas as colisões de tempo. Estabelecer um range é necessário para que o algoritmo defina as margens necesárias para os cálculos de tempo. 
+A primeira coisa a fazer é definir um range, ou seja, o início e o fim do período onde serão manipuladas as colisões de tempo. Estabelecer um range é necessário para que o algoritmo defina as margens necessárias para os cálculos de tempo. 
 
 Suponha que seja preciso manipular os horários de uma agenda que contemple 7 dias. Neste caso, deverá ser especificado um range para um semana inteira. 
 
@@ -40,7 +40,7 @@ $object = new Collision('2020-01-10 11:35');
 $object = new Collision('2020-01-10 11:35', '2020-01-10 12:00');
 ```
 
-Lembrando que, como dito anterioremente, um range não precisa ser definido em um único dia. Isso significa que pode-se criar renges abrangendo vários dias, meses ou até anos.
+Lembrando que, como dito anterioremente, um range não precisa ser definido em um único dia. Isso significa que pode-se criar ranges abrangendo vários dias, meses ou até anos.
 
 ```php
 // de 10/01/2020 às 08h00m até 15/01/2020 às 18h00m
