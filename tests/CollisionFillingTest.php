@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests;
 
 use Time\Collision;
-use Time\Minutes;
 
 class CollisionFillingTest extends TestCase
 {
@@ -13,8 +12,8 @@ class CollisionFillingTest extends TestCase
     public function fill()
     {
         $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');
-        $object->allowPeriod('12:20', '12:30')
-               ->allowPeriod('12:35', '12:40');
+        $object->allowDefaultPeriod('12:20', '12:30')
+               ->allowDefaultPeriod('12:35', '12:40');
 
         $object->fill('2020-11-01 12:25:00', '2020-11-01 12:34:00');
 
@@ -28,8 +27,8 @@ class CollisionFillingTest extends TestCase
     public function fillCumulative()
     {
         $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');
-        $object->allowPeriod('12:20', '12:30')
-               ->allowPeriod('12:35', '12:40');
+        $object->allowDefaultPeriod('12:20', '12:30')
+               ->allowDefaultPeriod('12:35', '12:40');
 
         // Precisa de 10 minutos (contando o minuto 25)
         $object->fill('2020-11-01 12:25:00', '2020-11-01 12:34:00', true);

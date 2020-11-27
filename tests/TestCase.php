@@ -101,8 +101,10 @@ class TestCase extends PhpUnitTestCase
         $lost      = "\e[93m□\e[0m";
 
         // Marca o horario comercial
-        foreach($object->range() as $minute => $bit) {
+        foreach($object->minutes()->range() as $index => $bit) {
 
+            $minute = $index+1;
+            
             switch($bit){
                 case Minutes::UNUSED: $signal = $unused; break;
                 case Minutes::ALLOWED: $signal = $allowed; break;
