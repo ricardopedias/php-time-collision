@@ -5,9 +5,148 @@ declare(strict_types=1);
 namespace Time;
 
 use DateTime;
+use Exception;
+use Time\Exceptions\InvalidDateTimeException;
 
-class Collision extends Settings
+class Collision
 {
+    protected DateTime $rangeStart;
+
+    protected DateTime $rangeEnd;
+
+    protected Params $params;
+
+    protected ?Minutes $minutesObject = null;
+
+    public function __construct(string $start, ?string $end = null)
+    {
+        try {
+            $start = new DateTime($start);
+
+            if ($end === null) {
+                $customEnd = clone $start;
+                $customEnd->setTime(23,59);
+            }
+
+            $end = $end === null 
+                ? $customEnd
+                : new DateTime($end);
+
+        } catch (Exception $e) {
+            throw new InvalidDateTimeException($e->getMessage());
+        }
+
+        if ($start > $end) {
+            throw new InvalidDateTimeException('The end date must be greater than the start date of the period');
+        }
+
+        if ($end->format('H:i') === '00:00') {
+            $end->modify('+ 24 hours');
+        }
+
+        if ($end->format('H:i') === '23:59') {
+            $end->modify('+ 1 minute');
+        }
+
+        $this->rangeStart = $start;
+        $this->rangeEnd   = $end;
+        $this->params     = new Params();
+    }
+
+    /**
+     * Marca um determinado dia da semana como utilizável.
+     * Os dias são definidos de 0 a 7, sendo que '0' corresponde ao Domingo
+     * '6' correponde a Sábado e '7' significa a semana toda.
+     * @param int $day Um dia da semana. Ex: Week::MONDAY
+     * @return \Time\WeekDay
+     */
+    public function allowDay(int $day = WeekDay::MONDAY): WeekDay
+    {
+        $this->forceRecalculation();
+        return $this->params->setDay($day);
+    }
+
+    /**
+     * Marca um determinado dia da semana como não-utilizável.
+     * Os dias são definidos de 0 a 7, sendo que '0' corresponde ao Domingo
+     * '6' correponde a Sábado e '7' significa a semana toda.
+     * @param int $day Um dia da semana. Ex: Week::MONDAY
+     * @return self
+     */
+    public function disableDay(int $day = WeekDay::MONDAY): self
+    {
+        $this->forceRecalculation();
+        $this->params->unsetDay($day);
+        return $this;
+    }
+
+    /**
+     * Marca um determinado período do dia como utilizável.
+     * Os dias marcados como utilizáveis receberão os períodos definidos aqui.
+     * @param string $startTime Ex: 08:35
+     * @param string $endTime Ex: 09:50
+     * @return self
+     */
+    public function allowDefaultPeriod(string $startTime, string $endTime): self
+    {
+        $this->forceRecalculation();
+        $this->params->setDefaultPeriod($startTime, $endTime);
+        return $this;
+    }
+
+    /**
+     * Marca um dia específico como utilizável.
+     * @param string $date Um dia específico. Ex: 2020-10-01
+     * @return \Time\Day
+     */
+    public function allowDate(string $date): Day
+    {
+        $this->forceRecalculation();
+        return $this->params->setDate($date);
+    }
+
+    /**
+     * Marca um dia específico como não-utilizável.
+     * @param string $date Um dia específico. Ex: 2020-10-01
+     * @return self
+     */
+    public function disableDate(string $date): self
+    {
+        $this->forceRecalculation();
+        $this->params->unsetDate($date);
+        return $this;
+    }
+
+    /**
+     * Utiliza o período especificado.
+     * Por padrão, as horas que colidirem com minutos não 'usáveis' são perdidos.
+     * Caso o parâmetro $cumulative for true, os minutos são distribuídos para
+     * as lacunas seguintes até acabarem.
+     * @param string $start
+     * @param string $end
+     * @param bool $cumulative
+     */
+    public function fill(string $start, string $end, bool $cumulative = false): void
+    {
+        $this->forceRecalculation();
+        $this->params->setFilled($start, $end, $cumulative);
+    }
+
+    public function minutes(): Minutes
+    {
+        if ($this->minutesObject === null) {
+            $calculation = new Calculation(
+                $this->params,
+                $this->rangeStart,
+                $this->rangeEnd
+            );
+            $this->minutesObject = $calculation->populateRange();
+        }
+
+        /** @phpstan-ignore-next-line */
+        return $this->minutesObject;
+    }
+
     /**
      * Obtém as lacunas onde o período se encaixa
      * @return array<int, array>
@@ -17,128 +156,11 @@ class Collision extends Settings
         return $this->minutes()->chunks()->fittings($amountMinutes);
     }
 
-    protected function populateAlgorithm(): void
-    {
-        $this->populateWeek();
-        $this->populateDates();
-
-        // Obtém os dias contidos no período
-        $daysChunks = $this->minutes()->chunks()->days();
-        foreach ($daysChunks as $minute => $day) {
-            $weekDay = (int)$day->format('w');
-
-            // preenche somente dias da semana liberados
-            if (isset($this->weekDays[$weekDay]) === true) {
-                $current = clone $this->rangeStart;
-                $current->modify("+ {$minute} minutes");
-
-                $dayObject = new Day($current->format('Y-m-d H:i'));
-                $this->markDayAllowed($this->weekDays[$weekDay], $dayObject);
-
-                foreach ($this->fills as $times) {
-                    $this->markFilled($times[0], $times[1]);
-                }
-
-                foreach ($this->cumulativeFills as $times) {
-                    $this->markFilled($times[0], $times[1], true);
-                }
-            }
-        }
-    }
-
-    private function populateWeek(): void
-    {
-        // Se nenhum dia ou data explícita tiver sido setada,
-        // libera a semana toda
-        if ($this->weekDays === [] && $this->dates === []) {
-            $this->allowAllDays();
-            $this->useDefaultWeekDays = true;
-        }
-
-        // Remove dias da semana desativados
-        foreach($this->disabledWeekDays as $day) {
-            if (isset($this->weekDays[$day]) === true) {
-                unset($this->weekDays[$day]);
-            }
-        }
-    }
-
-    private function populateDates(): void
-    {
-        // Setagem de datas específicas
-        foreach ($this->dates as $dateObject) {
-
-            $index = $dateObject->dayString();
-            if (isset($this->disabledDates[$index]) === true) {
-                continue;
-            }
-
-            $weekDay = $dateObject->dayOfWeek();
-
-            if (isset($this->weekDays[$weekDay]) === false) {
-                $dayObject = new WeekDay($weekDay);
-                $this->weekDays[$weekDay] = $dayObject;
-            }
-            
-            $this->markDayAllowed($this->weekDays[$weekDay], $dateObject);
-        }
-    }
-
     /**
-     * Especifica os períodos que serão usados para o
-     * dia da semana especificado.
-     * Caso não tenha sido setado em WeekDay::withPeriod()
-     * usará o padrão setado com Collision::allowPeriod.
+     * Reinicia o objeto que calcula os minutos.
      */
-    private function defaultPeriodsIfNot(WeekDay $day): void
+    private function forceRecalculation(): void
     {
-        $day->removeDefaults();
-
-        if ($day->periods() !== []) {
-            return;
-        }
-
-        $day->withPeriods($this->defaultPeriods, true);
-    }
-
-    /**
-     * Marca os períodos dos dias liberados para que possam
-     * ser usados para preenchimento.
-     */
-    private function markDayAllowed(WeekDay $dayObject, Day $date): void
-    {
-        $this->defaultPeriodsIfNot($dayObject);
-
-        $periods = $dayObject->periods();
-
-        foreach ($periods as $times) {
-            $periodStart = explode(':', $times[0]);
-            $periodEnd = explode(':', $times[1]);
-
-            $open = $date->day();
-            $open->setTime((int)$periodStart[0], (int)$periodStart[1]);
-            
-            $close = $date->day();
-            $close->setTime((int)$periodEnd[0], (int)$periodEnd[1]);
-
-            // not work minutes
-            $this->minutes()->mark($open, $close, Minutes::ALLOWED);
-        }
-    }
-
-    /**
-     * Marca efetivamente o período especificado como preenchido.
-     * @param \DateTime $start
-     * @param \DateTime $end
-     * @param bool $cumulative
-     */
-    private function markFilled(DateTime $start, DateTime $end, bool $cumulative = false): void
-    {
-        if ($cumulative === true) {
-            $this->minutes()->markCumulative($start, $end, Minutes::FILLED);
-            return;
-        }
-        
-        $this->minutes()->mark($start, $end, Minutes::FILLED);
+        $this->minutesObject = null;
     }
 }

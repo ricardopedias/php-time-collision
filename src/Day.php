@@ -88,8 +88,6 @@ class Day
         return (int)$this->day()->format('w');
     }
 
-    
-
     /**
      * @return array<int, array>
      */
