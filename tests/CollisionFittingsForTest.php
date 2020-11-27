@@ -13,8 +13,8 @@ class CollisionFittingsForTest extends TestCase
     public function fittingsFor()
     {
         $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');
-        $object->allowPeriod('12:20', '12:30')
-               ->allowPeriod('12:35', '12:40');
+        $object->allowDefaultPeriod('12:20', '12:30')
+               ->allowDefaultPeriod('12:35', '12:40');
 
         $this->assertEquals([
             19 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ]
