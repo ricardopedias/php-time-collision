@@ -16,7 +16,7 @@ class CollisionAllowPeriodsTest extends TestCase
     public function defaultAllDaysDefaultPeriod()
     {
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $object->allowPeriod('08:00', '09:00');
+        $object->allowDefaultPeriod('08:00', '09:00');
 
         // das 8 as 9 do primeiro dia
         $start1 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00')) - 1;
@@ -43,7 +43,7 @@ class CollisionAllowPeriodsTest extends TestCase
     public function allowOnePeriod()
     {
         $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');
-        $object->allowPeriod('12:15', '12:31');
+        $object->allowDefaultPeriod('12:15', '12:31');
 
         $resultAll = $this->period('0..13', Minutes::UNUSED)
             + $this->period('14..30', Minutes::ALLOWED)
@@ -62,8 +62,8 @@ class CollisionAllowPeriodsTest extends TestCase
     public function allowTwoPeriods()
     {
         $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');
-        $object->allowPeriod('12:10', '12:25');
-        $object->allowPeriod('12:35', '12:50');
+        $object->allowDefaultPeriod('12:10', '12:25');
+        $object->allowDefaultPeriod('12:35', '12:50');
 
         $result = $this->period('0..8', Minutes::UNUSED)
             + $this->period('9..24', Minutes::ALLOWED)
@@ -79,9 +79,9 @@ class CollisionAllowPeriodsTest extends TestCase
     public function allowThreePeriods()
     {
         $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');
-        $object->allowPeriod('12:10', '12:20');
-        $object->allowPeriod('12:30', '12:40');
-        $object->allowPeriod('12:50', '13:00');
+        $object->allowDefaultPeriod('12:10', '12:20');
+        $object->allowDefaultPeriod('12:30', '12:40');
+        $object->allowDefaultPeriod('12:50', '13:00');
 
         $result = $this->period('0..8', Minutes::UNUSED)
             + $this->period('9..19', Minutes::ALLOWED)
@@ -95,21 +95,21 @@ class CollisionAllowPeriodsTest extends TestCase
     }
 
     /** @test */
-    public function allowPeriodSyntaxException()
+    public function allowDefaultPeriodSyntaxException()
     {
         $this->expectException(InvalidTimeException::class);
         
         $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');
-        $object->allowPeriod('00:00', '00,00');
+        $object->allowDefaultPeriod('00:00', '00,00');
     }
 
     /** @test */
-    public function allowPeriodException()
+    public function allowDefaultPeriodException()
     {
         $this->expectException(InvalidTimeException::class);
         $this->expectExceptionMessage('The end time must be greater than the start time of the period');
         
         $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');
-        $object->allowPeriod('09:00', '08:00');
+        $object->allowDefaultPeriod('09:00', '08:00');
     }
 }

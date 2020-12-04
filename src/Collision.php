@@ -67,6 +67,17 @@ class Collision
     }
 
     /**
+     * Ativa todos os dias de semana.
+     * @return self
+     */
+    public function allowAllDays(): self
+    {
+        $this->forceRecalculation();
+        $this->params->setAllDays();
+        return $this;
+    }
+
+    /**
      * Marca um determinado dia da semana como não-utilizável.
      * Os dias são definidos de 0 a 7, sendo que '0' corresponde ao Domingo
      * '6' correponde a Sábado e '7' significa a semana toda.
@@ -77,6 +88,17 @@ class Collision
     {
         $this->forceRecalculation();
         $this->params->unsetDay($day);
+        return $this;
+    }
+
+    /**
+     * Desativa todos os dias de semana.
+     * @return self
+     */
+    public function disableAllDays(): self
+    {
+        $this->forceRecalculation();
+        $this->params->unsetAllDays();
         return $this;
     }
 

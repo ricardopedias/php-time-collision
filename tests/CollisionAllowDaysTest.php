@@ -7,7 +7,6 @@ namespace Tests;
 use DateTime;
 use SplFixedArray;
 use Time\Collision;
-use Time\Exceptions\InvalidDateException;
 use Time\WeekDay;
 use Time\Exceptions\InvalidDayException;
 
@@ -24,7 +23,8 @@ class CollisionAllowDaysTest extends TestCase
     public function allowOneDayDefaultPeriod()
     {
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $object->allowPeriod('08:00', '09:00');
+        $object->disableAllDays();
+        $object->allowDefaultPeriod('08:00', '09:00');
         $object->allowDay(WeekDay::MONDAY);
 
         // das 8 as 9 do segundo dia: Segunda-feira
@@ -39,6 +39,7 @@ class CollisionAllowDaysTest extends TestCase
     public function allowOneDayWithPeriod()
     {
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
+        $object->disableAllDays();
         $object->allowDay(WeekDay::MONDAY)
             ->withPeriod('08:00', '09:00');
 
@@ -54,7 +55,8 @@ class CollisionAllowDaysTest extends TestCase
     public function allowDateDefaultPeriod()
     {
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $object->allowPeriod('08:00', '09:00');
+        $object->disableAllDays();
+        $object->allowDefaultPeriod('08:00', '09:00');
         $object->allowDay(WeekDay::MONDAY);
         $object->allowDate('2020-11-03');
 
