@@ -11,12 +11,13 @@ use Time\WeekDay;
 class CollisionRecalculateAllowDayTest extends TestCase
 {
     /** @test */
-    public function dayToAllDays()
+    public function specificDayToAllDays()
     {
         // DAY
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $object->allowPeriod('08:00', '09:00');
-        $object->allowDay(WeekDay::MONDAY);
+        $object->disableAllDays();
+        $object->allowDefaultPeriod('08:00', '09:00');
+        $object->allowDay(WeekDay::MONDAY); // 02/11/2020
 
         // das 8 as 9 do segundo dia
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
@@ -25,7 +26,6 @@ class CollisionRecalculateAllowDayTest extends TestCase
         
         $this->assertEquals($result, $object->minutes()->allowed());
 
-        // + ALL DAYS
         $object->allowAllDays();
 
         // das 8 as 9 do primeiro dia
@@ -50,12 +50,13 @@ class CollisionRecalculateAllowDayTest extends TestCase
     }
 
     /** @test */
-    public function dayToDay()
+    public function specificDayToSpecificDay()
     {
         // DAY
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $object->allowPeriod('08:00', '09:00');
-        $object->allowDay(WeekDay::MONDAY);
+        $object->disableAllDays();
+        $object->allowDefaultPeriod('08:00', '09:00');
+        $object->allowDay(WeekDay::MONDAY); // 02/11/2020
 
         // das 8 as 9 do segundo dia: Segunda-feira
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
@@ -64,7 +65,7 @@ class CollisionRecalculateAllowDayTest extends TestCase
         $this->assertEquals($result, $object->minutes()->allowed());
 
         // + DAY
-        $object->allowDay(WeekDay::TUESDAY);
+        $object->allowDay(WeekDay::TUESDAY); // 03/11/2020
 
         // das 8 as 9 do segundo dia: Segunda-feira
         $start1 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
@@ -83,12 +84,13 @@ class CollisionRecalculateAllowDayTest extends TestCase
     }
 
     /** @test */
-    public function dayToPeriod()
+    public function specificDayToAddedDefaultPeriod()
     {
         // DAY
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $object->allowPeriod('08:00', '09:00');
-        $object->allowDay(WeekDay::MONDAY);
+        $object->disableAllDays();
+        $object->allowDefaultPeriod('08:00', '09:00');
+        $object->allowDay(WeekDay::MONDAY); // 02/11/2020
 
         // das 8 as 9 do segundo dia: Segunda-feira
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
@@ -97,7 +99,7 @@ class CollisionRecalculateAllowDayTest extends TestCase
         $this->assertEquals($result, $object->minutes()->allowed());
 
         // + PERIOD
-        $object->allowPeriod('10:00', '11:00');
+        $object->allowDefaultPeriod('10:00', '11:00');
 
         // das 8 as 9 do segundo dia
         $start1 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
@@ -116,12 +118,13 @@ class CollisionRecalculateAllowDayTest extends TestCase
     }
 
     /** @test */
-    public function dayToDate()
+    public function specificDayToSpecificDate()
     {
         // DAY
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $object->allowPeriod('08:00', '09:00');
-        $object->allowDay(WeekDay::MONDAY);
+        $object->disableAllDays();
+        $object->allowDefaultPeriod('08:00', '09:00');
+        $object->allowDay(WeekDay::MONDAY); // 02/11/2020
 
         // das 8 as 9 do segundo dia: Segunda-feira
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
@@ -130,7 +133,7 @@ class CollisionRecalculateAllowDayTest extends TestCase
         $this->assertEquals($result, $object->minutes()->allowed());
 
         // + DATE
-        $object->allowDate('2020-11-03');
+        $object->allowDate('2020-11-03'); // Terça-feira
 
         // das 8 as 9 do segundo dia: Segunda-feira
         $start1 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;

@@ -12,13 +12,27 @@ use Time\Exceptions\InvalidTimeException;
 
 class WeekDay
 {
+    /** @const Domingo */
     public const SUNDAY    = 0;
+
+    /** @const Segunda-feira */
     public const MONDAY    = 1;
+
+    /** @const Terça-feira */
     public const TUESDAY   = 2;
+
+    /** @const Quarta-feira */
     public const WEDNESDAY = 3;
+
+    /** @const Quinta-feira */
     public const THURSDAY  = 4;
+
+    /** @const Sexta-feira */
     public const FRIDAY    = 5;
+
+    /** @const Sábado */
     public const SATURDAY  = 6;
+    
     public const ALL_DAYS  = 7;
 
     private int $day = self::MONDAY;

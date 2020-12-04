@@ -29,9 +29,7 @@ class Params
     public function __construct()
     {
         // por padrão, todos os dias da semana são utilizáveis
-        foreach ([0, 1, 2, 3, 4, 5, 6] as $day) {
-            $this->setDay($day);
-        }
+        $this->setAllDays();
     }
 
     /**
@@ -46,6 +44,18 @@ class Params
         $dayObject = new WeekDay($day);
         $this->weekDays[$day] = $dayObject;
         return $this->weekDays[$day];
+    }
+
+    /**
+     * Ativa todos os dias de semana.
+     * @return self
+     */
+    public function setAllDays(): self
+    {
+        foreach ([0, 1, 2, 3, 4, 5, 6] as $day) {
+            $this->setDay($day);
+        }
+        return $this;
     }
 
     /**
@@ -64,6 +74,18 @@ class Params
             unset($this->weekDays[$day]);
         }
 
+        return $this;
+    }
+
+    /**
+     * Desativa todos os dias de semana.
+     * @return self
+     */
+    public function unsetAllDays(): self
+    {
+        foreach ([0, 1, 2, 3, 4, 5, 6] as $day) {
+            $this->unsetDay($day);
+        }
         return $this;
     }
 
