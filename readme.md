@@ -21,8 +21,8 @@ Existem várias formas de trabalhar com colisões de tempo dentro da biblioteca 
 $object = new Collision('2020-01-10');
 
 // Libera dois períodos dentro do range
-$object->allowPeriod('13:00', '14:00');
-$object->allowPeriod('15:00', '18:00');
+$object->allowDefaultPeriod('13:00', '14:00');
+$object->allowDefaultPeriod('15:00', '18:00');
 
 // Obtém os períodos onde 01h30m pode se encaixar
 $fittings = $object->fittingsFor(90);
