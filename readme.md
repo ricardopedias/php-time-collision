@@ -43,7 +43,7 @@ No exemplo acima, a variável *"$fittings"* terá o seguinte conteúdo:
 
 Ou seja, apenas o período das 15:00 às 18:00 podem alocar 01h30m, sendo:
 
-1. O índice **900** é o número de minutos desde o início do range até atingir o inicio do período;
+1. O índice **900** é o número de minutos desde o início do range até atingir o início do período;
 2. O valor, constituído de um array com dois elementos, corresponde ao início e ao fim dos períodos, ou seja, das 15:00 às 18:00.
 
 Para mais informações, consulte a [Documentação da Biblioteca](docs/index.md) para descobrir outras funcionalidades.
