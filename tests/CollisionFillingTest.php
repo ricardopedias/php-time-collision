@@ -31,7 +31,7 @@ class CollisionFillingTest extends TestCase
                ->allowDefaultPeriod('12:35', '12:40');
 
         // Precisa de 10 minutos (contando o minuto 25)
-        $object->fill('2020-11-01 12:25:00', '2020-11-01 12:34:00', true);
+        $object->fillCumulative('2020-11-01 12:25:00', '2020-11-01 12:34:00');
 
         $result = $this->makeRange('24..29', '34..37'); // + 4 minutos (contando o 35)
         $this->assertEquals($result, $object->minutes()->filled());

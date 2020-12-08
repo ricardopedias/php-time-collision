@@ -141,17 +141,26 @@ class Collision
 
     /**
      * Utiliza o período especificado.
-     * Por padrão, as horas que colidirem com minutos não 'usáveis' são perdidos.
-     * Caso o parâmetro $cumulative for true, os minutos são distribuídos para
-     * as lacunas seguintes até acabarem.
+     * O tempo que colidir com minutos não 'usáveis' serão perdidas.
      * @param string $start
      * @param string $end
-     * @param bool $cumulative
      */
-    public function fill(string $start, string $end, bool $cumulative = false): void
+    public function fill(string $start, string $end): void
     {
         $this->forceRecalculation();
-        $this->params->setFilled($start, $end, $cumulative);
+        $this->params->setFilled($start, $end, false);
+    }
+
+    /**
+     * Utiliza o período especificado.
+     * Os minutos são distribuídos para as lacunas seguintes até acabarem.
+     * @param string $start
+     * @param string $end
+     */
+    public function fillCumulative(string $start, string $end): void
+    {
+        $this->forceRecalculation();
+        $this->params->setFilled($start, $end, true);
     }
 
     public function minutes(): Minutes
