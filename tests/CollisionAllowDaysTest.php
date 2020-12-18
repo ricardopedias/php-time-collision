@@ -31,6 +31,7 @@ class CollisionAllowDaysTest extends TestCase
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
         $end = $start + 60;
         $result = $this->makeRange("{$start}..{$end}");
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
         $this->assertEquals($result, $object->minutes()->allowed());
     }
@@ -47,6 +48,7 @@ class CollisionAllowDaysTest extends TestCase
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
         $end = $start + 60;
         $result = $this->makeRange("{$start}..{$end}");
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
         $this->assertEquals($result, $object->minutes()->allowed());
     }
@@ -69,6 +71,7 @@ class CollisionAllowDaysTest extends TestCase
         $end2 = $start2 + 30;
 
         $result = $this->makeRange("{$start1}..{$end1}", "{$start2}..{$end2}");
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
         $this->assertEquals($result, $object->minutes()->allowed());
     }

@@ -79,6 +79,19 @@ class TestCase extends PhpUnitTestCase
         return SplFixedArray::fromArray(array_keys($list));
     }
 
+    protected function rangeToDatetime(string $start, SplFixedArray $range)
+    {
+        $list = [];
+
+        foreach($range as $index => $minute) {
+            $moment = new Datetime($start);
+            $moment->modify("+ {$minute} minutes");
+            $list[$index] = $moment;
+        }
+
+        return SplFixedArray::fromArray($list);
+    }
+
     protected function printCli($variable)
     {
         fwrite(STDERR, print_r($variable, TRUE));
