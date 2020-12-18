@@ -2,6 +2,24 @@
 
 Esta parte ainda está sendo desenvolvida.
 
+```php
+// Obtém os períodos onde 90 minutos podem se encaixar
+$fittings = $object->fittingsFor(90);
+```
+
+```php
+// Obtém os períodos preenchidos entre a data inicial e a data final
+$fittings = $object->filledsBetween('2020-10-01 12:00', '2020-10-01 16:00');
+```
+
+```php
+// Obtém os períodos não preenchidos entre a data inicial e a data final
+$fittings = $object->fillablesBetween('2020-10-01 12:00', '2020-10-01 16:00');
+```
+
+
+
+
 ## Sumário
 
 1.   [Criando ranges para manipulação](ranges.md)
