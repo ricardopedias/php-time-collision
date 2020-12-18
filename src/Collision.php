@@ -188,6 +188,25 @@ class Collision
     }
 
     /**
+     * Obtém os períodos preenchidos entre a data inicial e a final
+     * @return array<int, array>
+     */
+    public function filledsBetween(string $start, string $end): array
+    {
+        return $this->minutes()->chunks()->filleds($start, $end);
+    }
+
+    /**
+     * Obtém as lacunas disponíveis entre a data inicial e a final
+     * @return array<int, array>
+     */
+    public function fillablesBetween(string $start, string $end): array
+    {
+        return $this->minutes()->chunks()->fillables($start, $end);
+    }
+    
+
+    /**
      * Reinicia o objeto que calcula os minutos.
      */
     private function forceRecalculation(): void
