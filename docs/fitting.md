@@ -94,7 +94,7 @@ Neste novo exemplo, como o algoritmo ignora as colisões com horários indispon�
 | Tempo especificado     | das 13h às 16h   | 3 horas total       |
 | Lacuna das 13h as 14h  | das 13h às 14h   | 1 hora preenchida   |
 | Espaço das 14h as 15h  | das 14h às 15h   | **1 hora ignorada** |
-| Lacuna das 15h às 18h  | das 15h às 16h   | 1 horas preenchida  |
+| Lacuna das 15h às 18h  | das 15h às 16h   | 1 hora preenchida   |
 
 **Resultado:** 2h preenchidas e 1h ignorada.
 
