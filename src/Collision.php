@@ -179,7 +179,7 @@ class Collision
     }
 
     /**
-     * Obtém as lacunas onde o período se encaixa
+     * Obtém as lacunas onde os minutos especificados se encaixam
      * @return array<int, array>
      */
     public function fittingsFor(int $amountMinutes): array

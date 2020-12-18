@@ -18,7 +18,10 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         $object->disableAllDays();
         $object->allowDefaultPeriod('08:00', '09:00');
 
-        $this->assertEquals($this->makeRange('0..0'), $object->minutes()->allowed());
+        $result = $this->makeRange('0..0');
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
+
+        $this->assertEquals($result, $object->minutes()->allowed());
 
         $object->allowAllDays();
 
@@ -40,6 +43,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
             "{$start3}..{$end3}",
         );
         
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         $this->assertEquals($result, $object->minutes()->allowed());
 
         // das 8 as 9 do primeiro dia
@@ -59,6 +63,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
             "{$start5}..{$end5}", 
             "{$start6}..{$end6}", 
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
         $this->assertEquals($result, $object->minutes()->allowed());
     }
@@ -71,7 +76,10 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         $object->disableAllDays();
         $object->allowDefaultPeriod('08:00', '09:00');
 
-        $this->assertEquals($this->makeRange('0..0'), $object->minutes()->allowed());
+        $result = $this->makeRange('0..0');
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
+
+        $this->assertEquals($result, $object->minutes()->allowed());
         
         // Libera somente a segunda-feira
         $object->allowDay(WeekDay::MONDAY); // 02/11/2020
@@ -83,6 +91,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         $result = $this->makeRange(
             "{$start1}..{$end1}",
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
         $this->assertEquals($result, $object->minutes()->allowed());
 
@@ -105,6 +114,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
             "{$start2}..{$end2}",
             "{$start3}..{$end3}",
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
         $this->assertEquals($result, $object->minutes()->allowed());
     }
@@ -133,6 +143,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
             "{$start2}..{$end2}",
             "{$start3}..{$end3}",
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
         $this->assertEquals($result, $object->minutes()->allowed());
 
@@ -166,6 +177,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
             "{$start7}..{$end7}",
             "{$start8}..{$end8}",
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
         $this->assertEquals($result, $object->minutes()->allowed());
     }
@@ -196,6 +208,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
             "{$start2}..{$end2}",
             "{$start3}..{$end3}",
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
         $this->assertEquals($result, $object->minutes()->allowed());
 
@@ -207,6 +220,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-03 08:00:00')) - 1;
         $end = $start + 30;
         $result = $this->makeRange("{$start}..{$end}");
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
         $this->assertEquals($result, $object->minutes()->allowed());
     }

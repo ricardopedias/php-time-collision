@@ -34,6 +34,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
             "{$start2}..{$end2}",
             "{$start3}..{$end3}",
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
         $this->assertEquals($result, $object->minutes()->allowed());
 
@@ -56,6 +57,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
             "{$start5}..{$end5}", 
             "{$start6}..{$end6}", 
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
         $this->assertEquals($result, $object->minutes()->allowed());
     }
@@ -84,6 +86,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
             "{$start2}..{$end2}",
             "{$start3}..{$end3}",
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
         $this->assertEquals($result, $object->minutes()->allowed());
 
@@ -95,6 +98,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
         $end = $start + 60;
         $result = $this->makeRange("{$start}..{$end}");
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
         $this->assertEquals($result, $object->minutes()->allowed());
     }
@@ -123,6 +127,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
             "{$start2}..{$end2}",
             "{$start3}..{$end3}",
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
         $this->assertEquals($result, $object->minutes()->allowed());
 
@@ -156,6 +161,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
             "{$start7}..{$end7}",
             "{$start8}..{$end8}",
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
         $this->assertEquals($result, $object->minutes()->allowed());
     }
@@ -185,6 +191,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
             "{$start2}..{$end2}",
             "{$start3}..{$end3}",
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
         $this->assertEquals($result, $object->minutes()->allowed());
 
@@ -200,6 +207,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $result = $this->makeRange(
             "{$start4}..{$end4}",
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
         $this->assertEquals($result, $object->minutes()->allowed());
     }
@@ -229,6 +237,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
             "{$start2}..{$end2}",
             "{$start3}..{$end3}",
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
         $this->assertEquals($result, $object->minutes()->allowed());
 
@@ -257,6 +266,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
             "{$start4}..{$end4}",
             "{$start5}..{$end5}",
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
         $this->assertEquals($result, $object->minutes()->allowed());
     }

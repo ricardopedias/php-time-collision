@@ -70,7 +70,7 @@ class Minutes
      */
     public function unused(): SplFixedArray
     {
-        return $this->range(Minutes::UNUSED);
+        return (new Chunks($this))->unused();
     }
 
     /**
@@ -79,7 +79,7 @@ class Minutes
      */
     public function allowed(): SplFixedArray
     {
-        return $this->range(Minutes::ALLOWED);
+        return (new Chunks($this))->allowed();
     }
 
     /**
@@ -88,7 +88,7 @@ class Minutes
      */
     public function filled(): SplFixedArray
     {
-        return $this->range(Minutes::FILLED);
+        return (new Chunks($this))->filled();
     }
 
     /**

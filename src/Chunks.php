@@ -123,6 +123,39 @@ class Chunks
         return $result;
     }
 
+    /**
+     * Devolve os minutos bloqueados para uso.
+     * @return SplFixedArray<int>
+     */
+    public function unused(): SplFixedArray
+    {
+        $list = $this->minutes->range(Minutes::UNUSED);
+        $list = array_map(fn($minute) => $this->getDateTime($minute), $list->toArray());
+        return SplFixedArray::fromArray($list);
+    }
+
+    /**
+     * Devolve os minutos que podem ser usados.
+     * @return SplFixedArray<int>
+     */
+    public function allowed(): SplFixedArray
+    {
+        $list = $this->minutes->range(Minutes::ALLOWED);
+        $list = array_map(fn($minute) => $this->getDateTime($minute), $list->toArray());
+        return SplFixedArray::fromArray($list);
+    }
+
+    /**
+     * Devolve os minutos usados dentro do horário comercial.
+     * @return SplFixedArray<int>
+     */
+    public function filled(): SplFixedArray
+    {
+        $list = $this->minutes->range(Minutes::FILLED);
+        $list = array_map(fn($minute) => $this->getDateTime($minute), $list->toArray());
+        return SplFixedArray::fromArray($list);
+    }
+
     private function getDateTime(int $minute): DateTime
     {
         $moment = clone $this->start;

@@ -35,6 +35,7 @@ class CollisionAllowPeriodsTest extends TestCase
             "{$start2}..{$end2}", 
             "{$start3}..{$end3}"
         );
+        $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
         $this->assertEquals($result, $object->minutes()->allowed());
     }
@@ -51,7 +52,10 @@ class CollisionAllowPeriodsTest extends TestCase
         $resultAll = SplFixedArray::fromArray($resultAll);
 
         $resultUnused = $this->makeRange('0..13', '31..59');
+        $resultUnused = $this->rangeToDatetime('2020-11-01 12:00:00', $resultUnused);
+
         $resultAllowed = $this->makeRange('14..30');
+        $resultAllowed = $this->rangeToDatetime('2020-11-01 12:00:00', $resultAllowed);
         
         $this->assertEquals($resultAll, $object->minutes()->range());
         $this->assertEquals($resultUnused, $object->minutes()->unused());
