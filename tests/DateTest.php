@@ -25,4 +25,10 @@ class DateTest extends TestCase
 
         new Date('00000');
     }
+
+    /** @test */
+    public function next()
+    {
+        $this->markTestIncomplete('Não implementado ainda');
+    }
 }

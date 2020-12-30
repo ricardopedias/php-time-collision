@@ -61,16 +61,16 @@ class Date
         return $this;
     }
 
-    public function removeDefaults(): self
-    {
-        foreach ($this->periods as $index => $item) {
-            if ($item[2] === true) {
-                unset($this->periods[$index]);
-            }
-        }
+    // public function removeDefaultPeriods(): self
+    // {
+    //     foreach ($this->periods as $index => $item) {
+    //         if ($item[2] === true) {
+    //             unset($this->periods[$index]);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function day(): DateTime
     {

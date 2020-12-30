@@ -36,7 +36,7 @@ class Chunks
     /**
      * Obtém os breakpoints para o inicio de novos dias dentro do range.
      * @return array<int, DateTime>
-     * @see Time\Calculation::allowWeekDays()
+     * @see Time\Calculation::allowDayOfWeeks()
      */
     public function days(): array
     {

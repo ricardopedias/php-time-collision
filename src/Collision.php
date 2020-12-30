@@ -57,7 +57,7 @@ class Collision
      * @param int $day Um dia da semana. Ex: Week::MONDAY
      * @return \Time\WeekDay
      */
-    public function allowDay(int $day = WeekDay::MONDAY): WeekDay
+    public function allowDayOfWeek(int $day = WeekDay::MONDAY): WeekDay
     {
         $this->forceRecalculation();
         return $this->params->setWeekDay($day);
@@ -67,7 +67,7 @@ class Collision
      * Ativa todos os dias de semana.
      * @return self
      */
-    public function allowAllDays(): self
+    public function allowAllWeekDays(): self
     {
         $this->forceRecalculation();
         $this->params->setAllWeekDays();
@@ -81,7 +81,7 @@ class Collision
      * @param int $day Um dia da semana. Ex: Week::MONDAY
      * @return self
      */
-    public function disableDay(int $day = WeekDay::MONDAY): self
+    public function disableDayOfWeek(int $day = WeekDay::MONDAY): self
     {
         $this->forceRecalculation();
         $this->params->unsetWeekDay($day);
@@ -92,7 +92,7 @@ class Collision
      * Desativa todos os dias de semana.
      * @return self
      */
-    public function disableAllDays(): self
+    public function disableAllWeekDays(): self
     {
         $this->forceRecalculation();
         $this->params->unsetAllWeekDays();

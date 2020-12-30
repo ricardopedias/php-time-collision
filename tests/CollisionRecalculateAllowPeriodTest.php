@@ -15,7 +15,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
     {
         // PERIOD
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $object->disableAllDays();
+        $object->disableAllWeekDays();
         $object->allowDefaultPeriod('08:00', '09:00');
 
         $result = $this->makeRange('0..0');
@@ -23,7 +23,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
 
         $this->assertEquals($result, $object->minutes()->allowed());
 
-        $object->allowAllDays();
+        $object->allowAllWeekDays();
 
         // das 8 as 9 do primeiro dia
         $start1 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00')) - 1;
@@ -73,7 +73,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
     {
         // PERIOD
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $object->disableAllDays();
+        $object->disableAllWeekDays();
         $object->allowDefaultPeriod('08:00', '09:00');
 
         $result = $this->makeRange('0..0');
@@ -82,7 +82,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         $this->assertEquals($result, $object->minutes()->allowed());
         
         // Libera somente a segunda-feira
-        $object->allowDay(WeekDay::MONDAY); // 02/11/2020
+        $object->allowDayOfWeek(WeekDay::MONDAY); // 02/11/2020
 
         // das 8 as 9 do segundo dia
         $start1 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
@@ -95,7 +95,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
 
         $this->assertEquals($result, $object->minutes()->allowed());
 
-        $object->allowAllDays();
+        $object->allowAllWeekDays();
 
         // das 8 as 9 do primeiro dia
         $start1 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00')) - 1;
@@ -187,9 +187,9 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
     {
         // PERIOD
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $object->disableAllDays();
+        $object->disableAllWeekDays();
         $object->allowDefaultPeriod('08:00', '09:00');
-        $object->allowAllDays();
+        $object->allowAllWeekDays();
 
         // das 8 as 9 do primeiro dia
         $start1 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00')) - 1;
@@ -213,7 +213,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         $this->assertEquals($result, $object->minutes()->allowed());
 
         // + DATE
-        $object->disableAllDays();
+        $object->disableAllWeekDays();
         $object->allowDate('2020-11-03');
 
         // das 8 as 9 do segundo dia

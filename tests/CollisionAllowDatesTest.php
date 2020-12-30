@@ -15,9 +15,9 @@ class CollisionAllowDatesTest extends TestCase
     public function allowDateDefaultPeriod()
     {
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $object->disableAllDays();
+        $object->disableAllWeekDays();
         $object->allowDefaultPeriod('08:00', '09:00');
-        $object->allowDay(WeekDay::MONDAY);
+        $object->allowDayOfWeek(WeekDay::MONDAY);
         $object->allowDate('2020-11-03');
 
         // das 8 as 9 do segundo dia: Segunda-feira
