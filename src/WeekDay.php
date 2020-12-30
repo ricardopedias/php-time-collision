@@ -48,6 +48,11 @@ class WeekDay
         $this->day = $day;
     }
 
+    public function day(): int
+    {
+        return $this->day;
+    }
+
     public function withPeriod(string $startTime, string $endTime, bool $default = false): self
     {
         try {
@@ -81,20 +86,16 @@ class WeekDay
         return $this;
     }
 
-    public function removeDefaults(): self
+    public function removeDefaultPeriods(): self
     {
         foreach ($this->periods as $index => $item) {
-            if ($item[2] === true) {
+            $isDefault = $item[2];
+            if ($isDefault === true) {
                 unset($this->periods[$index]);
             }
         }
 
         return $this;
-    }
-
-    public function day(): int
-    {
-        return $this->day;
     }
 
     /**
