@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Time;
 
 use DateTime;
+use Exception;
 use Time\Exceptions\InvalidDateException;
+use Time\Exceptions\InvalidDateTimeException;
 
 class Params
 {
@@ -90,6 +92,12 @@ class Params
         return $this;
     }
 
+    /** @return array<int, \Time\WeekDay> */
+    public function getWeekDays(): array
+    {
+        return $this->weekDays;
+    }
+
     /**
      * Marca um dia específico como utilizável.
      * @param string $date Um dia específico. Ex: 2020-10-01
@@ -125,6 +133,18 @@ class Params
         return $this;
     }
 
+    /** @return array<string, \Time\Date> */
+    public function getDates(): array
+    {
+        return $this->dates;
+    }
+
+    /** @return array<string, \Time\Date> */
+    public function getDisabledDates(): array
+    {
+        return $this->disabledDates;
+    }
+
     /**
      * Marca um determinado período do dia como utilizável.
      * Os dias marcados como utilizáveis receberão os períodos definidos aqui.
@@ -142,6 +162,12 @@ class Params
         return $this;
     }
 
+    /** @return array<int, array> */
+    public function getDefaultPeriods(): array
+    {
+        return $this->defaultPeriods;
+    }
+
     /**
      * Utiliza o período especificado.
      * Por padrão, as horas que colidirem com minutos não 'usáveis' são perdidos.
@@ -153,8 +179,18 @@ class Params
      */
     public function setFilled(string $start, string $end, bool $cumulative = false): void
     {
-        $start = new DateTime($start);
-        $end   = new DateTime($end);
+        try {
+            $start = new DateTime($start);
+            $end   = new DateTime($end);
+        } catch (Exception $e) {
+            throw new InvalidDateTimeException($e->getMessage());
+        }
+
+        if ($end < $start) {
+            throw new InvalidDateTimeException(
+                'The end datetime must be greater than the start datetime of the period'
+            );
+        }
 
         if ($cumulative === true) {
             $this->cumulativeFills[] = [$start, $end];
@@ -162,30 +198,6 @@ class Params
         }
 
         $this->fills[] = [$start, $end];
-    }
-
-    /** @return array<int, \Time\WeekDay> */
-    public function getWeekDays(): array
-    {
-        return $this->weekDays;
-    }
-
-    /** @return array<string, \Time\Date> */
-    public function getDates(): array
-    {
-        return $this->dates;
-    }
-
-    /** @return array<string, \Time\Date> */
-    public function getDisabledDates(): array
-    {
-        return $this->disabledDates;
-    }
-
-    /** @return array<int, array> */
-    public function getDefaultPeriods(): array
-    {
-        return $this->defaultPeriods;
     }
 
     /** @return array<int, array> */
