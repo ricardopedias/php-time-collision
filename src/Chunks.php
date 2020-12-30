@@ -69,19 +69,17 @@ class Chunks
         $result = [];
 
         $chunksList = $this->chunksByType($this->range, Minutes::ALLOWED, $this->start, $this->end);
-        foreach($chunksList as $minuteIndex => $chunk) {
-
+        foreach ($chunksList as $minuteIndex => $chunk) {
             $startDate = clone $chunk[0];
             $endDate = clone $chunk[1];
 
             // Verifica se a lacuna cabe os minutos necessários
             if ($startDate->modify("+ {$minutes} minutes") <= $endDate) {
-                $result[$minuteIndex] = [ 
-                    $chunk[0], 
+                $result[$minuteIndex] = [
+                    $chunk[0],
                     $chunk[1]
                 ];
             }
-        
         }
 
         return $result;
@@ -129,7 +127,7 @@ class Chunks
     /**
      * Método recursivo. Cada iteração extrai um pedaço do período
      * contendo uma sequência de minutos disponíveis
-     * @param SplFixedArray<int, int|null> $range
+     * @param SplFixedArray<int> $range
      * @param int $type
      * @param DateTime $start
      * @param DateTime $end
@@ -137,14 +135,19 @@ class Chunks
      * @param array<int, array<int, DateTime>> $result
      * @return array<int, array<int, DateTime>>
      */
-    private function chunksByType(SplFixedArray $range, int $type, DateTime &$start, DateTime &$end, int &$startIndex = 0, array &$result = []): array
-    {
+    private function chunksByType(
+        SplFixedArray $range,
+        int $type,
+        DateTime &$start,
+        DateTime &$end,
+        int &$startIndex = 0,
+        array &$result = []
+    ): array {
         $chunk  = [];
         $forwardIndex = $startIndex;
         $hasAllowed = false;
-        
-        for ($index = $startIndex; $index < $range->getSize(); $index++) {
 
+        for ($index = $startIndex; $index < $range->getSize(); $index++) {
             $minute = $index;
             $bit    = $range[$index];
 
@@ -173,19 +176,19 @@ class Chunks
         $endMinute   = (int)array_key_last($chunk);
         $result[$startMinute] = [
             // +1 porque os indices dos minutos são a partir de zero
-            $this->getDateTimeFromMinute($startMinute + 1), 
+            $this->getDateTimeFromMinute($startMinute + 1),
             $this->getDateTimeFromMinute($endMinute + 1)
         ];
 
         // Busca por outros pedaços
         $this->chunksByType($range, $type, $start, $end, $forwardIndex, $result);
-        
+
         return $result;
     }
 
     /**
      * Devolve os minutos bloqueados para uso.
-     * @return SplFixedArray<int>
+     * @return SplFixedArray<\DateTime>
      */
     public function unused(): SplFixedArray
     {
@@ -196,7 +199,7 @@ class Chunks
 
     /**
      * Devolve os minutos que podem ser usados.
-     * @return SplFixedArray<int>
+     * @return SplFixedArray<\DateTime>
      */
     public function allowed(): SplFixedArray
     {
@@ -207,7 +210,7 @@ class Chunks
 
     /**
      * Devolve os minutos usados dentro do horário comercial.
-     * @return SplFixedArray<int>
+     * @return SplFixedArray<\DateTime>
      */
     public function filled(): SplFixedArray
     {
