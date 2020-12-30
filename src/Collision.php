@@ -21,35 +21,32 @@ class Collision
     public function __construct(string $start, ?string $end = null)
     {
         try {
-            $start = new DateTime($start);
+            $customStart = new DateTime($start);
 
-            if ($end === null) {
-                $customEnd = clone $start;
-                $customEnd->setTime(23,59);
+            $customEnd = clone $customStart;
+            $customEnd->setTime(23, 59);
+
+            if ($end !== null) {
+                $customEnd = new DateTime($end);
             }
-
-            $end = $end === null 
-                ? $customEnd
-                : new DateTime($end);
-
         } catch (Exception $e) {
             throw new InvalidDateTimeException($e->getMessage());
         }
 
-        if ($start > $end) {
+        if ($customStart > $customEnd) {
             throw new InvalidDateTimeException('The end date must be greater than the start date of the period');
         }
 
-        if ($end->format('H:i') === '00:00') {
-            $end->modify('+ 24 hours');
+        if ($customEnd->format('H:i') === '00:00') {
+            $customEnd->modify('+ 24 hours');
         }
 
-        if ($end->format('H:i') === '23:59') {
-            $end->modify('+ 1 minute');
+        if ($customEnd->format('H:i') === '23:59') {
+            $customEnd->modify('+ 1 minute');
         }
 
-        $this->rangeStart = $start;
-        $this->rangeEnd   = $end;
+        $this->rangeStart = $customStart;
+        $this->rangeEnd   = $customEnd;
         $this->params     = new Params();
     }
 
@@ -174,7 +171,6 @@ class Collision
             $this->minutesObject = $calculation->populateRange();
         }
 
-        /** @phpstan-ignore-next-line */
         return $this->minutesObject;
     }
 
