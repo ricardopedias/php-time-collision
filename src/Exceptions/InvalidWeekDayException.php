@@ -6,7 +6,7 @@ namespace Time\Exceptions;
 
 use InvalidArgumentException;
 
-class InvalidDayException extends InvalidArgumentException
+class InvalidWeekDayException extends InvalidArgumentException
 {
     // ...
 }
