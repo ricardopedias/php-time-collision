@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Time;
 
-use Closure;
 use DateTime;
 use Exception;
 use Time\Exceptions\InvalidDateException;
 use Time\Exceptions\InvalidTimeException;
 
-class Day
+class Date
 {
     private DateTime $day;
 
@@ -21,11 +20,11 @@ class Day
     {
         try {
             $day = new DateTime($date);
-            $day->setTime(0,0,0);
+            $day->setTime(0, 0, 0);
         } catch (Exception $e) {
             throw new InvalidDateException($e->getMessage());
         }
-       
+
         $this->day = $day;
     }
 
@@ -41,7 +40,7 @@ class Day
         if ($start > $end) {
             throw new InvalidTimeException('The end time must be greater than the start time of the period');
         }
-        
+
         $this->periods[] = [$startTime, $endTime, $default];
         return $this;
     }
@@ -50,7 +49,7 @@ class Day
      * Especifica uma lista de períodos a serem usados neste dia.
      * @param array<int, array> $periods
      * @param bool $default
-     * @return \Time\WeekDay
+     * @return \Time\Date
      */
     public function withPeriods(array $periods, bool $default = false): self
     {
@@ -58,7 +57,7 @@ class Day
         foreach ($periods as $item) {
             $this->withPeriod($item[0], $item[1], $default);
         }
-        
+
         return $this;
     }
 
@@ -69,7 +68,7 @@ class Day
                 unset($this->periods[$index]);
             }
         }
-        
+
         return $this;
     }
 
