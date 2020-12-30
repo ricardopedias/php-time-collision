@@ -38,7 +38,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         
         $this->assertEquals($result, $object->minutes()->allowed());
 
-        $object->allowAllDays();
+        $object->allowAllWeekDays();
 
         // das 8 as 9 do primeiro dia
         $start4 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00')) - 1;
@@ -91,8 +91,8 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $this->assertEquals($result, $object->minutes()->allowed());
 
         // libera apenas a segunda-feira
-        $object->disableAllDays();
-        $object->allowDay(WeekDay::MONDAY); // 02/11/2020
+        $object->disableAllWeekDays();
+        $object->allowDayOfWeek(WeekDay::MONDAY); // 02/11/2020
 
         // das 8 as 9 do segundo dia
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
@@ -196,7 +196,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $this->assertEquals($result, $object->minutes()->allowed());
 
         // determina um dia específico
-        $object->disableAllDays();
+        $object->disableAllWeekDays();
         $object->allowDate('2020-11-03'); // Terça-feira
 
         // das 8 as 9 do segundo dia
@@ -242,8 +242,8 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $this->assertEquals($result, $object->minutes()->allowed());
 
         // Libera as Segundas-feiras
-        $object->disableAllDays();
-        $object->allowDay(WeekDay::MONDAY); // 02/11/2020
+        $object->disableAllWeekDays();
+        $object->allowDayOfWeek(WeekDay::MONDAY); // 02/11/2020
 
         // Somente a Segunda-feira é contada
         $result = $this->makeRange(

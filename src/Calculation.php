@@ -40,7 +40,7 @@ class Calculation
         }
     }
 
-    private function allowWeekDays(): void
+    private function allowDayOfWeeks(): void
     {
         $weekDaysList = $this->params->getWeekDays();
         $disabledDays = $this->params->getDisabledDates();
@@ -111,7 +111,7 @@ class Calculation
     public function populateRange(): Minutes
     {
         $this->allowSpecificDays();
-        $this->allowWeekDays();
+        $this->allowDayOfWeeks();
 
         foreach ($this->params->getFills() as $times) {
             $this->markFilled($times[0], $times[1]);

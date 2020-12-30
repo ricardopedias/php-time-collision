@@ -23,9 +23,9 @@ class CollisionAllowDaysTest extends TestCase
     public function allowOneDayDefaultPeriod()
     {
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $object->disableAllDays();
+        $object->disableAllWeekDays();
         $object->allowDefaultPeriod('08:00', '09:00');
-        $object->allowDay(WeekDay::MONDAY);
+        $object->allowDayOfWeek(WeekDay::MONDAY);
 
         // das 8 as 9 do segundo dia: Segunda-feira
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
@@ -40,8 +40,8 @@ class CollisionAllowDaysTest extends TestCase
     public function allowOneDayWithPeriod()
     {
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $object->disableAllDays();
-        $object->allowDay(WeekDay::MONDAY)
+        $object->disableAllWeekDays();
+        $object->allowDayOfWeek(WeekDay::MONDAY)
             ->withPeriod('08:00', '09:00');
 
         // das 8 as 9 do segundo dia: Segunda-feira
@@ -57,9 +57,9 @@ class CollisionAllowDaysTest extends TestCase
     public function allowDateDefaultPeriod()
     {
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $object->disableAllDays();
+        $object->disableAllWeekDays();
         $object->allowDefaultPeriod('08:00', '09:00');
-        $object->allowDay(WeekDay::MONDAY);
+        $object->allowDayOfWeek(WeekDay::MONDAY);
         $object->allowDate('2020-11-03');
 
         // das 8 as 9 do segundo dia: Segunda-feira
@@ -83,6 +83,6 @@ class CollisionAllowDaysTest extends TestCase
         $this->expectExceptionMessage('The day must be 0 to 7, or use Week::???');
         
         $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');
-        $object->allowDay(8);
+        $object->allowDayOfWeek(8);
     }
 }

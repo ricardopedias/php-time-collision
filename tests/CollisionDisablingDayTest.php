@@ -18,12 +18,12 @@ class CollisionDisablingDayTest extends TestCase
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
         $object->allowDefaultPeriod('08:00', '09:00');
         // libera somente WeekDay::MONDAY
-        $object->disableDay(WeekDay::SUNDAY);    
-        $object->disableDay(WeekDay::TUESDAY);   
-        $object->disableDay(WeekDay::WEDNESDAY); 
-        $object->disableDay(WeekDay::THURSDAY);  
-        $object->disableDay(WeekDay::FRIDAY);    
-        $object->disableDay(WeekDay::SATURDAY);  
+        $object->disableDayOfWeek(WeekDay::SUNDAY);    
+        $object->disableDayOfWeek(WeekDay::TUESDAY);   
+        $object->disableDayOfWeek(WeekDay::WEDNESDAY); 
+        $object->disableDayOfWeek(WeekDay::THURSDAY);  
+        $object->disableDayOfWeek(WeekDay::FRIDAY);    
+        $object->disableDayOfWeek(WeekDay::SATURDAY);  
 
         // das 8 as 9 do segundo dia: Segunda-feira
         $start = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-02 08:00:00')) - 1;
@@ -40,12 +40,12 @@ class CollisionDisablingDayTest extends TestCase
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
         $object->allowDefaultPeriod('08:00', '09:00');
         // libera somente WeekDay::MONDAY
-        $object->disableDay(WeekDay::SUNDAY);    
-        $object->disableDay(WeekDay::TUESDAY); // desativou 03/11/2020
-        $object->disableDay(WeekDay::WEDNESDAY); 
-        $object->disableDay(WeekDay::THURSDAY);  
-        $object->disableDay(WeekDay::FRIDAY);    
-        $object->disableDay(WeekDay::SATURDAY);  
+        $object->disableDayOfWeek(WeekDay::SUNDAY);    
+        $object->disableDayOfWeek(WeekDay::TUESDAY); // desativou 03/11/2020
+        $object->disableDayOfWeek(WeekDay::WEDNESDAY); 
+        $object->disableDayOfWeek(WeekDay::THURSDAY);  
+        $object->disableDayOfWeek(WeekDay::FRIDAY);    
+        $object->disableDayOfWeek(WeekDay::SATURDAY);  
 
         $object->allowDate('2020-11-03'); // reaativou 03/11/2020
 
@@ -68,7 +68,7 @@ class CollisionDisablingDayTest extends TestCase
         $this->expectExceptionMessage('The day must be 0 to 7, or use Week::???');
         
         $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');
-        $object->disableDay(8);
+        $object->disableDayOfWeek(8);
     }
 
     /** @test */
