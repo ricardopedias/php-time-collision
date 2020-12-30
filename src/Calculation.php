@@ -28,18 +28,18 @@ class Calculation
     {
         $specificDays = $this->params->getDates();
         $weekDays     = $this->params->getWeekDays();
-        
+
         foreach ($specificDays as $dateObject) {
             $weekDay = $dateObject->dayOfWeek();
             if (isset($weekDays[$weekDay]) === false) {
                 $dayObject = new WeekDay($weekDay);
                 $weekDays[$weekDay] = $dayObject;
             }
-            
+
             $this->allowPeriods($dateObject, $weekDays[$weekDay]);
         }
     }
-    
+
     private function allowWeekDays(): void
     {
         $weekDaysList = $this->params->getWeekDays();
@@ -47,7 +47,7 @@ class Calculation
         $daysChunks   = $this->minutes->chunks()->days();
 
         foreach ($daysChunks as $minute => $day) {
-            $day = new Day((string)$day->format('Y-m-d'));
+            $day = new Date((string)$day->format('Y-m-d'));
 
             // marca somente dias liberados
             $disabledIndex = $day->dayString();
@@ -60,7 +60,7 @@ class Calculation
             if (isset($weekDaysList[$weekDay]) === true) {
                 $current = clone $this->rangeStart;
                 $current->modify("+ {$minute} minutes");
-                $dayObject = new Day($current->format('Y-m-d H:i'));
+                $dayObject = new Date($current->format('Y-m-d H:i'));
                 $this->allowPeriods($dayObject, $weekDaysList[$weekDay]);
             }
         }
@@ -70,7 +70,7 @@ class Calculation
      * Marca os períodos dos dias liberados para que possam
      * ser usados para preenchimento.
      */
-    private function allowPeriods(Day $specificDay, WeekDay $weekDay): void
+    private function allowPeriods(Date $specificDay, WeekDay $weekDay): void
     {
         $this->resolveDefaultPeriods($weekDay);
 
@@ -82,7 +82,7 @@ class Calculation
 
             $open = $specificDay->day();
             $open->setTime((int)$periodStart[0], (int)$periodStart[1]);
-            
+
             $close = $specificDay->day();
             $close->setTime((int)$periodEnd[0], (int)$periodEnd[1]);
 
@@ -107,7 +107,7 @@ class Calculation
 
         $day->withPeriods($this->params->getDefaultPeriods(), true);
     }
-    
+
     public function populateRange(): Minutes
     {
         $this->allowSpecificDays();
@@ -136,7 +136,7 @@ class Calculation
             $this->minutes->markCumulative($start, $end, Minutes::FILLED);
             return;
         }
-        
+
         $this->minutes->mark($start, $end, Minutes::FILLED);
     }
 }

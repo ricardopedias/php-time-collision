@@ -8,7 +8,7 @@ use DateTime;
 use SplFixedArray;
 use Time\Collision;
 use Time\WeekDay;
-use Time\Exceptions\InvalidDayException;
+use Time\Exceptions\InvalidWeekDayException;
 
 class CollisionAllowDaysTest extends TestCase
 {
@@ -79,7 +79,7 @@ class CollisionAllowDaysTest extends TestCase
     /** @test */
     public function allowDayException()
     {
-        $this->expectException(InvalidDayException::class);
+        $this->expectException(InvalidWeekDayException::class);
         $this->expectExceptionMessage('The day must be 0 to 7, or use Week::???');
         
         $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');

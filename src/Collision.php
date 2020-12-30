@@ -116,9 +116,9 @@ class Collision
     /**
      * Marca um dia específico como utilizável.
      * @param string $date Um dia específico. Ex: 2020-10-01
-     * @return \Time\Day
+     * @return \Time\Date
      */
-    public function allowDate(string $date): Day
+    public function allowDate(string $date): Date
     {
         $this->forceRecalculation();
         return $this->params->setDate($date);
@@ -200,7 +200,6 @@ class Collision
     {
         return $this->minutes()->chunks()->fillables($start, $end);
     }
-    
 
     /**
      * Reinicia o objeto que calcula os minutos.

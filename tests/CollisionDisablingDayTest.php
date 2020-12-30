@@ -6,9 +6,9 @@ namespace Tests;
 
 use DateTime;
 use Time\Collision;
-use Time\Exceptions\InvalidDateException;
 use Time\WeekDay;
-use Time\Exceptions\InvalidDayException;
+use Time\Exceptions\InvalidDateException;
+use Time\Exceptions\InvalidWeekDayException;
 
 class CollisionDisablingDayTest extends TestCase
 {
@@ -64,7 +64,7 @@ class CollisionDisablingDayTest extends TestCase
     /** @test */
     public function disableDayException()
     {
-        $this->expectException(InvalidDayException::class);
+        $this->expectException(InvalidWeekDayException::class);
         $this->expectExceptionMessage('The day must be 0 to 7, or use Week::???');
         
         $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');

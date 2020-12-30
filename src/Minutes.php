@@ -30,7 +30,7 @@ class Minutes
     {
         $this->start = $start;
         $this->end   = $end;
-        
+
         $vector = array_fill(0, $this->beetwen($start, $end), self::UNUSED);
         $this->rangeVector = SplFixedArray::fromArray($vector);
     }
@@ -47,7 +47,7 @@ class Minutes
 
     /**
      * Devolve o range total de minutos, começando com zero.
-     * @return SplFixedArray<int, int>
+     * @return SplFixedArray<int>
      */
     public function range(int $status = self::ALL): SplFixedArray
     {
@@ -66,7 +66,7 @@ class Minutes
 
     /**
      * Devolve os minutos bloqueados para uso.
-     * @return SplFixedArray<int>
+     * @return SplFixedArray<DateTime>
      */
     public function unused(): SplFixedArray
     {
@@ -75,7 +75,7 @@ class Minutes
 
     /**
      * Devolve os minutos que podem ser usados.
-     * @return SplFixedArray<int>
+     * @return SplFixedArray<\DateTime>
      */
     public function allowed(): SplFixedArray
     {
@@ -84,7 +84,7 @@ class Minutes
 
     /**
      * Devolve os minutos usados dentro do horário comercial.
-     * @return SplFixedArray<int>
+     * @return SplFixedArray<\DateTime>
      */
     public function filled(): SplFixedArray
     {
@@ -152,9 +152,8 @@ class Minutes
         $settedCount = 0;
         $settedLimit = $this->beetwen($start, $end);
         $startIn     = $this->beetwen($this->start, $start);
-        
+
         foreach ($this->rangeVector as $index => $currentBit) {
-            
             $minute = $index + 1;
             // Minutos anteriores serão ignorados
             if ($minute < $startIn) {

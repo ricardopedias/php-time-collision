@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace Time;
 
 use DateTime;
+use Time\Exceptions\InvalidDateException;
 
 class Params
 {
     /** @var array<int, \Time\WeekDay> */
     protected array $weekDays = [];
 
-    /** @var array<int, \Time\Day> */
+    /** @var array<string, \Time\Date> */
     protected array $dates = [];
 
-    /** @var array<int, \Time\Day> */
+    /** @var array<string, \Time\Date> */
     protected array $disabledDates = [];
 
     /** @var array<int, array> */
@@ -92,11 +93,16 @@ class Params
     /**
      * Marca um dia específico como utilizável.
      * @param string $date Um dia específico. Ex: 2020-10-01
-     * @return \Time\Day
+     * @return \Time\Date
      */
-    public function setDate(string $date): Day
+    public function setDate(string $date): Date
     {
-        $dayObject = new Day($date);
+        try {
+            $dayObject = new Date($date);
+        } catch (InvalidDateException $e) {
+            throw new InvalidDateException($e->getMessage());
+        }
+
         $index = $dayObject->dayString();
         $this->dates[$index] = $dayObject;
         return $this->dates[$index];
@@ -109,7 +115,7 @@ class Params
      */
     public function unsetDate(string $date): self
     {
-        $dayObject = new Day($date);
+        $dayObject = new Date($date);
         $index = $dayObject->dayString();
         if (isset($this->dates[$index])) {
             unset($this->dates[$index]);
@@ -154,7 +160,7 @@ class Params
             $this->cumulativeFills[] = [$start, $end];
             return;
         }
-        
+
         $this->fills[] = [$start, $end];
     }
 
@@ -164,13 +170,13 @@ class Params
         return $this->weekDays;
     }
 
-    /** @return array<int, \Time\Day> */
+    /** @return array<string, \Time\Date> */
     public function getDates(): array
     {
         return $this->dates;
     }
 
-    /** @return array<int, \Time\Day> */
+    /** @return array<string, \Time\Date> */
     public function getDisabledDates(): array
     {
         return $this->disabledDates;

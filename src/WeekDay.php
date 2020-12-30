@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Time;
 
-use Closure;
 use DateTime;
 use Exception;
-use Time\Exceptions\InvalidDayException;
 use Time\Exceptions\InvalidTimeException;
+use Time\Exceptions\InvalidWeekDayException;
 
 class WeekDay
 {
@@ -32,7 +31,7 @@ class WeekDay
 
     /** @const Sábado */
     public const SATURDAY  = 6;
-    
+
     public const ALL_DAYS  = 7;
 
     private int $day = self::MONDAY;
@@ -43,9 +42,9 @@ class WeekDay
     public function __construct(int $day)
     {
         if ($day < 0 || $day > 7) {
-            throw new InvalidDayException("The day must be 0 to 7, or use Week::???");
+            throw new InvalidWeekDayException("The day must be 0 to 7, or use Week::???");
         }
-        
+
         $this->day = $day;
     }
 
@@ -61,7 +60,7 @@ class WeekDay
         if ($start > $end) {
             throw new InvalidTimeException('The end time must be greater than the start time of the period');
         }
-        
+
         $this->periods[] = [$startTime, $endTime, $default];
         return $this;
     }
@@ -78,7 +77,7 @@ class WeekDay
         foreach ($periods as $item) {
             $this->withPeriod($item[0], $item[1], $default);
         }
-        
+
         return $this;
     }
 
@@ -89,7 +88,7 @@ class WeekDay
                 unset($this->periods[$index]);
             }
         }
-        
+
         return $this;
     }
 

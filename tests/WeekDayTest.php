@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Time\Collision;
 use Time\WeekDay;
-use Time\Exceptions\InvalidDayException;
 use Time\Exceptions\InvalidTimeException;
+use Time\Exceptions\InvalidWeekDayException;
 
 class WeekDayTest extends TestCase
 {
@@ -34,7 +33,7 @@ class WeekDayTest extends TestCase
     /** @test */
     public function constructorException()
     {
-        $this->expectException(InvalidDayException::class);
+        $this->expectException(InvalidWeekDayException::class);
         $this->expectExceptionMessage('The day must be 0 to 7, or use Week::???');
         
         new WeekDay(8);
