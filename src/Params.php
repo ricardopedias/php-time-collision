@@ -30,7 +30,7 @@ class Params
     public function __construct()
     {
         // por padrão, todos os dias da semana são utilizáveis
-        $this->setAllDays();
+        $this->setAllWeekDays();
     }
 
     /**
@@ -40,7 +40,7 @@ class Params
      * @param int $day Um dia da semana. Ex: Week::MONDAY
      * @return \Time\WeekDay
      */
-    public function setDay(int $day = WeekDay::MONDAY): WeekDay
+    public function setWeekDay(int $day = WeekDay::MONDAY): WeekDay
     {
         $dayObject = new WeekDay($day);
         $this->weekDays[$day] = $dayObject;
@@ -51,10 +51,10 @@ class Params
      * Ativa todos os dias de semana.
      * @return self
      */
-    public function setAllDays(): self
+    public function setAllWeekDays(): self
     {
         foreach ([0, 1, 2, 3, 4, 5, 6] as $day) {
-            $this->setDay($day);
+            $this->setWeekDay($day);
         }
         return $this;
     }
@@ -66,7 +66,7 @@ class Params
      * @param int $day Um dia da semana. Ex: Week::MONDAY
      * @return self
      */
-    public function unsetDay(int $day = WeekDay::MONDAY): self
+    public function unsetWeekDay(int $day = WeekDay::MONDAY): self
     {
         // Apenas para validar o dia
         new WeekDay($day);
@@ -82,10 +82,10 @@ class Params
      * Desativa todos os dias de semana.
      * @return self
      */
-    public function unsetAllDays(): self
+    public function unsetAllWeekDays(): self
     {
         foreach ([0, 1, 2, 3, 4, 5, 6] as $day) {
-            $this->unsetDay($day);
+            $this->unsetWeekDay($day);
         }
         return $this;
     }
