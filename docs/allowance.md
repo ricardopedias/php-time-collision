@@ -41,8 +41,8 @@ $object->allowDefaultPeriod('08:00', '12:00');
 $object->allowDefaultPeriod('13:00', '18:00');
 
 // Restringe os períodos apenas para os dias úteis
-$object->disableDay(WeekDay::SATURDAY);
-$object->disableDay(WeekDay::SUNDAY);
+$object->disableDayOfWeek(WeekDay::SATURDAY);
+$object->disableDayOfWeek(WeekDay::SUNDAY);
 ```
 
 No exemplo anterior, os dois períodos estarão disponíveis apenas para os dias úteis, determinando o Sábado e o Domingo como "não utilizáveis".
@@ -54,12 +54,12 @@ Isso pode ser feito da seguinte forma:
 ...
 
 // Libera o Sábado para uso
-$object->allowDay(WeekDay::SATURDAY);
+$object->disableDayOfWeek(WeekDay::SATURDAY);
 
 // ou 
 
 // Libera a semana toda, ou seja, reativa o Sábado e o Domingo
-$object->allowAllDays();
+$object->allowAllWeekDays();
 ```
 
 Se por algum motivo for necessário, é possível também desativar todos os dias da semana de uma vez:
@@ -68,7 +68,7 @@ Se por algum motivo for necessário, é possível também desativar todos os dia
 ...
 
 // Desativa a semana inteira
-$object->disableAllDays();
+$object->disableAllWeekDays();
 ```
 
 ## 2.3. Definindo dias explicitamente
@@ -91,8 +91,8 @@ $object->allowDefaultPeriod('08:00', '12:00');
 $object->allowDefaultPeriod('13:00', '18:00');
 
 // Restringe os períodos apenas para os dias úteis
-$object->disableDay(WeekDay::SATURDAY);
-$object->disableDay(WeekDay::SUNDAY);
+$object->disableDayOfWeek(WeekDay::SATURDAY);
+$object->disableDayOfWeek(WeekDay::SUNDAY);
 
 // Libera o dia 11, Sábado
 $object->allowDate('2020-07-11');
@@ -104,14 +104,14 @@ No segundo caso (feriado), é preciso bloquear um dia específico:
 ...
 
 // Restringe os períodos apenas para os dias úteis
-$object->disableDay(WeekDay::SATURDAY);
-$object->disableDay(WeekDay::SUNDAY);
+$object->disableDayOfWeek(WeekDay::SATURDAY);
+$object->disableDayOfWeek(WeekDay::SUNDAY);
 
 // Bloqueia o dia 09, Quinta-feira
 $object->disableDate('2020-07-09');
 ```
 
-## 2.3. Disponibilizando horários para dias específicos
+## 2.3. Disponibilizando horários para os dias desejados
 
 Existem casos onde é necessário definir um período de trabalho diferente para um dia específico. Seja por ser um Sábado ou um feriado facultativo como Quarta-feira de cinzas que algumas empresas costumam liberar meio 
 período de folga.
@@ -128,15 +128,15 @@ $object->allowDefaultPeriod('08:00', '12:00');
 $object->allowDefaultPeriod('13:00', '18:00');
 
 // Libera 5 dias da semana
-$object->disableDay(WeekDay::SATURDAY);
-$object->disableDay(WeekDay::SUNDAY);
+$object->disableDayOfWeek(WeekDay::SATURDAY);
+$object->disableDayOfWeek(WeekDay::SUNDAY);
 
 // Libera apenas meio período na Quarta-feira
-$object->allowDay(WeekDay::WEDNESDAY)
+$object->allowDayOfWeek(WeekDay::WEDNESDAY)
     ->withPeriod('08:00', '12:00');
 
 // Libera um período diferente para o Sábado
-$object->allowDay(WeekDay::SATURDAY)
+$object->allowDayOfWeek(WeekDay::SATURDAY)
     ->withPeriod('08:00', '11:00')
     ->withPeriod('12:00', '15:00');
 ```
@@ -153,8 +153,8 @@ $object->allowDefaultPeriod('08:00', '12:00');
 $object->allowDefaultPeriod('13:00', '18:00');
 
 // Libera 5 dias da semana
-$object->disableDay(WeekDay::SATURDAY);
-$object->disableDay(WeekDay::SUNDAY);
+$object->allowDayOfWeek(WeekDay::SATURDAY);
+$object->allowDayOfWeek(WeekDay::SUNDAY);
 
 // Libera apenas meio período na Quarta-feira
 $object->allowDate('2020-07-08')
