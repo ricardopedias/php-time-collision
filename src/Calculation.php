@@ -99,7 +99,7 @@ class Calculation
      */
     private function resolveDefaultPeriods(WeekDay $day): void
     {
-        $day->removeDefaults();
+        $day->removeDefaultPeriods();
 
         if ($day->periods() !== []) {
             return;
