@@ -8,20 +8,20 @@ use Time\Collision;
 use DateTime;
 use Time\Exceptions\InvalidDateTimeException;
 
-class CollisionFillablesBetweenTest extends TestCase
+class CollisionfittingsBetweenTest extends TestCase
 {
     /** @test */
-    public function fillablesBetween()
+    public function fittingsBetween()
     {
         $object = new Collision('2020-11-01 12:00:00', '2020-11-01 13:00:00');
         $object->allowDefaultPeriod('12:20', '12:30')
                ->allowDefaultPeriod('12:35', '12:40');
 
         $this->assertEquals([
-                19 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ],
-                34 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00') ]
+                0 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ],
+                1 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00') ]
             ], 
-            $object->fillablesBetween('2020-11-01 12:00:00', '2020-11-01 13:00:00')
+            $object->fittingsBetween('2020-11-01 12:00:00', '2020-11-01 13:00:00')
         );
     }
 
@@ -35,7 +35,7 @@ class CollisionFillablesBetweenTest extends TestCase
         $object->allowDefaultPeriod('12:20', '12:30')
                ->allowDefaultPeriod('12:35', '12:40');
 
-        $object->fillablesBetween('2020-11-01 11:00:00', '2020-11-01 12:00:00');
+        $object->fittingsBetween('2020-11-01 11:00:00', '2020-11-01 12:00:00');
     }
 
     /** @test */
@@ -48,6 +48,6 @@ class CollisionFillablesBetweenTest extends TestCase
         $object->allowDefaultPeriod('12:20', '12:30')
                ->allowDefaultPeriod('12:35', '12:40');
 
-        $object->fillablesBetween('2020-11-01 14:00:00', '2020-11-01 15:00:00');
+        $object->fittingsBetween('2020-11-01 14:00:00', '2020-11-01 15:00:00');
     }
 }

@@ -7,7 +7,6 @@ namespace Time;
 use DateTime;
 use Exception;
 use SplFixedArray;
-use Time\Exceptions\InvalidDateException;
 use Time\Exceptions\InvalidDateTimeException;
 
 /**
@@ -62,43 +61,142 @@ class Chunks
 
     /**
      * Obtém as lacunas disponiveis para a quantidade de minutos especificada.
-     * @return array<int, array>
+     * @return array<int, array<\DateTime>>
      */
     public function fittings(int $minutes): array
     {
-        $result = [];
+        $chunks = $this->extractFillablesChunks($this->start, $this->end);
 
-        $chunksList = $this->chunksByType($this->range, Minutes::ALLOWED, $this->start, $this->end);
-        foreach ($chunksList as $minuteIndex => $chunk) {
-            $startDate = clone $chunk[0];
-            $endDate = clone $chunk[1];
-
-            // Verifica se a lacuna cabe os minutos necessários
-            if ($startDate->modify("+ {$minutes} minutes") <= $endDate) {
-                $result[$minuteIndex] = [
-                    $chunk[0],
-                    $chunk[1]
-                ];
+        $chunksDateTime = [];
+        foreach ($chunks as $minuteIndex => $minutesAmount) {
+            if ($minutesAmount >= $minutes) {
+                $chunksDateTime[] = $this->makeDateTimeChunks($minuteIndex, $minutesAmount);
             }
         }
 
-        return $result;
+        return $chunksDateTime;
     }
 
     /**
-     * Obtém os períodos preenchidos entre a data inicial e a final
-     * @return array<int, array>
+     * Obtém os períodos disponiveis entre a data inicial e a final
+     * @return array<int, array<\DateTime>>
      */
     public function fillables(string $start, string $end): array
     {
-        $start = $this->createDateTimeParam($start);
-        $end = $this->createDateTimeParam($end);
+        $start  = $this->createDateTimeParam($start);
+        $end    = $this->createDateTimeParam($end);
+        $chunks = $this->extractFillablesChunks($start, $end);
 
-        return $this->chunksByType($this->range, Minutes::ALLOWED, $start, $end);
+        $chunksDateTime = [];
+        foreach ($chunks as $minuteIndex => $minutesAmount) {
+            $chunksDateTime[] = $this->makeDateTimeChunks($minuteIndex, $minutesAmount);
+        }
+
+        return $chunksDateTime;
+    }
+
+    /** 
+     * @return array<\DateTime> 
+     */
+    private function makeDateTimeChunks(int $minuteIndex, int $minutesAmount): array
+    {
+        $startMinute = $minuteIndex === 0 ? 0 : $minuteIndex + 1;
+        $endMinute   = $minuteIndex + $minutesAmount;
+
+        return [
+            $this->getDateTimeFromMinute($startMinute),
+            $this->getDateTimeFromMinute($endMinute)
+        ];
+    }
+
+    private function isFillable(int $minuteIndex, int $minuteType, DateTime $start, DateTime $end): bool
+    {
+        $currentDate = $this->getDateTimeFromMinute($minuteIndex + 1);
+        if ($currentDate < $start || $currentDate > $end) {
+            return false;
+        }
+
+        if ($minuteType !== Minutes::ALLOWED) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /** @return array<int> */
+    private function grabOnlyFillables(DateTime $start, DateTime $end): array
+    {
+        $fillables = [];
+        foreach ($this->range as $minuteIndex => $minuteType) {
+            if ($this->isFillable($minuteIndex, $minuteType, $start, $end) === true) {
+                $fillables[] = $minuteIndex;
+                continue;
+            }
+        }
+
+        return $fillables;
+    }
+
+    /**
+     * @param array<int> $minutesList 
+     * @return array<int> 
+     */
+    private function grabCheckpointsForChunks(array $minutesList): array
+    {
+        $last = -2;
+        // -2 foi usado para a soma com +1 não ser zero
+        // Porque zero pode coincidir com o indice do primeiro minuto
+        // e a verificação de sequência não funcionaria
+
+        $checkpoints = [];
+        foreach ($minutesList as $minuteIndex) {
+            // o último minuto e o atual são uma sequência?
+            if ($minuteIndex !== $last + 1) {
+                $checkpoints[] = $minuteIndex;
+            }
+            $last = $minuteIndex;
+        }
+
+        return $checkpoints;
+    }
+
+    /**
+     * @param array<int> $minutesList 
+     * @param array<int> $checkpoints
+     * @return array<int> 
+     */
+    private function computeMinutesFromCheckpoints(array $minutesList, array $checkpoints): array
+    {
+        $chunks = [];
+
+        foreach ($minutesList as $minuteIndex) {
+            if (in_array($minuteIndex, $checkpoints) === true) {
+                $chunks[$minuteIndex] = 0;
+            }
+
+            $minuteCheckpoint = array_key_last($chunks);
+            $chunks[$minuteCheckpoint]++;
+        }
+
+        return $chunks;
+    }
+
+    /**
+     * Obtém os períodos disponiveis entre a data inicial e a final
+     * @return array<int>
+     */
+    private function extractFillablesChunks(DateTime $start, DateTime $end): array
+    {
+        $minutesList = $this->grabOnlyFillables($start, $end);
+        $checkpoints = $this->grabCheckpointsForChunks($minutesList);
+        $withMinutes = $this->computeMinutesFromCheckpoints($minutesList, $checkpoints);
+
+        return $withMinutes;
     }
 
     /**
      * Obtém os períodos preenchidos entre a data inicial e a final
+     * @todo Ainda não está implementado
      * @return array<int, array>
      */
     public function filleds(string $start, string $end): array
@@ -106,7 +204,8 @@ class Chunks
         $start = $this->createDateTimeParam($start);
         $end = $this->createDateTimeParam($end);
 
-        return $this->chunksByType($this->range, Minutes::ALLOWED, $start, $end);
+        return [];
+        //return $this->chunksByType($this->range, Minutes::ALLOWED, $start, $end);
     }
 
     private function createDateTimeParam(string $date): DateTime
@@ -122,68 +221,6 @@ class Chunks
         }
 
         return $date;
-    }
-
-    /**
-     * Método recursivo. Cada iteração extrai um pedaço do período
-     * contendo uma sequência de minutos disponíveis
-     * @param SplFixedArray<int> $range
-     * @param int $type
-     * @param DateTime $start
-     * @param DateTime $end
-     * @param int $startIndex
-     * @param array<int, array<int, DateTime>> $result
-     * @return array<int, array<int, DateTime>>
-     */
-    private function chunksByType(
-        SplFixedArray $range,
-        int $type,
-        DateTime &$start,
-        DateTime &$end,
-        int &$startIndex = 0,
-        array &$result = []
-    ): array {
-        $chunk  = [];
-        $forwardIndex = $startIndex;
-        $hasAllowed = false;
-
-        for ($index = $startIndex; $index < $range->getSize(); $index++) {
-            $minute = $index;
-            $bit    = $range[$index];
-
-            $isSecondChunk = $chunk !== [] // existe um ou mais minutos armazenados
-                && isset($chunk[$minute - 1]) === false; // o minuto atual não é uma sequência do anterior
-            if ($isSecondChunk === true) {
-                // Apenas um pedaço deve ser devolvido por vez
-                $forwardIndex = $index;
-                break;
-            }
-
-            $isChunk = $bit === $type // é do tipo especificado
-                && ($minute === 0 || isset($range[$minute]) === true); // é uma sequência;
-
-            if ($isChunk === true) {
-                $chunk[$minute] = $bit;
-                $hasAllowed = true;
-            }
-        }
-
-        if ($hasAllowed === false) {
-            return $result;
-        }
-
-        $startMinute = (int)key($chunk);
-        $endMinute   = (int)array_key_last($chunk);
-        $result[$startMinute] = [
-            // +1 porque os indices dos minutos são a partir de zero
-            $this->getDateTimeFromMinute($startMinute + 1),
-            $this->getDateTimeFromMinute($endMinute + 1)
-        ];
-
-        // Busca por outros pedaços
-        $this->chunksByType($range, $type, $start, $end, $forwardIndex, $result);
-
-        return $result;
     }
 
     /**
