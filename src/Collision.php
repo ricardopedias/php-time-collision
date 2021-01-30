@@ -184,21 +184,22 @@ class Collision
     }
 
     /**
+     * Obtém as lacunas disponíveis entre a data inicial e a final
+     * @return array<int, array>
+     */
+    public function fittingsBetween(string $start, string $end): array
+    {
+        return $this->minutes()->chunks()->fillables($start, $end);
+    }
+
+    /**
      * Obtém os períodos preenchidos entre a data inicial e a final
+     * @todo Ainda não está implementado
      * @return array<int, array>
      */
     public function filledsBetween(string $start, string $end): array
     {
         return $this->minutes()->chunks()->filleds($start, $end);
-    }
-
-    /**
-     * Obtém as lacunas disponíveis entre a data inicial e a final
-     * @return array<int, array>
-     */
-    public function fillablesBetween(string $start, string $end): array
-    {
-        return $this->minutes()->chunks()->fillables($start, $end);
     }
 
     /**

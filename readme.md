@@ -34,17 +34,14 @@ No exemplo acima, a variável *"$fittings"* terá o seguinte conteúdo:
 
 ```
 [
-    900 => [
+    0 => [
         0 => DateTime("2020-01-10 15:00:00"),
         1 => DateTime("2020-01-10 18:00:00")
     ]
 ]
 ```
 
-Ou seja, apenas o período das 15:00 às 18:00 podem alocar 01h30m, sendo:
-
-1. O índice **900** é o número de minutos desde o início do range até atingir o início do período;
-2. O valor, constituído de um array com dois elementos, corresponde ao início e ao fim dos períodos, ou seja, das 15:00 às 18:00.
+Ou seja, apenas o período das 15:00 às 18:00 podem alocar 01h30m. O valor, constituído de um array com dois elementos, corresponde ao início e ao fim dos períodos, ou seja, das 15:00 às 18:00.
 
 Para mais informações, consulte a [Documentação da Biblioteca](docs/index.md) para descobrir outras funcionalidades.
 

@@ -10,172 +10,82 @@ use Time\Minutes;
 
 class ChunksFittingsTest extends TestCase
 {
-    public function rangeProvider()
+    public function dataTests(): array
     {
-        return [
-            // LIBERADOS NO MEIO DO RANGE
-            [
-                // range
-                [
-                    new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
-                    new DateTime('2020-11-01 13:00:00'),
-                ],
-                // allloweds
-                [
-                    [new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')],
-                    [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')],
-                ],
-                // minutes required
-                [
-                    5 => [ // inserir 5 minutos
-                        // results
-                        19 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ],
-                        34 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00') ],
-                    ],
-                    10 => [ // inserir 10 minutos
-                        // results
-                        19 => [ new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00') ]
-                    ],
-                    15 => [ // inserir 15 minutos
-                        // results
-                        // ...
-                    ]
-                ]
-            ],
-            // // 1 PERIODO LIBERADO NO INICIO DO RANGE
-            // [
-            //     // range
-            //     [
-            //         new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
-            //         new DateTime('2020-11-01 13:00:00'),
-            //     ],
-            //     // allloweds
-            //     [
-            //         [new DateTime('2020-11-01 12:00:00'), new DateTime('2020-11-01 12:30:00')],
-            //     ],
-            //     // minutes required
-            //     [
-            //         5 => [
-            //             // results
-            //             1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
-            //         ],
-            //         20 => [
-            //             // results
-            //             1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
-            //         ],
-            //         35 => [
-            //             // results
-            //             // ...
-            //         ]
-            //     ]
-            // ],
-            // // 2 PERIODOS, O PRIMEIRO LIBERADO NO INICIO DO RANGE
-            // [
-            //     // range
-            //     [
-            //         new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
-            //         new DateTime('2020-11-01 13:00:00'),
-            //     ],
-            //     // allloweds
-            //     [
-            //         [new DateTime('2020-11-01 12:00:00'), new DateTime('2020-11-01 12:30:00')],
-            //         [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')],
-            //     ],
-            //     // minutes required
-            //     [
-            //         5 => [
-            //             // results
-            //             1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
-            //             35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00') ],
-            //         ],
-            //         20 => [
-            //             // results
-            //             1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:30:00') ],
-            //         ],
-            //         35 => [
-            //             // results
-            //             // ...
-            //         ]
-            //     ]
-            // ],
-            // // 1 PERIODO LIBERADO NO TÉRMINO DO RANGE
-            // [
-            //     // range
-            //     [
-            //         new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
-            //         new DateTime('2020-11-01 13:00:00'),
-            //     ],
-            //     // allloweds
-            //     [
-            //         [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00')],
-            //     ],
-            //     // minutes required
-            //     [
-            //         5 => [
-            //             // results
-            //             35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ]
-            //         ],
-            //         20 => [
-            //             // results
-            //             35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
-            //         ],
-            //         25 => [
-            //             // results
-            //             35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
-            //         ],
-            //         30 => [
-            //             // results
-            //             // ...
-            //         ],
-            //     ]
-            // ],
-            // // 2 PERIODOS, O SEGUNDO LIBERADO NO TÉRMINO DO RANGE
-            // [
-            //     // range
-            //     [
-            //         new DateTime('2020-11-01 12:00:00'), // <-- 12:00 ZERO
-            //         new DateTime('2020-11-01 13:00:00'),
-            //     ],
-            //     // allloweds
-            //     [
-            //         [new DateTime('2020-11-01 12:00:00'), new DateTime('2020-11-01 12:31:00')],
-            //         [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00')],
-            //     ],
-            //     // minutes required
-            //     [
-            //         30 => [
-            //             // results
-            //             1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:31:00') ]
-            //         ],
-            //         20 => [
-            //             // results
-            //             1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:31:00') ],
-            //             35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
-            //         ],
-            //         25 => [
-            //             // results
-            //             1 => [ new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:31:00') ],
-            //             35 => [ new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 13:00:00') ],
-            //         ],
-            //     ]
-            // ],
+        // Range das 12:00 às 13:00
+        // Liberado das 12:10 às 12:30 = 20 minutos
+        //        e das 12:35 às 12:45 = 10 minutos
+
+        $result = []; 
+
+        $result[] = [
+            'from' => 5, // minutos
+            'result' => [
+                0 => [ '2020-11-01 12:10:00', '2020-11-01 12:30:00' ],
+                1 => [ '2020-11-01 12:35:00', '2020-11-01 12:45:00' ],
+            ]
         ];
+
+        $result[] = [
+            'from' => 10, // minutos
+            'result' => [
+                0 => [ '2020-11-01 12:10:00', '2020-11-01 12:30:00' ],
+                1 => [ '2020-11-01 12:35:00', '2020-11-01 12:45:00' ],
+            ]
+        ];
+
+        $result[] = [
+            'from' => 15, // minutos
+            'result' => [
+                0 => [ '2020-11-01 12:10:00', '2020-11-01 12:30:00' ],
+            ]
+        ];
+
+        $result[] = [
+            'from' => 20, // minutos
+            'result' => [
+                0 => [ '2020-11-01 12:10:00', '2020-11-01 12:30:00' ],
+            ]
+        ];
+
+        $result[] = [
+            'from' => 25, // minutos
+            'result' => []
+        ];
+
+        return $result;
     }
 
-    /** @test 
-      * @dataProvider rangeProvider
+    /** 
+     * @test 
+     * @dataProvider dataTests
      */
-    public function fittings($range, $alloweds, $requireds)
+    public function fillables($from, $result)
     {
-        $rangeObject = new Minutes($range[0], $range[1]);
-        foreach ($alloweds as $period) {
-            $rangeObject->mark($period[0], $period[1], Minutes::ALLOWED);
-        }
+        $range_1200_1300 = $this->makeRangeObject();
 
-        $object = new Chunks($rangeObject);
+        $chunksObject = new Chunks($range_1200_1300);
+        
+        // Transforma os itens de $result em DateTimes
+        array_walk($result, function(&$chunk){
+            $chunk[0] = new DateTime($chunk[0]);
+            $chunk[1] = new DateTime($chunk[1]);
+        });
 
-        foreach ($requireds as $minutes => $result) {
-            $this->assertEquals($result, $object->fittings($minutes));
-        }
+        // periodos onde cabem $from minutos
+        $this->assertEquals($result, $chunksObject->fittings($from));
+    }
+
+    private function makeRangeObject(): Minutes
+    {
+        $rangeObject = new Minutes(new DateTime('2020-11-01 12:00:00'), new DateTime('2020-11-01 13:00:00'));
+
+        // cabe 20 minutos
+        $rangeObject->mark(new DateTime('2020-11-01 12:10:00'), new DateTime('2020-11-01 12:30:00'), Minutes::ALLOWED);
+
+        // cabe 10 minutos
+        $rangeObject->mark(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:45:00'), Minutes::ALLOWED);
+
+        return $rangeObject;
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests;
 
 use Time\Collision;
-use DateTime;
 use Time\Exceptions\InvalidDateTimeException;
 
 class CollisionFilledsBetweenTest extends TestCase
