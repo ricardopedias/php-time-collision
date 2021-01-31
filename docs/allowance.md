@@ -1,12 +1,12 @@
 # 2. Disponibilizando dias e horários utilizáveis
 
-Após [criar um range](ranges.md), é preciso dizer para a biblioteca quais os horários (e em quais dias) estarão disponíveis para utilização dentro do range.
+Após [criar um intervalo](ranges.md), é preciso dizer para a biblioteca quais os horários estarão disponíveis para utilização dentro dele.
 
 ## 2.1. Liberando horários
 
-Somente criar um range não é suficiente. Para manipular o tempo é preciso disponibilizar horários, marcando-os como "liberados" para uso.
+Somente criar um intervalo não é suficiente. Para manipular o tempo é preciso disponibilizar horários, marcando-os como "liberados" para uso.
 
-Embora possa ser usado para diversos fins, a liberação de horários segue o mesmo princípio dos horários comerciais de empresas, que são definidos para que os clientes saibam os períodos onde podem ser atendidos.
+Embora  esta funcionalidade possa ser usada para diversos fins, um bom exemplo de utilização da liberação de horários pode ser o horário comercial de uma empresa, onde são definidos os períodos onde os clientes podem ser atendidos.
 
 Por exemplo, para determinar uma agenda semanal de uma empresa é preciso especificar o horário comercial da seguinte forma:
 
@@ -20,7 +20,7 @@ $object->allowDefaultPeriod('08:00', '12:00');
 $object->allowDefaultPeriod('13:00', '18:00');
 ```
 
-O exemplo anterior especifica que, dentro do range, todos os dias terão dois períodos disponíveis para uso: das 8h às 12h e das 13h às 18h.
+O exemplo especifica que, dentro do intervalo, todos os dias terão dois períodos disponíveis para uso: das 8h às 12h e das 13h às 18h.
 Tudo o que não estiver dentro desses períodos será considerado como "horário não utilizável".
 
 ## 2.2. Definindo os dias da semana
@@ -32,14 +32,6 @@ Por padrão todos os dias da semana são liberados como "utilizáveis". Mas exis
 Isso pode ser feito desativando apenas os dias indesejados da seguinte forma:
 
 ```php
-// Cria o range de uma semana completa, 
-// contemplando das 0h às 23h em todos os dias
-$object = new Collision('2020-07-05', '2020-07-11');
-
-// Libera dois períodos para todos os dias da semana
-$object->allowDefaultPeriod('08:00', '12:00');
-$object->allowDefaultPeriod('13:00', '18:00');
-
 // Restringe os períodos apenas para os dias úteis
 $object->disableDayOfWeek(WeekDay::SATURDAY);
 $object->disableDayOfWeek(WeekDay::SUNDAY);
@@ -54,7 +46,7 @@ Isso pode ser feito da seguinte forma:
 ...
 
 // Libera o Sábado para uso
-$object->disableDayOfWeek(WeekDay::SATURDAY);
+$object->allowDayOfWeek(WeekDay::SATURDAY);
 
 // ou 
 
@@ -83,17 +75,6 @@ Na vida real isso pode ser aplicado em duas situações:
 No primeiro caso (expediente excepcional), é preciso liberar um dia específico:
 
 ```php
-// Cria o range contemplando das 0h às 23h em todos os dias
-$object = new Collision('2020-07-05', '2020-07-12');
-
-// Libera dois períodos para todos os dias
-$object->allowDefaultPeriod('08:00', '12:00');
-$object->allowDefaultPeriod('13:00', '18:00');
-
-// Restringe os períodos apenas para os dias úteis
-$object->disableDayOfWeek(WeekDay::SATURDAY);
-$object->disableDayOfWeek(WeekDay::SUNDAY);
-
 // Libera o dia 11, Sábado
 $object->allowDate('2020-07-11');
 ```
@@ -101,12 +82,6 @@ $object->allowDate('2020-07-11');
 No segundo caso (feriado), é preciso bloquear um dia específico:
 
 ```php
-...
-
-// Restringe os períodos apenas para os dias úteis
-$object->disableDayOfWeek(WeekDay::SATURDAY);
-$object->disableDayOfWeek(WeekDay::SUNDAY);
-
 // Bloqueia o dia 09, Quinta-feira
 $object->disableDate('2020-07-09');
 ```
@@ -116,21 +91,9 @@ $object->disableDate('2020-07-09');
 Existem casos onde é necessário definir um período de trabalho diferente para um dia específico. Seja por ser um Sábado ou um feriado facultativo como Quarta-feira de cinzas que algumas empresas costumam liberar meio 
 período de folga.
 
-Isso pode ser feito na invocação de allowDay() ou allowDate():
+Isso pode ser feito na invocação de allowDayOfWeek() ou allowDate():
 
 ```php
-// Cria o range de uma semana completa, 
-// contemplando das 0h às 23h em todos os dias
-$object = new Collision('2020-07-05', '2020-07-11');
-
-// Libera dois períodos para os dias disponíveis
-$object->allowDefaultPeriod('08:00', '12:00');
-$object->allowDefaultPeriod('13:00', '18:00');
-
-// Libera 5 dias da semana
-$object->disableDayOfWeek(WeekDay::SATURDAY);
-$object->disableDayOfWeek(WeekDay::SUNDAY);
-
 // Libera apenas meio período na Quarta-feira
 $object->allowDayOfWeek(WeekDay::WEDNESDAY)
     ->withPeriod('08:00', '12:00');
@@ -144,17 +107,6 @@ $object->allowDayOfWeek(WeekDay::SATURDAY)
 Para definir os horários em um dia específico:
 
 ```php
-// Cria o range de uma semana completa, 
-// contemplando das 0h às 23h em todos os dias
-$object = new Collision('2020-07-05', '2020-07-11');
-
-// Libera dois períodos para os dias disponíveis
-$object->allowDefaultPeriod('08:00', '12:00');
-$object->allowDefaultPeriod('13:00', '18:00');
-
-// Libera 5 dias da semana
-$object->allowDayOfWeek(WeekDay::SATURDAY);
-$object->allowDayOfWeek(WeekDay::SUNDAY);
 
 // Libera apenas meio período na Quarta-feira
 $object->allowDate('2020-07-08')
@@ -163,9 +115,8 @@ $object->allowDate('2020-07-08')
 
 ## Sumário
 
-1.   [Criando ranges para manipulação](ranges.md)
+1.   [Criando intervalos para manipulação](ranges.md)
 2.   [Disponibilizando dias e horários utilizáveis](allowance.md)
 3.   [Encontrando horários disponíveis](search.md)
 4.   [Usando horários disponíveis](fitting.md)
-5.   [Obtendo informações sobre os horários](informations.md)
-6.   [Arquitetura da biblioteca](architecture.md)
+5.   [Arquitetura da biblioteca](architecture.md)

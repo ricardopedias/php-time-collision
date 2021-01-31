@@ -1,20 +1,20 @@
 # 4. Usando horários disponíveis
 
-Como dito no item anterior, uma vez que o [range](ranges.md) foi criado e os [horários de trabalho](allowance.md) foram configurados, pode-se utilizar os espaços vagos no range para alocar horários.
+Como dito no item anterior, uma vez que o [intervalo](ranges.md) foi criado e os [horários de trabalho](allowance.md) foram configurados, pode-se utilizar os espaços vagos do intervalo para alocar horários.
 
 Os espaços marcados como usados tornam-se indisponíveis para os próximos preenchimentos, simulando um agendamento de horários.
 
-Existem duas maneiras de usar horários disponíveis no range, preenchendo horários explicitamente ou de forma acumulativa.
+Existem duas maneiras de usar o horários disponíveis do intervalo, preenchendo-os explicitamente ou de forma acumulativa.
 
 ## 4.1. Preenchendo horários explicitamente
 
 Esta forma de preenchimento exige que se saiba com antecedência [onde os horários disponíveis estão](search.md).
 
-Suponhamos que o método [$object->fittingsFor()](search.md) tenha devolvido as seguintes informações:
+Suponhamos que o método [fittingsFor()](search.md) tenha devolvido as seguintes informações:
 
 ```
 [
-    900 => [
+    0 => [
         0 => DateTime("2020-01-10 15:00:00"),
         1 => DateTime("2020-01-10 18:00:00")
     ]
@@ -39,13 +39,13 @@ A implementação acima irá marcar o horário das 15h as 18h do dia 10/01/2020 
 
 ## 4.2. Estouro de horários preenchidos explicitamente
 
-No item anterior, como foi usado o retorno do método [$object->fittingsFor()](search.md), os horários setados foram definidos exatamente e nenhum minuto se perdeu.
+No item anterior, como foi usado o retorno do método [fittingsFor()](search.md), os horários setados foram definidos exatamente e nenhum minuto se perdeu.
 
 Mas podem existir casos onde se queira alocar um horário maior dentro de uma lacuna menor disponivel no range.
 
 ### Exemplo 1
 
-Imagine que no exemplo anterior se tente alocar das 15h às 18h30m. A implementação ficaria assim:
+Imagine que, no período das 15h às 18h do exemplo anterior, se tente alocar das 15h às 18h30m (30 minutos a mais). A implementação ficaria assim:
 
 ```php
 // Gera um range de 24 horas no dia 10/01/2020
@@ -63,7 +63,7 @@ Por padrão, os tempos definidos são alocados ignorando as colisões com horár
 
 Será considerado o seguinte:
 
-| Categoria                | Tempo            | Estado              |
+| Informação               | Tempo            | Estado              |
 | ------------------------ |----------------- | ------------------- |
 | Tempo especificado       | das 15h às 18h30 | 3h e 30m total      |
 | Lacuna das 15h às 18h    | das 15h às 18h   | 3 horas preenchidas |
@@ -73,7 +73,7 @@ Será considerado o seguinte:
 
 ### Exemplo 2
 
-Ainda no mesmo cenário, imagine que se tente alocar das 13h às 16h. A implementação ficaria assim:
+Ainda no mesmo cenário, imagine que, no período das 13h às 14h se tente alocar das 13h às 16h. A implementação ficaria assim:
 
 ```php
 // Gera um range de 24 horas no dia 10/01/2020
@@ -89,7 +89,7 @@ $fittings = $object->fill('2020-01-10 13:00', '2020-01-10 16:00');
 
 Neste novo exemplo, como o algoritmo ignora as colisões com horários indisponíveis, a implementação acima irá considerar o seguinte:
 
-| Categoria              | Tempo            | Estado              |
+| Informação               | Tempo            | Estado              |
 | ---------------------- |----------------- | ------------------- |
 | Tempo especificado     | das 13h às 16h   | 3 horas total       |
 | Lacuna das 13h as 14h  | das 13h às 14h   | 1 hora preenchida   |
@@ -101,7 +101,7 @@ Neste novo exemplo, como o algoritmo ignora as colisões com horários indispon�
 
 ## 4.3. Preenchendo horários acumulativos
 
-Outra forma de preencher as lacunas disponíveis é usando acumulação de tempo. Nesta modalidade, os minutos que colidirem com espaços indisponíveis não serão ignorados, mas usados para preencher as próximas lacunas até que todos os minutos acabem.
+Outra forma de preencher as lacunas disponíveis é usando acumulação de tempo. Nesta modalidade, os minutos que colidirem com espaços indisponíveis **não serão ignorados**, mas usados para preencher as próximas lacunas até que todos os minutos acabem.
 
 Imagine o mesmo exemplo anterior, onde se tenta alocar das 13h às 16h. A implementação acumulativa ficaria assim:
 
@@ -119,7 +119,7 @@ $fittings = $object->fillCumulative('2020-01-10 13:00', '2020-01-10 16:00');
 
 Neste exemplo, como o algoritmo não ignora as colisões com horários indisponíveis, a implementação acima irá considerar o seguinte:
 
-| Categoria              | Tempo            | Estado              |
+| Informação               | Tempo            | Estado              |
 | ---------------------- |----------------- | ------------------- |
 | Tempo acumulado        | das 13h às 16h   | 3 horas total       |
 | Periodo das 13h as 14h | das 13h às 14h   | 1 hora preenchida   |
@@ -129,9 +129,8 @@ Neste exemplo, como o algoritmo não ignora as colisões com horários indispon�
 
 ## Sumário
 
-1.   [Criando ranges para manipulação](ranges.md)
+1.   [Criando intervalos para manipulação](ranges.md)
 2.   [Disponibilizando dias e horários utilizáveis](allowance.md)
 3.   [Encontrando horários disponíveis](search.md)
 4.   [Usando horários disponíveis](fitting.md)
-5.   [Obtendo informações sobre os horários](informations.md)
-6.   [Arquitetura da biblioteca](architecture.md)
+5.   [Arquitetura da biblioteca](architecture.md)
