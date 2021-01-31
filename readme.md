@@ -47,7 +47,7 @@ Para mais informações, consulte a [Documentação da Biblioteca](docs/index.md
 
 ## Características
 
--   Feito para o PHP 7 ou superior;
+-   Feito para o PHP 7.4 ou superior;
 -   Codificado com boas práticas e máxima qualidade;
 -   Bem documentado e amigável para IDEs;
 -   Feito para TDD (Test Driven Development);

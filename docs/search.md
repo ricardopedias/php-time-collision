@@ -1,12 +1,12 @@
 # 3. Encontrando horários disponíveis
 
-Com o [range](ranges.md) criado e os [horários de trabalho](allowance.md) configurados, pode-se utilizar os espaços vagos no range para alocar horários.
+Com o [intervalo](ranges.md) criado e os [horários de trabalho](allowance.md) devidamente configurados, pode-se utilizar os espaços vagos no intervalo para alocar horários.
 
-Mas antes de utilizar espaços de tempo disponíveis no range, pode ser necessário saber onde eles estão e se os minutos necessários cabem neles.
+Mas antes de utilizar espaços de tempo disponíveis no intervalo, pode ser necessário saber onde eles estão e se os minutos necessários cabem neles.
 
-## 3.1. Encontrando períodos
+## 3.1. Encontrando períodos por minutos
 
-Suponha que seja necessário encontrar um horário vago de 30 minutos dentro do range. Isso pode ser feito da seguinte forma:
+Suponha que seja necessário encontrar um horário vago de 30 minutos dentro do intervalo. Isso pode ser feito com o método fittingsFor():
 
 ```php
 // Gera um range de 24 horas no dia 10/01/2020
@@ -16,12 +16,12 @@ $object = new Collision('2020-01-10');
 $object->allowDefaultPeriod('13:00', '14:00'); // 60 minutos
 $object->allowDefaultPeriod('15:00', '18:00'); // 180 minutos
 
-// Obtém os períodos onde 01h30m pode se encaixar
+// Obtém os períodos onde 01h30m (90 minutos) pode se encaixar
 $fittings = $object->fittingsFor(90);
 ```
 
 O resultado será um array contendo todos os períodos disponíveis onde
-1h30m podem ser alocados. O resultado do exemplo acima devolverá, na variável *"$fittings"*, o seguinte conteúdo:
+1h30m, ou seja, 90 minutos podem ser alocados. A variável *$fittings*, do exemplo acima, devolverá o seguinte conteúdo:
 
 ```
 [
@@ -32,16 +32,18 @@ O resultado será um array contendo todos os períodos disponíveis onde
 ]
 ```
 
-Ou seja, apenas o período das 15:00 às 18:00 podem alocar 01h30m. O valor, constituído de um array com dois elementos, corresponde ao início e ao fim dos períodos, ou seja, das 15:00 às 18:00.
+Ou seja, apenas o período das 15:00 às 18:00 pode alocar 01h30m. O valor, constituído de um array com dois elementos, corresponde ao início e ao fim do período.
 
-Outra maneira de encontrar horários disponíveis. 
+## 3.2. Encontrando períodos por extenção
+
+Também é possível buscar os periodos disponíveis em uma extenção específica de tempo dentro do intervalo. Isso é feito passando um horário de inicio e fim para o método fittingsBetween(). 
 
 ```php
 // Obtém os períodos não preenchidos entre a data inicial e a data final
 $fittings = $object->fittingsBetween('2020-10-01 12:00', '2020-10-01 16:00');
 ```
 
-Ambos métodos devolverão uma lista contendo as lacunas possíveis de preenchimento:
+A variável *$fittings*, do exemplo acima, devolverá o seguinte conteúdo:
 
 ```
 [
@@ -59,9 +61,8 @@ Ambos métodos devolverão uma lista contendo as lacunas possíveis de preenchim
 
 ## Sumário
 
-1.   [Criando ranges para manipulação](ranges.md)
+1.   [Criando intervalos para manipulação](ranges.md)
 2.   [Disponibilizando dias e horários utilizáveis](allowance.md)
 3.   [Encontrando horários disponíveis](search.md)
 4.   [Usando horários disponíveis](fitting.md)
-5.   [Obtendo informações sobre os horários](informations.md)
-6.   [Arquitetura da biblioteca](architecture.md)
+5.   [Arquitetura da biblioteca](architecture.md)
