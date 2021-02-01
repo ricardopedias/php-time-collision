@@ -6,9 +6,9 @@ namespace Time;
 
 use DateTime;
 
-class Calculation
+class RangeMaker
 {
-    protected Params $params;
+    protected Parameters $params;
 
     protected Minutes $minutes;
 
@@ -16,7 +16,7 @@ class Calculation
 
     protected DateTime $rangeEnd;
 
-    public function __construct(Params $params, DateTime $start, DateTime $end)
+    public function __construct(Parameters $params, DateTime $start, DateTime $end)
     {
         $this->rangeStart = $start;
         $this->rangeEnd   = $end;
@@ -24,6 +24,26 @@ class Calculation
         $this->minutes    = new Minutes($this->rangeStart, $this->rangeEnd);
     }
 
+    public function makeMinutesRange(): Minutes
+    {
+        $this->populateRange();
+        return $this->minutes;
+    }
+
+    private function populateRange(): void
+    {
+        $this->allowSpecificDays();
+        $this->allowDayOfWeeks();
+
+        foreach ($this->params->getFills() as $times) {
+            $this->markFilled($times[0], $times[1]);
+        }
+
+        foreach ($this->params->getCumulativeFills() as $times) {
+            $this->markFilled($times[0], $times[1], true);
+        }
+    }
+    
     private function allowSpecificDays(): void
     {
         $specificDays = $this->params->getDates();
@@ -106,22 +126,6 @@ class Calculation
         }
 
         $day->withPeriods($this->params->getDefaultPeriods(), true);
-    }
-
-    public function populateRange(): Minutes
-    {
-        $this->allowSpecificDays();
-        $this->allowDayOfWeeks();
-
-        foreach ($this->params->getFills() as $times) {
-            $this->markFilled($times[0], $times[1]);
-        }
-
-        foreach ($this->params->getCumulativeFills() as $times) {
-            $this->markFilled($times[0], $times[1], true);
-        }
-
-        return $this->minutes;
     }
 
     /**

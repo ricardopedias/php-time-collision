@@ -9,15 +9,15 @@ use Time\Exceptions\InvalidDateException;
 use Time\Exceptions\InvalidDateTimeException;
 use Time\Exceptions\InvalidTimeException;
 use Time\Exceptions\InvalidWeekDayException;
-use Time\Params;
+use Time\Parameters;
 use Time\WeekDay;
 
-class ParamsTest extends TestCase
+class ParametersTest extends TestCase
 {
     /** @test */
     public function defaults()
     {
-        $bag = new Params();
+        $bag = new Parameters();
 
         $this->assertCount(7, $bag->getWeekDays());
         $this->assertEquals([0,1,2,3,4,5,6], array_keys($bag->getWeekDays()));
@@ -29,7 +29,7 @@ class ParamsTest extends TestCase
     /** @test */
     public function setWeekDay()
     {
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->setWeekDay(WeekDay::MONDAY);
 
         $this->assertCount(7, $bag->getWeekDays());
@@ -44,14 +44,14 @@ class ParamsTest extends TestCase
     {
         $this->expectException(InvalidWeekDayException::class);
 
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->setWeekDay(99);
     }
 
     /** @test */
     public function unsetWeekDay()
     {
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->unsetWeekDay(WeekDay::MONDAY);
 
         $this->assertCount(6, $bag->getWeekDays());
@@ -66,14 +66,14 @@ class ParamsTest extends TestCase
     {
         $this->expectException(InvalidWeekDayException::class);
 
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->unsetWeekDay(99);
     }
 
     /** @test */
     public function unsetAllWeekDays()
     {
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->unsetAllWeekDays();
 
         $this->assertCount(0, $bag->getWeekDays());
@@ -82,7 +82,7 @@ class ParamsTest extends TestCase
     /** @test */
     public function setAllWeekDays()
     {
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->unsetAllWeekDays();
         $this->assertCount(0, $bag->getWeekDays());
 
@@ -98,7 +98,7 @@ class ParamsTest extends TestCase
     /** @test */
     public function setDate()
     {
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->setDate('2020-10-01');
         $bag->setDate('2020-10-02');
 
@@ -112,14 +112,14 @@ class ParamsTest extends TestCase
     {
         $this->expectException(InvalidDateException::class);
 
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->setDate('0000000');
     }
 
     /** @test */
     public function unsetDate()
     {
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->setDate('2020-10-01');
         $bag->setDate('2020-10-02');
         $this->assertCount(2, $bag->getDates());
@@ -141,14 +141,14 @@ class ParamsTest extends TestCase
     {
         $this->expectException(InvalidDateException::class);
 
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->unsetDate('0000000');
     }
 
     /** @test */
     public function setDefaultPeriod()
     {
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->setDefaultPeriod('14:30', '18:45');
         $bag->setDefaultPeriod('19:00', '20:10');
 
@@ -162,7 +162,7 @@ class ParamsTest extends TestCase
     {
         $this->expectException(InvalidTimeException::class);
 
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->setDefaultPeriod('00:00', '00,00');
     }
 
@@ -172,14 +172,14 @@ class ParamsTest extends TestCase
         $this->expectException(InvalidTimeException::class);
         $this->expectExceptionMessage('The end time must be greater than the start time of the period');
         
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->setDefaultPeriod('09:00', '08:00');
     }
 
     /** @test */
     public function setFilled()
     {
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->setFilled('2020-11-15 10:00', '2020-11-16 11:00');
         $bag->setFilled('2020-11-15 19:00', '2020-11-16 20:00');
 
@@ -192,7 +192,7 @@ class ParamsTest extends TestCase
     /** @test */
     public function setCumulativeFilled()
     {
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->setFilled('2020-11-15 10:00', '2020-11-16 11:00', true);
         $bag->setFilled('2020-11-15 19:00', '2020-11-16 20:00', true);
 
@@ -205,7 +205,7 @@ class ParamsTest extends TestCase
     /** @test */
     public function setBothFilleds()
     {
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->setFilled('2020-11-15 10:00', '2020-11-16 11:00', false);
         $bag->setFilled('2020-11-15 19:00', '2020-11-16 20:00', true);
 
@@ -220,7 +220,7 @@ class ParamsTest extends TestCase
     {
         $this->expectException(InvalidDateTimeException::class);
 
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->setFilled('000000 10,00', '2020-11-16 11:00');
     }
 
@@ -229,7 +229,7 @@ class ParamsTest extends TestCase
     {
         $this->expectException(InvalidDateTimeException::class);
 
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->setFilled('2020-11-15 10:00', '000000 11,00');
     }
 
@@ -239,7 +239,7 @@ class ParamsTest extends TestCase
         $this->expectException(InvalidDateTimeException::class);
         $this->expectExceptionMessage('The end datetime must be greater than the start datetime of the period');
 
-        $bag = new Params();
+        $bag = new Parameters();
         $bag->setFilled('2020-11-15 10:00', '2020-11-14 11:00');
     }
 }

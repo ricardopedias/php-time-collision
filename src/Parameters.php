@@ -9,7 +9,7 @@ use Exception;
 use Time\Exceptions\InvalidDateException;
 use Time\Exceptions\InvalidDateTimeException;
 
-class Params
+class Parameters
 {
     /** @var array<int, \Time\WeekDay> */
     protected array $weekDays = [];

@@ -49,6 +49,50 @@ class Minutes
      * Devolve o range total de minutos, começando com zero.
      * @return SplFixedArray<int>
      */
+    public function all(): SplFixedArray
+    {
+        $list = $this->range(Minutes::ALL);
+        $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
+        return SplFixedArray::fromArray($list);
+    }
+
+    /**
+     * Devolve os minutos bloqueados para uso.
+     * @return SplFixedArray<DateTime>
+     */
+    public function unused(): SplFixedArray
+    {
+        $list = $this->range(Minutes::UNUSED);
+        $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
+        return SplFixedArray::fromArray($list);
+    }
+
+    /**
+     * Devolve os minutos que podem ser usados.
+     * @return SplFixedArray<\DateTime>
+     */
+    public function allowed(): SplFixedArray
+    {
+        $list = $this->range(Minutes::ALLOWED);
+        $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
+        return SplFixedArray::fromArray($list);
+    }
+
+    /**
+     * Devolve os minutos usados dentro do horário comercial.
+     * @return SplFixedArray<\DateTime>
+     */
+    public function filled(): SplFixedArray
+    {
+        $list = $this->range(Minutes::FILLED);
+        $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
+        return SplFixedArray::fromArray($list);
+    }
+
+    /**
+     * Devolve o range de minutos, começando com zero.
+     * @return SplFixedArray<int>
+     */
     public function range(int $status = self::ALL): SplFixedArray
     {
         if ($status === self::ALL) {
@@ -62,33 +106,6 @@ class Minutes
             }
         }
         return SplFixedArray::fromArray($onlyStatus);
-    }
-
-    /**
-     * Devolve os minutos bloqueados para uso.
-     * @return SplFixedArray<DateTime>
-     */
-    public function unused(): SplFixedArray
-    {
-        return (new Chunks($this))->unused();
-    }
-
-    /**
-     * Devolve os minutos que podem ser usados.
-     * @return SplFixedArray<\DateTime>
-     */
-    public function allowed(): SplFixedArray
-    {
-        return (new Chunks($this))->allowed();
-    }
-
-    /**
-     * Devolve os minutos usados dentro do horário comercial.
-     * @return SplFixedArray<\DateTime>
-     */
-    public function filled(): SplFixedArray
-    {
-        return (new Chunks($this))->filled();
     }
 
     /**
@@ -192,5 +209,12 @@ class Minutes
         $minutes += $amount->i;
 
         return $minutes;
+    }
+
+    public function getDateTimeFromMinute(int $minute): DateTime
+    {
+        $moment = clone $this->start;
+        $moment->modify("+ {$minute} minutes");
+        return $moment;
     }
 }
