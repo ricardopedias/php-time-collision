@@ -9,6 +9,79 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ## \[Unreleased]
 
+### Changed
+
+-    Atualização do changelog
+
+## \[0.10.0] - 2020-02-01
+
+### Added
+
+-    Criação da documentação de arquitetura
+-    Criação da documentação da API
+
+### Changed
+
+-    Refatoração para nomenclatura mais inteligível
+-    Otimização do algoritmo de extração de lacunas de tempo
+
+## \[0.9.0] - 2020-12-30
+
+### Added
+
+-    Adicionados testes para diversas situações
+-    Adicionadas novas informações na documentação
+
+### Changed
+
+-    Transferida a responsabilidade sobre informações para a classe Chunks
+-    Refatoração da classe Chunks para reaproveitar o algoritmo de extração
+-    Renomeação em vários métodos para reduzir a carga mental
+
+### Removed
+
+-    Remoção da análise automática da PSR2 no script do composer
+
+## \[0.8.0] - 2020-12-04
+
+### Added
+
+-    Adicionados testes para diversas situações
+-    Criação do conteiner para armazenar os parâmetros de cálculo
+-    Criação de método exclusivo para preenchimentos acumulativos
+
+## \[0.7.0] - 2020-11-25
+
+### Added
+
+-    Criação do objeto para encapsulamento de dias específicos
+-    Atualização na documentação
+
+### Fixed
+
+-   Correção na devolução nula do objeto de minutos
+
+## \[0.6.0] - 2020-11-11
+
+### Added
+
+-   Aumento na cobertura de testes para a classe Collision
+-   Adicionadas exceções personalizadas
+
+### Changed
+
+-   Refatoração para aumentar a manutenibilidade
+-   Padronização da formatação do código fonte
+
+## \[0.5.0] - 2020-11-10
+
+### Added
+
+-   Adicionadas funcionalidades de períodos à classe principal
+-   Adicionadas exceções personalizadas
+
+## \[0.4.0] - 2020-11-08
+
 ### Added
 
 -   Refatoração do construtor de chunks para usar um objeto Minutes
