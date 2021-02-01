@@ -14,7 +14,7 @@ class Collision
 
     protected DateTime $rangeEnd;
 
-    protected Params $params;
+    protected Parameters $params;
 
     protected ?Minutes $minutesObject = null;
 
@@ -47,7 +47,7 @@ class Collision
 
         $this->rangeStart = $customStart;
         $this->rangeEnd   = $customEnd;
-        $this->params     = new Params();
+        $this->params     = new Parameters();
     }
 
     /**
@@ -163,12 +163,12 @@ class Collision
     public function minutes(): Minutes
     {
         if ($this->minutesObject === null) {
-            $calculation = new Calculation(
+            $calculation = new RangeMaker(
                 $this->params,
                 $this->rangeStart,
                 $this->rangeEnd
             );
-            $this->minutesObject = $calculation->populateRange();
+            $this->minutesObject = $calculation->makeMinutesRange();
         }
 
         return $this->minutesObject;

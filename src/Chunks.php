@@ -35,7 +35,7 @@ class Chunks
     /**
      * Obtém os breakpoints para o inicio de novos dias dentro do range.
      * @return array<int, DateTime>
-     * @see Time\Calculation::allowDayOfWeeks()
+     * @see Time\RangeMaker::allowDayOfWeeks()
      */
     public function days(): array
     {
@@ -104,14 +104,14 @@ class Chunks
         $endMinute   = $minuteIndex + $minutesAmount;
 
         return [
-            $this->getDateTimeFromMinute($startMinute),
-            $this->getDateTimeFromMinute($endMinute)
+            $this->minutes->getDateTimeFromMinute($startMinute),
+            $this->minutes->getDateTimeFromMinute($endMinute)
         ];
     }
 
     private function isFillable(int $minuteIndex, int $minuteType, DateTime $start, DateTime $end): bool
     {
-        $currentDate = $this->getDateTimeFromMinute($minuteIndex + 1);
+        $currentDate = $this->minutes->getDateTimeFromMinute($minuteIndex + 1);
         if ($currentDate < $start || $currentDate > $end) {
             return false;
         }
@@ -221,45 +221,5 @@ class Chunks
         }
 
         return $date;
-    }
-
-    /**
-     * Devolve os minutos bloqueados para uso.
-     * @return SplFixedArray<\DateTime>
-     */
-    public function unused(): SplFixedArray
-    {
-        $list = $this->minutes->range(Minutes::UNUSED);
-        $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
-        return SplFixedArray::fromArray($list);
-    }
-
-    /**
-     * Devolve os minutos que podem ser usados.
-     * @return SplFixedArray<\DateTime>
-     */
-    public function allowed(): SplFixedArray
-    {
-        $list = $this->minutes->range(Minutes::ALLOWED);
-        $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
-        return SplFixedArray::fromArray($list);
-    }
-
-    /**
-     * Devolve os minutos usados dentro do horário comercial.
-     * @return SplFixedArray<\DateTime>
-     */
-    public function filled(): SplFixedArray
-    {
-        $list = $this->minutes->range(Minutes::FILLED);
-        $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
-        return SplFixedArray::fromArray($list);
-    }
-
-    private function getDateTimeFromMinute(int $minute): DateTime
-    {
-        $moment = clone $this->start;
-        $moment->modify("+ {$minute} minutes");
-        return $moment;
     }
 }
