@@ -1,11 +1,8 @@
-# API
+# 7. Direto ao ponto - API
 
-## 1. Criação do range
+## 7.1. Criação do intervalo
 
-Um range de tempo pode conter várias horas, dias, meses ou até anos, dependendo 
-do problema a ser resolvido.
-
-Existem várias maneiras de criar ranges de tempo para manipulação. A seguir as possibilidades:
+Um intervalo de tempo pode conter várias horas, dias, meses ou até anos, dependendo do problema a ser resolvido.
 
 ```php
 // 24 horas no dia 10/01/2020
@@ -27,194 +24,170 @@ $object = new Collision('2020-01-10 11:35');
 $object = new Collision('2020-01-10 11:35', '2020-01-10 12:00');
 ```
 
-## 2. Disponibilizando horários
+## 7.2. Disponibilizando horários
 
-Somente criar um range não é suficiente. Para manipular o tempo é preciso disponibilizar horários, marcando-os como "liberados" para uso.
-
-Por exemplo, para determinar uma agenda semanal de uma empresa é preciso especificar o horário comercial da seguinte forma:
+Para manipular o tempo é preciso disponibilizar períodos, marcando-os como "liberados" para uso. 
+O horário comercial de uma empresa pode ser especificada da seguinte forma:
 
 ```php
-// Cria o range de uma semana completa, 
-// contemplando das 0h às 23h em todos os dias
-$object = new Collision('2020-07-05', '2020-07-11');
-
-// Libera dois períodos para todos os dias
-$object->allowPeriod('08:00', '12:00');
-$object->allowPeriod('13:00', '18:00');
+// Libera dois períodos para todos os dias da semana
+$object->allowDefaultPeriod('08:00', '12:00');
+$object->allowDefaultPeriod('13:00', '18:00');
 ```
 
-A implementação acima especifica que, dentro do range, todos os dias terão
-dois períodos disponíveis para manipulação: das 8h às 12h e das 13h às 18h.
-Tudo o que não estiver liverado será entendido como "horário não utilizável".
-
-## 3. Disponibilizando dias da semana
-
-Além de manipular períodos de tempo, muitas vezes é necessário restringir a manipulação para dias específicos, tornando alguns dias disponíveis e outros indisponíveis para uso.
+## 7.3. Disponibilizando dias da semana
 
 Por padrão, todos os dias da semana são definidos como "utilizáveis", mas isso
 pode ser mudado da seguinte forma:
 
 ```php
-// Cria o range de uma semana completa, 
-// contemplando das 0h às 23h em todos os dias
-$object = new Collision('2020-07-05', '2020-07-11');
-
-// Libera dois períodos para os dias disponíveis
-$object->allowPeriod('08:00', '12:00');
-$object->allowPeriod('13:00', '18:00');
-
-// Libera 5 dias da semana
-$object->allowDay(WeekDay::MONDAY);
-$object->allowDay(WeekDay::TUESDAY);
-$object->allowDay(WeekDay::WEDNESDAY);
-$object->allowDay(WeekDay::THURSDAY);
-$object->allowDay(WeekDay::FRIDAY);
+// Restringe os períodos apenas para os dias úteis
+$object->disableDayOfWeek(WeekDay::SATURDAY);
+$object->disableDayOfWeek(WeekDay::SUNDAY);
 ```
 
-Na implementação acima, os dois períodos estarão disponíveis apenas para os dias úteis, determinando o Sábado e o Domingo como "não utilizáveis".
-
-> TODO: falar de allowDate()
-
-## 4. Disponibilizando horários para dias específicos
-
-Existem casos onde é necessário definir um período de trabalho diferente
-para um dia específico. Seja por ser um Sábado ou um feriado facultativo 
-como Quarta-feira de cinzas que algumas empresas costumam liberar meio 
-período de folga.
-
-Isso pode ser feito da seguinte forma:
+```php
+// Libera o Sábado para uso
+$object->allowDayOfWeek(WeekDay::SATURDAY);
+```
 
 ```php
-// Cria o range de uma semana completa, 
-// contemplando das 0h às 23h em todos os dias
-$object = new Collision('2020-07-05', '2020-07-11');
+// Libera a semana toda, ou seja, reativa o Sábado e o Domingo
+$object->allowAllWeekDays();
+```
 
-// Libera dois períodos para os dias disponíveis
-$object->allowPeriod('08:00', '12:00');
-$object->allowPeriod('13:00', '18:00');
+## 7.4. Disponibilizando dias específicos
 
-// Libera 5 dias da semana
-$object->allowDay(WeekDay::MONDAY);
-$object->allowDay(WeekDay::TUESDAY);
-$object->allowDay(WeekDay::WEDNESDAY);
-$object->allowDay(WeekDay::THURSDAY);
-$object->allowDay(WeekDay::FRIDAY);
+Além dos dias da semana, em muitos casos, será preciso definir dias especiais, que serão ou não liberados.
 
-// Libera apenas meio período na Quarta-feira
-$object->allowDay(WeekDay::WEDNESDAY)
+```php
+// Libera o dia 11, Sábado
+$object->allowDate('2020-07-11');
+```
+
+```php
+// Bloqueia o dia 09, Quinta-feira
+$object->disableDate('2020-07-09');
+```
+
+## 7.5. Disponibilizando horários para os dias desejados
+
+Existem casos onde é necessário definir um período de trabalho diferente 
+do padrão setado com o método allowDefaultPeriod(). 
+
+```php
+// Na Quarta-feira, libera apenas meio período
+$object->allowDayOfWeek(WeekDay::WEDNESDAY)
     ->withPeriod('08:00', '12:00');
+```
 
+```php
 // Libera um período diferente para o Sábado
-$object->allowDay(WeekDay::SATURDAY)
+$object->allowDayOfWeek(WeekDay::SATURDAY)
     ->withPeriod('08:00', '11:00')
     ->withPeriod('12:00', '15:00');
 ```
 
-## 5. Identificando horários disponíveis
+```php
+// Na Quarta-feira, dia 08/07/2020, libera apenas meio período
+$object->allowDate('2020-07-08')
+    ->withPeriod('08:00', '12:00');
+```
 
-Depois de determinar os horários "utilizáveis", pode-se manipulá-los,
-obtendo informações úteis dentro dos períodos.
+
+## 7.6. Encontrando períodos por minutos
+
+Para encontrar um horário vago de 30 minutos dentro do intervalo:
 
 ```php
-// Cria um range de 24 horas no dia 10/01/2020
-$object = new Collision('2020-01-10');
-
-// Libera dois períodos dentro do range
-$object->allowPeriod('10:00', '12:00');
-$object->allowPeriod('13:00', '14:00');
-$object->allowPeriod('15:00', '18:00');
-
-// Obtém os períodos onde 01h30m pode se encaixar
+// Obtém os períodos onde 01h30m (90 minutos) pode se encaixar
 $fittings = $object->fittingsFor(90);
 ```
 
-O resultado será um array contendo todos os períodos disponíveis com
-minutos suficientes para alocar 1h30m.
-
-No exemplo acima, a variável *"$fittings"* terá o seguinte conteúdo:
+O resultado será um array contendo todos os períodos disponíveis:
 
 ```
 [
-    600 => [
-        0 => DateTime("2020-01-10 10:00:00"),
-        1 => DateTime("2020-01-10 12:00:00"),
-    ],
-    900 => [
+    0 => [
         0 => DateTime("2020-01-10 15:00:00"),
         1 => DateTime("2020-01-10 18:00:00")
     ]
 ]
 ```
 
-Dos três períodos "utilizáveis", apenas dois comportam 90 minutos. Estes,
-justamente, são os retornados.
+## 7.7. Encontrando períodos por extenção
 
-No resuldo:
-
-1. O índice (**600** ou **900**) é o número de minutos desde o início do range até atingir o inicio do período;
-2. Os dois valores de cada registro correspondem ao início e o fim dos períodos, ou seja, das 10:00 às 12:00 e das 15:00 às 18:00.
-
-## 6. Marcando horários como "utilizados"
-
-Depois de saber quais os horários disponíveis para o tempo especificado, 
-é preciso marcá-los no range como "utilizados", preenchendo os minutos e 
-impedindo que outros possam usá-los também.
-
-Isso é feito da seguinte forma:
+Também é possível buscar os periodos disponíveis em uma extenção específica de tempo dentro do intervalo: 
 
 ```php
-// Cria um range de 24 horas no dia 10/01/2020
-$object = new Collision('2020-01-10');
-
-// Libera dois períodos dentro do range
-$object->allowPeriod('10:00', '12:00');
-$object->allowPeriod('13:00', '14:00');
-
-// Obtém os períodos onde 01h30m pode se encaixar
-$object->fill('10:00', '11:30');
+// Obtém os períodos não preenchidos entre a data inicial e a data final
+$fittings = $object->fittingsBetween('2020-10-01 12:00', '2020-10-01 16:00');
 ```
 
-> TODO: falar de fill() acumulativo
+A variável *$fittings*, do exemplo acima, devolverá o seguinte conteúdo:
 
-Dessa maneira, o horário das 10h00m às 11h30m não serão usados 
-por outros pedidos.
-
-## 7. Obtendo informações sobre os horários
-
-Informação é a característica de maior valor em qualquer sistema. 
-Por esse motivo, a biblioteca foi desenvolvida para fornecer 
-o maior número de informações sobre o uso do tempo.
-
-Pode-se obter as informações necessários da seguinte maneira:
-
-```php
-// O range completo de minutos
-$object->minutes()->range();
+```
+[
+    0 => [
+        0 => DateTime("2020-01-10 12:00:00"),
+        1 => DateTime("2020-01-10 12:40:00")
+    ],
+    1 => [
+        0 => DateTime("2020-01-10 15:30:00"),
+        1 => DateTime("2020-01-10 16:00:00")
+    ]
+]
 ```
 
-O valor devolvido será um array composto de minutos, onde
-sus valores representam as seguintes constantes:
+## 7.8. Preenchendo horários explicitamente
+
+Pode-se preencher os horários da seguinte forma:
 
 ```php
-// Minutos "não utilizáveis"
-Minutes::UNUSED = -1;
-// Minutos "utilizáveis"
-Minutes::ALLOWED = 0;
-// Minutos "utilizados"
-Minutes::FILLED  = 1;
+// Preenche os períodos com base nos dados de $object->fittingsFor()
+$fittings = $object->fill('2020-01-10 15:00:00', '2020-01-10 18:00:00');
 ```
 
+## 7.9. Preenchendo horários acumulativos
+
+Outra forma de preencher as lacunas disponíveis é usando acumulação de tempo. Nesta modalidade, os minutos que colidirem com espaços indisponíveis **não serão ignorados**, mas usados para preencher as próximas lacunas até que todos os minutos acabem.
+
 ```php
-// Devolve o range de minutos "não utilizáveis"
+// Tenta preencher das 13h às 16h do dia 10/01/2020
+$fittings = $object->fillCumulative('2020-01-10 13:00', '2020-01-10 16:00');
+```
+
+
+## 7.10. Obtendo informações de minutos
+
+Para obter as informações armazenadas em cada minuto do intervalo:
+
+```php
+// Devolve os minutos bloqueados para uso
 $object->minutes()->unused();
 ```
 
 ```php
-// Devolve o range de minutos "utilizáveis"
+// Devolve os minutos que podem ser usados
 $object->minutes()->allowed();
 ```
 
 ```php
-// Devolve o range de minutos "utilizados"
+// Devolve os minutos já usados
 $object->minutes()->filled();
 ```
+
+```php
+// Devolve o range total de minutos, começando com zero
+$object->minutes()->all();
+```
+
+## Sumário
+
+1.   [Criando intervalos para manipulação](ranges.md)
+2.   [Disponibilizando dias e horários utilizáveis](allowance.md)
+3.   [Encontrando horários disponíveis](search.md)
+4.   [Usando horários disponíveis](fitting.md)
+5.   [Arquitetura da biblioteca](architecture.md)
+6.   [Algoritmo de colisão](minutes.md)
+7.   [Direto ao ponto - API](api.md)
