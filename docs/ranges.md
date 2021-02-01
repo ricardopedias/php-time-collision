@@ -1,6 +1,6 @@
 # 1. Criando intervalos para manipulação
 
-## 1.1. O que é um range
+## 1.1. O que é um intervalo
 
 A primeira coisa a fazer é definir um **intervalo**, ou seja, o início e o fim do período onde serão manipuladas as colisões de tempo. Estabelecer um intervalo é necessário para que o algoritmo defina as margens necessárias para os cálculos de tempo. 
 
@@ -56,3 +56,5 @@ $object = new Collision('2020-01-10 08:00', '2020-01-15 18:00');
 3.   [Encontrando horários disponíveis](search.md)
 4.   [Usando horários disponíveis](fitting.md)
 5.   [Arquitetura da biblioteca](architecture.md)
+6.   [Algoritmo de colisão](minutes.md)
+7.   [Direto ao ponto - API](api.md)

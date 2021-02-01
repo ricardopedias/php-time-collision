@@ -11,3 +11,5 @@ Além disso, informações sobre a arquitetura utilizada auxiliará àqueles que
 3.   [Encontrando horários disponíveis](search.md)
 4.   [Usando horários disponíveis](fitting.md)
 5.   [Arquitetura da biblioteca](architecture.md)
+6.   [Algoritmo de colisão](minutes.md)
+7.   [Direto ao ponto - API](api.md)

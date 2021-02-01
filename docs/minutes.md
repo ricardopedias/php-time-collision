@@ -1,13 +1,18 @@
-# Controle gerencimento de minutos
+# 6. Algoritmo da classe Minutes 
 
-## Preenchimento normal
+As colisões são tratadas no momento onde os minutos são marcados para uso ou bloqueados.
+Nesse processo, usa-se os métodos mark() ou markCumulative(), cujos comportamentos são explicados
+a seguir.
 
-O preenchimento normal usa os minutos não-disponiveis (Minutes::UNUSED), contabilizando-os juntamente com os minutos liberados (Minutes::ALLOWED).
-No entanto, são preenchidos apenas os minutos liberados.
+## 6.1 Preenchimento comum
+
+O preenchimento comum usa os minutos não-disponiveis (Minutes::UNUSED), contabilizando-os 
+juntamente com os minutos liberados (Minutes::ALLOWED). No entanto, são preenchidos apenas 
+os minutos liberados.
 
 Por exemplo:
 
-Considerando que o construtor receba um range de 12:00 a 12:20:
+Considerando que o construtor receba um intervalo de 12:00 a 12:20:
 
 ```
 $minutes = new Minutes(
@@ -17,7 +22,7 @@ $minutes = new Minutes(
 ```
 
 Internamente, significa que serão contabilizados 20 minutos. 
-Na forma de uma timeline ficaria com a seguinte aparência:
+Na forma de uma linha do tempo ficaria com a seguinte aparência:
 
 ```
 ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
@@ -40,15 +45,15 @@ $minutes->mark(
 );
 ```
 
-A timeline ficaria com a seguinte aparência:
+A linha do tempo ficaria com a seguinte aparência:
 
 ```
 __ __ __ __ __ ■■ ■■ ■■ ■■ __ __ __ __ __ __ ■■ ■■ ■■ ■■ ■■ 
 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20
 ```
 
-Dessa forma, preenchendo o minutos de 12:00 a 12:08, 
-seriam necessários 8 minutos:
+Suponha que seja necessário preencher 8 minutos, em um período 
+de 12:00 a 12:08:
 
 ```
 $minutes->mark(
@@ -58,7 +63,7 @@ $minutes->mark(
 );
 ```
 
-A timeline ficaria com a seguinte aparência:
+A linha do tempo ficaria com a seguinte aparência:
 
 ```
 ++ ++ ++ ++ ++ ■■ ■■ ■■ ■■ __ __ __ __ __ __ ■■ ■■ ■■ ■■ ■■ 
@@ -66,18 +71,19 @@ A timeline ficaria com a seguinte aparência:
 ```
 
 Perceba que os minutos 06, 07 e 08 foram ignorados, pois não
-coincidem com lacunas disponíveis para uso. OU seja, 
-apenas 5 minutos foram efetivamente usados.
+coincidem com lacunas disponíveis para uso. Ou seja, no período 
+de 12:00 a 12:08, apenas 5 minutos foram efetivamente usados.
 
-## Preenchimento acumulativo
+## 6.2 Preenchimento acumulativo
 
-O preenchimento acumulativo pula os minutos não-disponiveis (Minutes::UNUSED), contabilizando apenas os minutos liberados (Minutes::ALLOWED).
-Os minutos que sobrarem em um período liberado, serão alocados no próximo 
-período até que os minutos setados acabem ou o final do range seja atingido.
+No preenchimento comum, os minutos não-disponiveis (Minutes::UNUSED) são 
+simplesmente ignorados. Já no preenchimento acumulativo, o processo pula 
+os minutos não-disponiveis (Minutes::UNUSED), contando os próximos 
+minutos liberados (Minutes::ALLOWED).
 
 ### Exemplo 1:
 
-Considerando que o construtor receba um range de 12:00 a 12:20:
+Considerando que o construtor receba um intervalo de 12:00 a 12:20:
 
 ```
 $minutes = new Minutes(
@@ -87,7 +93,7 @@ $minutes = new Minutes(
 ```
 
 Internamente, significa que serão contabilizados 20 minutos. 
-Na forma de uma timeline ficaria com a seguinte aparência:
+Na forma de uma linha do tempo ficaria com a seguinte aparência:
 
 ```
 ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
@@ -110,7 +116,7 @@ $minutes->mark(
 );
 ```
 
-A timeline ficaria com a seguinte aparência:
+A linha do tempo ficaria com a seguinte aparência:
 
 ```
 __ __ __ __ __ ■■ ■■ ■■ ■■ __ __ __ __ __ __ ■■ ■■ ■■ ■■ ■■ 
@@ -128,16 +134,16 @@ $minutes->markCumulative(
 );
 ```
 
-A timeline ficaria com a seguinte aparência:
+A linha do tempo ficaria com a seguinte aparência:
 
 ```
 ++ ++ ++ ++ ++ ■■ ■■ ■■ ■■ ++ ++ ++ __ __ __ ■■ ■■ ■■ ■■ ■■ 
 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20
 ```
 
-Os minutos 06, 07 e 08 não se perderam, mas foram alocados 
-no próximo período disponível (12:10 a 12:15), de forma
-que todos os 8 minutos foram utilizados.
+Diferente do preenchimento comum, os minutos 06, 07 e 08 não 
+se perderam, mas foram alocados no próximo período disponível 
+(12:10 a 12:15), de forma que todos os 8 minutos foram utilizados.
 
 ### Exemplo 2:
 
@@ -152,19 +158,29 @@ $minutes->markCumulative(
 );
 ```
 
-A timeline ficaria com a seguinte aparência:
+A linha do tempo ficaria com a seguinte aparência:
 
 ```
 ++ ++ ++ ++ ++ ■■ ■■ ■■ ■■ ++ ++ ++ ++ ++ ++ ■■ ■■ ■■ ■■ ■■
 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20
 ```
 
-Note que a timeline comleta possui apenas 10 minutos 
+Note que a linha do tempo comleta possui apenas 10 minutos 
 disponíveis para uso. Ou seja, os outros 5 minutos que faltaram
-foram ignorados pois não couberam no range da timeline:
+foram ignorados pois não couberam no intervalo completo da linha do tempo:
 
 ```
 ... ++ ++ ++ ++ ■■ ■■ ■■ ■■ ■■ xx xx xx xx xx
 ... 12 13 14 15 16 17 18 19 20 21 22 23 24 25
                                .  .  .  .  .
 ```
+
+## Sumário
+
+1.   [Criando intervalos para manipulação](ranges.md)
+2.   [Disponibilizando dias e horários utilizáveis](allowance.md)
+3.   [Encontrando horários disponíveis](search.md)
+4.   [Usando horários disponíveis](fitting.md)
+5.   [Arquitetura da biblioteca](architecture.md)
+6.   [Algoritmo de colisão](minutes.md)
+7.   [Direto ao ponto - API](api.md)
