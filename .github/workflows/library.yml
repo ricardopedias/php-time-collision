@@ -1,86 +1,84 @@
 name: Code
 
 on:
-    push: ~
-    pull_request: ~
+  push: ~
+  pull_request: ~
 
 jobs:
-    phpcs:
-        name: PHPCodeSniffer
-        runs-on: ubuntu-latest
+  phpcs:
+    name: PHPCodeSniffer
+    runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@v2
+    steps:
+      - uses: actions/checkout@v2
 
-            - uses: shivammathur/setup-php@v2
-              with:
-                  php-version: 7.4
-                  extensions: curl, mbstring
-                  coverage: none
-                  tools: composer:v2, cs2pr
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          extensions: curl, mbstring
+          coverage: none
+          tools: composer:v2, cs2pr
 
-            - run: composer update --no-progress
+      - run: composer update --no-progress
 
-            - run: vendor/bin/phpcs --standard=PSR1,PSR12 src
+      - run: vendor/bin/phpcs --standard=PSR1,PSR12 src
 
-    phpunit:
-        name: PHPUnit on ${{ matrix.php }} ${{ matrix.composer-flags }}
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                php: ['7.4', '8.0']
-                coverage: [false]
-                composer-flags: ['']
-        steps:
-            - uses: actions/checkout@v2
+  phpunit:
+    name: PHPUnit on ${{ matrix.php }} ${{ matrix.composer-flags }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['7.4', '8.0']
+        coverage: [false]
+        composer-flags: ['']
+    steps:
+      - uses: actions/checkout@v2
 
-            - uses: shivammathur/setup-php@v2
-              with:
-                  php-version: ${{ matrix.php }}
-                  extensions: curl, mbstring
-                  tools: composer:v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, mbstring
+          tools: composer:v2
 
-            - name: "Use PHPUnit 9.3+ on PHP 8"
-              run: composer require --no-update --dev phpunit/phpunit:^9.3
-              if: "matrix.php == '8.0'"
+      - name: "Use PHPUnit 9.3+ on PHP 8"
+        run: composer require --no-update --dev phpunit/phpunit:^9.3
+        if: "matrix.php == '8.0'"
 
-            - run: composer update --no-progress
+      - run: composer update --no-progress
+      - run: vendor/bin/phpunit --no-coverage
 
-            - run: vendor/bin/phpunit --no-coverage
-              if: ${{ !matrix.coverage }}
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
 
-    phpstan:
-        name: PHPStan
-        runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
 
-        steps:
-            - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          extensions: curl, mbstring
+          coverage: none
+          tools: composer:v2
 
-            - uses: shivammathur/setup-php@v2
-              with:
-                  php-version: 7.4
-                  extensions: curl, mbstring
-                  coverage: none
-                  tools: composer:v2
+      - run: composer update --no-progress
 
-            - run: composer update --no-progress
+      - run: vendor/bin/phpstan analyse src --level 8 --no-progress
 
-            - run: vendor/bin/phpstan analyse src --level 8 --no-progress
+  phpmd:
+    name: PHPMessDetector
+    runs-on: ubuntu-latest
 
-    phpmd:
-      name: PHPMessDetector
-      runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
 
-      steps:
-          - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          extensions: curl, mbstring
+          coverage: none
+          tools: composer:v2
 
-          - uses: shivammathur/setup-php@v2
-            with:
-                php-version: 7.4
-                extensions: curl, mbstring
-                coverage: none
-                tools: composer:v2
+      - run: composer update --no-progress
 
-          - run: composer update --no-progress
-
-          - run: vendor/bin/phpmd src ansi cleancode,codesize,controversial,design,naming,unusedcode
+      - run: vendor/bin/phpmd src ansi cleancode,codesize,controversial,design,naming,unusedcode

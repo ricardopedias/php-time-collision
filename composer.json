@@ -28,7 +28,9 @@
         "phpstan/phpstan": "^0.12.36",
         "squizlabs/php_codesniffer": "3.*",
         "phpmd/phpmd" : "@stable",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "ext-xdebug": "*",
+        "codacy/coverage": "dev-master"
     },
     "config": {
         "optimize-autoloader": true,
@@ -49,6 +51,8 @@
     "prefer-stable": true,
     "scripts":{
         "test":"vendor/bin/phpunit --testdox $1",
+        "coverage-html":"vendor/bin/phpunit --coverage-html coverage",
+        "coverage-xml":"vendor/bin/phpunit --coverage-clover clover.xml",
         "psr": "vendor/bin/phpcs --standard=PSR1,PSR12 src",
         "fixer": "vendor/bin/phpcbf --standard=PSR1,PSR12 src",
         "analyse" : "vendor/bin/phpstan analyse src --level 8",
