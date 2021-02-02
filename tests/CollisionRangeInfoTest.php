@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use Time\Collision;
+use Time\Minutes;
 
 class CollisionRangeInfoTest extends TestCase
 {
@@ -17,7 +18,7 @@ class CollisionRangeInfoTest extends TestCase
         $result = $this->makeRange('0..13', '31..59');
         $result = $this->rangeToDatetime('2020-11-01 12:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->unused());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::UNUSED));
     }
 
     /** @test */
@@ -29,6 +30,6 @@ class CollisionRangeInfoTest extends TestCase
         $result = $this->makeRange('14..30');
         $result = $this->rangeToDatetime('2020-11-01 12:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 }

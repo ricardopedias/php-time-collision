@@ -95,8 +95,8 @@ class Chunks
         return $chunksDateTime;
     }
 
-    /** 
-     * @return array<\DateTime> 
+    /**
+     * @return array<\DateTime>
      */
     private function makeDateTimeChunks(int $minuteIndex, int $minutesAmount): array
     {
@@ -138,8 +138,8 @@ class Chunks
     }
 
     /**
-     * @param array<int> $minutesList 
-     * @return array<int> 
+     * @param array<int> $minutesList
+     * @return array<int>
      */
     private function grabCheckpointsForChunks(array $minutesList): array
     {
@@ -161,9 +161,9 @@ class Chunks
     }
 
     /**
-     * @param array<int> $minutesList 
+     * @param array<int> $minutesList
      * @param array<int> $checkpoints
-     * @return array<int> 
+     * @return array<int>
      */
     private function computeMinutesFromCheckpoints(array $minutesList, array $checkpoints): array
     {

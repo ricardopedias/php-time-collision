@@ -30,13 +30,13 @@ class DateTest extends TestCase
     public function withPeriod()
     {
         $object = new Date('2020-11-01');
-        $object->withPeriod('12:00', '14:00', false);
+        $object->withPeriod('12:00', '14:00');
 
         $this->assertEquals([
             [ "12:00", "14:00", false]
         ], $object->periods());
 
-        $object->withPeriod('15:00', '16:00', true);
+        $object->withDefaultPeriod('15:00', '16:00');
         $this->assertEquals([
             [ "12:00", "14:00", false],
             [ "15:00", "16:00", true]
@@ -50,7 +50,7 @@ class DateTest extends TestCase
         $object->withPeriods([
             [ "12:00", "14:00"],
             [ "15:00", "16:00"]
-        ], false);
+        ]);
 
         $this->assertEquals([
             [ "12:00", "14:00", false],
@@ -58,9 +58,9 @@ class DateTest extends TestCase
         ], $object->periods());
 
         // apaga tudo e inicia uma nova lista
-        $object->withPeriods([
+        $object->withDefaultPeriods([
             [ "16:30", "17:00"]
-        ], true);
+        ]);
 
         $this->assertEquals([
             [ "16:30", "17:00", true]
@@ -74,7 +74,7 @@ class DateTest extends TestCase
         $object->withPeriods([
             [ "12:00", "14:00"],
             [ "15:00", "16:00"]
-        ], false);
+        ]);
 
         $this->assertEquals([
             [ "12:00", "14:00", false],
@@ -82,7 +82,7 @@ class DateTest extends TestCase
         ], $object->periods());
 
         // apaga tudo e inicia uma nova lista
-        $object->withPeriod("16:30", "17:00", true);
+        $object->withDefaultPeriod("16:30", "17:00");
 
         $this->assertEquals([
             [ "12:00", "14:00", false],

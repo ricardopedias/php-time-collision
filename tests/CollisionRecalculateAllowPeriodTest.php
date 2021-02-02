@@ -6,6 +6,7 @@ namespace Tests;
 
 use DateTime;
 use Time\Collision;
+use Time\Minutes;
 use Time\WeekDay;
 
 class CollisionRecalculateAllowPeriodTest extends TestCase
@@ -21,7 +22,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         $result = $this->makeRange('0..0');
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
 
         $object->allowAllWeekDays();
 
@@ -44,7 +45,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         );
         
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
 
         // das 8 as 9 do primeiro dia
         $start4 = $this->minutesBeetwen(new DateTime('2020-11-01 00:00:00'), new DateTime('2020-11-01 08:00:00')) - 1;
@@ -65,7 +66,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
@@ -79,7 +80,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         $result = $this->makeRange('0..0');
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
         
         // Libera somente a segunda-feira
         $object->allowDayOfWeek(WeekDay::MONDAY); // 02/11/2020
@@ -93,7 +94,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
 
         $object->allowAllWeekDays();
 
@@ -116,7 +117,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
@@ -145,7 +146,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
 
         // adiciona o período das 10 às 11
         $object->allowDefaultPeriod('10:00', '11:00');
@@ -179,7 +180,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
@@ -210,7 +211,7 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
 
         // + DATE
         $object->disableAllWeekDays();
@@ -222,6 +223,6 @@ class CollisionRecalculateAllowPeriodTest extends TestCase
         $result = $this->makeRange("{$start}..{$end}");
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 }

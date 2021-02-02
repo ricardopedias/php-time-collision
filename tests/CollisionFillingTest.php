@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use Time\Collision;
+use Time\Minutes;
 
 class CollisionFillingTest extends TestCase
 {
@@ -22,7 +23,7 @@ class CollisionFillingTest extends TestCase
         $result = $this->makeRange('24..29'); 
         $result = $this->rangeToDatetime('2020-11-01 12:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->filled());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::FILLED));
     }
 
     /** @test */
@@ -38,6 +39,6 @@ class CollisionFillingTest extends TestCase
         $result = $this->makeRange('24..29', '34..37'); // + 4 minutos (contando o 35)
         $result = $this->rangeToDatetime('2020-11-01 12:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->filled());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::FILLED));
     }
 }

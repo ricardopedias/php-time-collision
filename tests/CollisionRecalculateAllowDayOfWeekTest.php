@@ -6,6 +6,7 @@ namespace Tests;
 
 use DateTime;
 use Time\Collision;
+use Time\Minutes;
 use Time\WeekDay;
 
 class CollisionRecalculateAllowDayOfWeekTest extends TestCase
@@ -25,7 +26,7 @@ class CollisionRecalculateAllowDayOfWeekTest extends TestCase
         $result = $this->makeRange("{$start}..{$end}");
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
 
         $object->allowAllWeekDays();
 
@@ -48,7 +49,7 @@ class CollisionRecalculateAllowDayOfWeekTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
@@ -66,7 +67,7 @@ class CollisionRecalculateAllowDayOfWeekTest extends TestCase
         $result = $this->makeRange("{$start}..{$end}");
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
 
         // + DAY
         $object->allowDayOfWeek(WeekDay::TUESDAY); // 03/11/2020
@@ -85,7 +86,7 @@ class CollisionRecalculateAllowDayOfWeekTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
@@ -103,7 +104,7 @@ class CollisionRecalculateAllowDayOfWeekTest extends TestCase
         $result = $this->makeRange("{$start}..{$end}");
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
 
         // + PERIOD
         $object->allowDefaultPeriod('10:00', '11:00');
@@ -122,7 +123,7 @@ class CollisionRecalculateAllowDayOfWeekTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
@@ -140,7 +141,7 @@ class CollisionRecalculateAllowDayOfWeekTest extends TestCase
         $result = $this->makeRange("{$start}..{$end}");
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
 
         // + DATE
         $object->allowDate('2020-11-03'); // Terça-feira
@@ -156,6 +157,6 @@ class CollisionRecalculateAllowDayOfWeekTest extends TestCase
         $result = $this->makeRange("{$start1}..{$end1}", "{$start2}..{$end2}");
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 }

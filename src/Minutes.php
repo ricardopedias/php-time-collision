@@ -26,13 +26,16 @@ class Minutes
      */
     private SplFixedArray $rangeVector;
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function __construct(DateTime $start, Datetime $end)
     {
         $this->start = $start;
         $this->end   = $end;
 
         $vector = array_fill(0, $this->beetwen($start, $end), self::UNUSED);
-        $this->rangeVector = $this->makeArray($vector);
+        $this->rangeVector = SplFixedArray::fromArray($vector);
     }
 
     public function startRange(): DateTime
@@ -46,47 +49,14 @@ class Minutes
     }
 
     /**
-     * Devolve o range total de minutos, começando com zero.
-     * @return SplFixedArray<int>
-     */
-    public function all(): SplFixedArray
-    {
-        $list = $this->range(Minutes::ALL);
-        $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
-        return $this->makeArray($list);
-    }
-
-    /**
-     * Devolve os minutos bloqueados para uso.
-     * @return SplFixedArray<DateTime>
-     */
-    public function unused(): SplFixedArray
-    {
-        $list = $this->range(Minutes::UNUSED);
-        $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
-        return $this->makeArray($list);
-    }
-
-    /**
-     * Devolve os minutos que podem ser usados.
+     * Devolve o range de minutos, começando com zero.
      * @return SplFixedArray<\DateTime>
      */
-    public function allowed(): SplFixedArray
+    public function rangeInDateTime(int $type = Minutes::ALL): SplFixedArray
     {
-        $list = $this->range(Minutes::ALLOWED);
+        $list = $this->range($type);
         $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
-        return $this->makeArray($list);
-    }
-
-    /**
-     * Devolve os minutos usados dentro do horário comercial.
-     * @return SplFixedArray<\DateTime>
-     */
-    public function filled(): SplFixedArray
-    {
-        $list = $this->range(Minutes::FILLED);
-        $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
-        return $this->makeArray($list);
+        return $this->makeDateTimeArray($list);
     }
 
     /**
@@ -105,7 +75,7 @@ class Minutes
                 $onlyStatus[] = $index;
             }
         }
-        return $this->makeArray($onlyStatus);
+        return $this->makeIntArray($onlyStatus);
     }
 
     /**
@@ -218,7 +188,22 @@ class Minutes
         return $moment;
     }
 
-    private function makeArray(array $vector): SplFixedArray
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     * @param array<int> $vector
+     * @return SplFixedArray<int>
+     */
+    private function makeIntArray(array $vector): SplFixedArray
+    {
+        return SplFixedArray::fromArray($vector);
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     * @param array<\DateTime> $vector
+     * @return SplFixedArray<\DateTime>
+     */
+    private function makeDatetimeArray(array $vector): SplFixedArray
     {
         return SplFixedArray::fromArray($vector);
     }

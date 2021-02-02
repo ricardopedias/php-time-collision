@@ -54,8 +54,8 @@ class WeekDayTest extends TestCase
     public function withDefaultPeriod()
     {
         $object = new WeekDay(WeekDay::MONDAY);
-        $object->withPeriod('10:00', '11:00', true);
-        $object->withPeriod('14:00', '15:00', true);
+        $object->withDefaultPeriod('10:00', '11:00');
+        $object->withDefaultPeriod('14:00', '15:00');
 
         $this->assertEquals(['10:00', '11:00', true], $object->periods()[0]);
         $this->assertEquals(['14:00', '15:00', true], $object->periods()[1]);
@@ -66,7 +66,7 @@ class WeekDayTest extends TestCase
     {
         $object = new WeekDay(WeekDay::MONDAY);
         $object->withPeriod('10:00', '11:00');
-        $object->withPeriod('14:00', '15:00', true);
+        $object->withDefaultPeriod('14:00', '15:00');
 
         $this->assertEquals(['10:00', '11:00', false], $object->periods()[0]);
         $this->assertEquals(['14:00', '15:00', true], $object->periods()[1]);
@@ -100,93 +100,93 @@ class WeekDayTest extends TestCase
         $object->withPeriod('09:00', '08:00');
     }
 
-    /** @test */
-    public function withPeriods()
-    {
-        $object = new WeekDay(WeekDay::MONDAY);
-        $object->withPeriods([
-            ['10:00', '11:00'],
-            ['14:00', '15:00']
-        ]);
+    // /** @test */
+    // public function withPeriods()
+    // {
+    //     $object = new WeekDay(WeekDay::MONDAY);
+    //     $object->withPeriods([
+    //         ['10:00', '11:00'],
+    //         ['14:00', '15:00']
+    //     ]);
 
-        $this->assertEquals(['10:00', '11:00', false], $object->periods()[0]);
-        $this->assertEquals(['14:00', '15:00', false], $object->periods()[1]);
-    }
+    //     $this->assertEquals(['10:00', '11:00', false], $object->periods()[0]);
+    //     $this->assertEquals(['14:00', '15:00', false], $object->periods()[1]);
+    // }
 
-    /** @test */
-    public function withPeriodsDefault()
-    {
-        $object = new WeekDay(WeekDay::MONDAY);
-        $object->withPeriods([
-            ['10:00', '11:00'],
-            ['14:00', '15:00']
-        ], true);
+    // /** @test */
+    // public function withPeriodsDefault()
+    // {
+    //     $object = new WeekDay(WeekDay::MONDAY);
+    //     $object->withPeriods([
+    //         ['10:00', '11:00'],
+    //         ['14:00', '15:00']
+    //     ], true);
 
-        $this->assertEquals(['10:00', '11:00', true], $object->periods()[0]);
-        $this->assertEquals(['14:00', '15:00', true], $object->periods()[1]);
-    }
+    //     $this->assertEquals(['10:00', '11:00', true], $object->periods()[0]);
+    //     $this->assertEquals(['14:00', '15:00', true], $object->periods()[1]);
+    // }
 
-    /** @test */
-    public function withPeriodsOverwrite()
-    {
-        $object = new WeekDay(WeekDay::MONDAY);
-        $object->withPeriods([
-            ['08:00', '09:00']
-        ]);
+    // /** @test */
+    // public function withPeriodsOverwrite()
+    // {
+    //     $object = new WeekDay(WeekDay::MONDAY);
+    //     $object->withPeriods([
+    //         ['08:00', '09:00']
+    //     ]);
 
-        $object->withPeriods([
-            ['10:00', '11:00'],
-            ['14:00', '15:00']
-        ], true);
+    //     $object->withPeriods([
+    //         ['10:00', '11:00'],
+    //         ['14:00', '15:00']
+    //     ], true);
 
-        $this->assertEquals(['10:00', '11:00', true], $object->periods()[0]);
-        $this->assertEquals(['14:00', '15:00', true], $object->periods()[1]);
+    //     $this->assertEquals(['10:00', '11:00', true], $object->periods()[0]);
+    //     $this->assertEquals(['14:00', '15:00', true], $object->periods()[1]);
 
-        $object->withPeriods([
-            ['08:00', '10:00'],
-            ['11:00', '12:00']
-        ]);
+    //     $object->withPeriods([
+    //         ['08:00', '10:00'],
+    //         ['11:00', '12:00']
+    //     ]);
 
-        $this->assertEquals(['08:00', '10:00', false], $object->periods()[0]);
-        $this->assertEquals(['11:00', '12:00', false], $object->periods()[1]);
-    }
+    //     $this->assertEquals(['08:00', '10:00', false], $object->periods()[0]);
+    //     $this->assertEquals(['11:00', '12:00', false], $object->periods()[1]);
+    // }
 
-    /** @test */
-    public function withPeriodsSyntaxExceptionStart()
-    {
-        $this->expectException(InvalidTimeException::class);
+    // /** @test */
+    // public function withPeriodsSyntaxExceptionStart()
+    // {
+    //     $this->expectException(InvalidTimeException::class);
 
-        $object = new WeekDay(WeekDay::MONDAY);
-        $object->withPeriods([
-            ['10:00', '11:00'],
-            ['14,00', '15:00']
-        ]);
-    }
+    //     $object = new WeekDay(WeekDay::MONDAY);
+    //     $object->withPeriods([
+    //         ['10:00', '11:00'],
+    //         ['14,00', '15:00']
+    //     ]);
+    // }
 
-    /** @test */
-    public function withPeriodsSyntaxExceptionEnd()
-    {
-        $this->expectException(InvalidTimeException::class);
+    // /** @test */
+    // public function withPeriodsSyntaxExceptionEnd()
+    // {
+    //     $this->expectException(InvalidTimeException::class);
 
-        $object = new WeekDay(WeekDay::MONDAY);
-        $object->withPeriods([
-            ['10:00', '11:00'],
-            ['14:00', '15,00']
-        ]);
-    }
+    //     $object = new WeekDay(WeekDay::MONDAY);
+    //     $object->withPeriods([
+    //         ['10:00', '11:00'],
+    //         ['14:00', '15,00']
+    //     ]);
+    // }
 
-    /** @test */
-    public function withPeriodsException()
-    {
-        $this->expectException(InvalidTimeException::class);
-        $this->expectExceptionMessage('The end time must be greater than the start time of the period');
+    // /** @test */
+    // public function withPeriodsException()
+    // {
+    //     $this->expectException(InvalidTimeException::class);
+    //     $this->expectExceptionMessage('The end time must be greater than the start time of the period');
         
-        $object = new WeekDay(WeekDay::MONDAY);
-        $object->withPeriods([
-            ['10:00', '11:00'],
-            ['14:00', '13:00'] // <--
-        ]);
-    }
+    //     $object = new WeekDay(WeekDay::MONDAY);
+    //     $object->withPeriods([
+    //         ['10:00', '11:00'],
+    //         ['14:00', '13:00'] // <--
+    //     ]);
+    // }
 
     
 }

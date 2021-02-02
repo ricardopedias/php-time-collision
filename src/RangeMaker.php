@@ -40,10 +40,10 @@ class RangeMaker
         }
 
         foreach ($this->params->getCumulativeFills() as $times) {
-            $this->markFilled($times[0], $times[1], true);
+            $this->markFilledCumulative($times[0], $times[1]);
         }
     }
-    
+
     private function allowSpecificDays(): void
     {
         $specificDays = $this->params->getDates();
@@ -125,22 +125,26 @@ class RangeMaker
             return;
         }
 
-        $day->withPeriods($this->params->getDefaultPeriods(), true);
+        $day->withDefaultPeriods($this->params->getDefaultPeriods());
     }
 
     /**
      * Marca efetivamente o período especificado como preenchido.
      * @param \DateTime $start
      * @param \DateTime $end
-     * @param bool $cumulative
      */
-    private function markFilled(DateTime $start, DateTime $end, bool $cumulative = false): void
+    private function markFilled(DateTime $start, DateTime $end): void
     {
-        if ($cumulative === true) {
-            $this->minutes->markCumulative($start, $end, Minutes::FILLED);
-            return;
-        }
-
         $this->minutes->mark($start, $end, Minutes::FILLED);
+    }
+
+    /**
+     * Marca efetivamente o período especificado como preenchido.
+     * @param \DateTime $start
+     * @param \DateTime $end
+     */
+    private function markFilledCumulative(DateTime $start, DateTime $end): void
+    {
+        $this->minutes->markCumulative($start, $end, Minutes::FILLED);
     }
 }

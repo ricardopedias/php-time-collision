@@ -28,7 +28,7 @@ class Date
         $this->day = $day;
     }
 
-    public function withPeriod(string $startTime, string $endTime, bool $default = false): self
+    public function withDefaultPeriod(string $startTime, string $endTime): self
     {
         try {
             $start = new DateTime("2020-01-10 {$startTime}");
@@ -41,36 +41,67 @@ class Date
             throw new InvalidTimeException('The end time must be greater than the start time of the period');
         }
 
-        $this->periods[] = [$startTime, $endTime, $default];
+        $this->periods[] = [$startTime, $endTime, true];
+        return $this;
+    }
+
+    public function withPeriod(string $startTime, string $endTime): self
+    {
+        try {
+            $start = new DateTime("2020-01-10 {$startTime}");
+            $end = new DateTime("2020-01-10 {$endTime}");
+        } catch (Exception $e) {
+            throw new InvalidTimeException($e->getMessage());
+        }
+
+        if ($start > $end) {
+            throw new InvalidTimeException('The end time must be greater than the start time of the period');
+        }
+
+        $this->periods[] = [$startTime, $endTime, false];
         return $this;
     }
 
     /**
      * Especifica uma lista de períodos a serem usados neste dia.
      * @param array<int, array> $periods
-     * @param bool $default
      * @return \Time\Date
      */
-    public function withPeriods(array $periods, bool $default = false): self
+    public function withDefaultPeriods(array $periods): self
     {
         $this->periods = [];
         foreach ($periods as $item) {
-            $this->withPeriod($item[0], $item[1], $default);
+            $this->withDefaultPeriod($item[0], $item[1]);
         }
 
         return $this;
     }
 
-    // public function removeDefaultPeriods(): self
-    // {
-    //     foreach ($this->periods as $index => $item) {
-    //         if ($item[2] === true) {
-    //             unset($this->periods[$index]);
-    //         }
-    //     }
+    /**
+     * Especifica uma lista de períodos a serem usados neste dia.
+     * @param array<int, array> $periods
+     * @return \Time\Date
+     */
+    public function withPeriods(array $periods): self
+    {
+        $this->periods = [];
+        foreach ($periods as $item) {
+            $this->withPeriod($item[0], $item[1]);
+        }
 
-    //     return $this;
-    // }
+        return $this;
+    }
+
+    public function removeDefaultPeriods(): self
+    {
+        foreach ($this->periods as $index => $item) {
+            if ($item[2] === true) {
+                unset($this->periods[$index]);
+            }
+        }
+
+        return $this;
+    }
 
     public function day(): DateTime
     {

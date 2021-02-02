@@ -8,6 +8,9 @@ use DateTime;
 use Exception;
 use Time\Exceptions\InvalidDateTimeException;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+*/
 class Collision
 {
     protected DateTime $rangeStart;

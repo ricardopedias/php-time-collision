@@ -6,6 +6,7 @@ namespace Tests;
 
 use DateTime;
 use Time\Collision;
+use Time\Minutes;
 use Time\WeekDay;
 
 class CollisionRecalculateDefaultAllDaysTest extends TestCase
@@ -36,7 +37,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
 
         $object->allowAllWeekDays();
 
@@ -59,7 +60,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
@@ -88,7 +89,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
 
         // libera apenas a segunda-feira
         $object->disableAllWeekDays();
@@ -100,7 +101,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         $result = $this->makeRange("{$start}..{$end}");
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
@@ -129,7 +130,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
 
         // + PERIOD
         $object->allowDefaultPeriod('10:00', '11:00');
@@ -163,7 +164,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
@@ -193,7 +194,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
 
         // determina um dia específico
         $object->disableAllWeekDays();
@@ -209,7 +210,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
@@ -239,7 +240,7 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
 
         // Libera as Segundas-feiras
         $object->disableAllWeekDays();
@@ -268,6 +269,6 @@ class CollisionRecalculateDefaultAllDaysTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 }

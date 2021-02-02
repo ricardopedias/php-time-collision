@@ -37,7 +37,7 @@ class CollisionAllowPeriodsTest extends TestCase
         );
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
         
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
@@ -58,8 +58,8 @@ class CollisionAllowPeriodsTest extends TestCase
         $resultAllowed = $this->rangeToDatetime('2020-11-01 12:00:00', $resultAllowed);
         
         $this->assertEquals($resultAll, $object->minutes()->range());
-        $this->assertEquals($resultUnused, $object->minutes()->unused());
-        $this->assertEquals($resultAllowed, $object->minutes()->allowed());
+        $this->assertEquals($resultUnused, $object->minutes()->rangeInDateTime(Minutes::UNUSED));
+        $this->assertEquals($resultAllowed, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */

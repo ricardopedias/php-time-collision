@@ -173,6 +173,7 @@ class Parameters
      * Por padrão, as horas que colidirem com minutos não 'usáveis' são perdidos.
      * Caso o parâmetro $cumulative for true, os minutos são distribuídos para
      * as lacunas seguintes até acabarem.
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      * @param string $start
      * @param string $end
      * @param bool $cumulative

@@ -9,6 +9,7 @@ use Time\Collision;
 use Time\WeekDay;
 use Time\Exceptions\InvalidDateException;
 use Time\Exceptions\InvalidWeekDayException;
+use Time\Minutes;
 
 class CollisionDisablingDayTest extends TestCase
 {
@@ -31,7 +32,7 @@ class CollisionDisablingDayTest extends TestCase
         $result = $this->makeRange("{$start}..{$end}");
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
@@ -58,7 +59,7 @@ class CollisionDisablingDayTest extends TestCase
         $result = $this->makeRange("{$start1}..{$end1}", "{$start2}..{$end2}");
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */

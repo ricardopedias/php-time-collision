@@ -9,6 +9,7 @@ use SplFixedArray;
 use Time\Collision;
 use Time\WeekDay;
 use Time\Exceptions\InvalidWeekDayException;
+use Time\Minutes;
 
 class CollisionAllowDaysTest extends TestCase
 {
@@ -16,7 +17,7 @@ class CollisionAllowDaysTest extends TestCase
     public function defaultAllDays()
     {
         $object = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
-        $this->assertEquals(new SplFixedArray(0), $object->minutes()->allowed());
+        $this->assertEquals(new SplFixedArray(0), $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
@@ -33,7 +34,7 @@ class CollisionAllowDaysTest extends TestCase
         $result = $this->makeRange("{$start}..{$end}");
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
@@ -50,7 +51,7 @@ class CollisionAllowDaysTest extends TestCase
         $result = $this->makeRange("{$start}..{$end}");
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
@@ -73,7 +74,7 @@ class CollisionAllowDaysTest extends TestCase
         $result = $this->makeRange("{$start1}..{$end1}", "{$start2}..{$end2}");
         $result = $this->rangeToDatetime('2020-11-01 00:00:00', $result);
 
-        $this->assertEquals($result, $object->minutes()->allowed());
+        $this->assertEquals($result, $object->minutes()->rangeInDateTime(Minutes::ALLOWED));
     }
 
     /** @test */
