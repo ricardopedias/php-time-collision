@@ -1,4 +1,4 @@
-name: CodacyCoverage
+name: code-coverage
 
 on: ["push"]
 
