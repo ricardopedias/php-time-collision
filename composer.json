@@ -27,6 +27,7 @@
         "phpunit/phpunit": "^9",
         "phpstan/phpstan": "^0.12.36",
         "squizlabs/php_codesniffer": "3.*",
+        "phpmd/phpmd" : "@stable",
         "ext-mbstring": "*"
     },
     "config": {
@@ -50,6 +51,7 @@
         "test":"vendor/bin/phpunit --testdox $1",
         "psr": "vendor/bin/phpcs --standard=PSR1,PSR12 src",
         "fixer": "vendor/bin/phpcbf --standard=PSR1,PSR12 src",
-        "analyse" : "vendor/bin/phpstan analyse src --level 8"
+        "analyse" : "vendor/bin/phpstan analyse src --level 8",
+        "mess" : "vendor/bin/phpmd src ansi cleancode,codesize,controversial,design,naming,unusedcode"
     }
 }
