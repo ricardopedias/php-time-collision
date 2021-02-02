@@ -75,7 +75,7 @@ de 12:00 a 12:08, apenas 5 minutos foram efetivamente usados.
 
 ## 6.2 Preenchimento acumulativo
 
-No preenchimento comum, os minutos não-disponiveis (Minutes::UNUSED) são 
+No preenchimento comum, os minutos não-disponiveis (Minutes::UNUSED) são
 simplesmente ignorados. Já no preenchimento acumulativo, o processo pula
 os minutos não-disponiveis (Minutes::UNUSED), contando os próximos
 minutos liberados (Minutes::ALLOWED).

@@ -124,7 +124,7 @@ $fittings = $object->fittingsBetween('2020-10-01 12:00', '2020-10-01 16:00');
 
 A variável *$fittings*, do exemplo acima, devolverá o seguinte conteúdo:
 
-```
+```php
 [
     0 => [
         0 => DateTime("2020-01-10 12:00:00"),
