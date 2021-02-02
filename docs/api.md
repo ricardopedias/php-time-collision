@@ -163,23 +163,35 @@ $fittings = $object->fillCumulative('2020-01-10 13:00', '2020-01-10 16:00');
 Para obter as informações armazenadas em cada minuto do intervalo:
 
 ```php
+// Devolve um array contendo todos os minutos em valores numéricos
+$object->minutes()->range(Minutes::ALL);
+```
+
+```php
+// Devolve um array contendo todos os minutos em valores de Data e Hora
+$object->minutes()->rangeInDateTime(Minutes::ALL);
+```
+
+As seguintes constantes podem ser usadas para devolver tipos específicos de minutos:
+
+```php
 // Devolve os minutos bloqueados para uso
-$object->minutes()->unused();
+Minutes::UNUSED;
 ```
 
 ```php
 // Devolve os minutos que podem ser usados
-$object->minutes()->allowed();
+Minutes::ALLOWED;
 ```
 
 ```php
 // Devolve os minutos já usados
-$object->minutes()->filled();
+Minutes::FILLED;
 ```
 
 ```php
 // Devolve o range total de minutos, começando com zero
-$object->minutes()->all();
+Minutes::ALL;
 ```
 
 ## Sumário

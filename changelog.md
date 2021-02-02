@@ -9,9 +9,19 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ## \[Unreleased]
 
+### Added
+
+-   Acrescentado o PHP Mess detector nos scripts do composer
+-   Adicionada CI do GitHub
+
 ### Changed
 
 -   Atualização do changelog
+-   Ajustes e pendências detectadas pelo PHP Mess Detector
+
+### Removed
+
+-   Remoção do TravisCI
 
 ## \[0.10.0] - 2020-02-01
 
@@ -34,13 +44,13 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ### Changed
 
--    Transferida a responsabilidade sobre informações para a classe Chunks
--    Refatoração da classe Chunks para reaproveitar o algoritmo de extração
--    Renomeação em vários métodos para reduzir a carga mental
+-   Transferida a responsabilidade sobre informações para a classe Chunks
+-   Refatoração da classe Chunks para reaproveitar o algoritmo de extração
+-   Renomeação em vários métodos para reduzir a carga mental
 
 ### Removed
 
--    Remoção da análise automática da PSR2 no script do composer
+-   Remoção da análise automática da PSR2 no script do composer
 
 ## \[0.8.0] - 2020-12-04
 
@@ -119,7 +129,14 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ## Releases
 
--   Unreleased <https://github.com/ricardopedias/php-reliability/compare/v0.3.0...HEAD>
+-   Unreleased <https://github.com/ricardopedias/php-reliability/compare/v0.10.0...HEAD>
+-   0.10.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.9.0...v0.10.0>
+-   0.9.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.8.0...v0.9.0>
+-   0.8.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.7.0...v0.8.0>
+-   0.7.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.6.0...v0.7.0>
+-   0.6.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.5.0...v0.6.0>
+-   0.5.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.4.0...v0.5.0>
+-   0.4.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.3.0...v0.4.0>
 -   0.3.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.2.0...v0.3.0>
 -   0.2.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.1.0...v0.2.0>
 -   0.1.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.1.0>

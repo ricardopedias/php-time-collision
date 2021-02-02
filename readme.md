@@ -4,9 +4,11 @@
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![TDD](https://img.shields.io/badge/tdd-Tested%20100%25-blue)
 [![Build Status](https://travis-ci.org/ricardopedias/php-time-collision.svg?branch=master)](https://travis-ci.org/ricardopedias/php-time-collision)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/5d9844c598e9425a98059e3d08c78f92)](https://www.codacy.com/manual/ricardopedias/php-time-collision?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ricardopedias/php-time-collision&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/8656013c42c74dfeaf34cdfcd310a7b1)](https://www.codacy.com/gh/ricardopedias/php-time-collision/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ricardopedias/php-time-collision&amp;utm_campaign=Badge_Grade)
 [![Follow](https://img.shields.io/github/followers/ricardopedias?label=Siga%20no%20GitHUB&style=social)](https://github.com/ricardopedias)
 [![Twitter](https://img.shields.io/twitter/follow/ricardopedias?label=Siga%20no%20Twitter)](https://twitter.com/ricardopedias)
+
+> **Atenção:** Esta biblioteca está em fase de desenvolvimento. Use-a por sua conta e risco.
 
 PHP Time Collision é uma biblioteca para lidar com colisão temporal, podendo identificar horários livres em um período especificado. Útil especialmente para gerenciamento de horários em agendas, onde é preciso encaixar um determinado tempo em um horário disponível.
 
