@@ -1,4 +1,4 @@
-name: Tests
+name: Library
 
 on:
     push: ~
@@ -21,14 +21,14 @@ jobs:
 
             - run: composer update --no-progress
 
-            - run: vendor/bin/phpcs -q --report=checkstyle | cs2pr
+            - run: vendor/bin/phpcs --standard=PSR1,PSR12 src
 
     phpunit:
         name: PHPUnit on ${{ matrix.php }} ${{ matrix.composer-flags }}
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php: ['7.2', '7.3', '7.4']
+                php: ['7.4', '8.0']
                 coverage: [true]
                 composer-flags: ['']
                 include:
@@ -82,4 +82,4 @@ jobs:
 
             - run: composer update --no-progress
 
-            - run: vendor/bin/phpstan analyse --no-progress
+            - run: vendor/bin/phpstan analyse src --level 8 --no-progress
