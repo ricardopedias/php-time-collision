@@ -11,26 +11,26 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ### Changed
 
--    Atualização do changelog
+-   Atualização do changelog
 
 ## \[0.10.0] - 2020-02-01
 
 ### Added
 
--    Criação da documentação de arquitetura
--    Criação da documentação da API
+-   Criação da documentação de arquitetura
+-   Criação da documentação da API
 
 ### Changed
 
--    Refatoração para nomenclatura mais inteligível
--    Otimização do algoritmo de extração de lacunas de tempo
+-   Refatoração para nomenclatura mais inteligível
+-   Otimização do algoritmo de extração de lacunas de tempo
 
 ## \[0.9.0] - 2020-12-30
 
 ### Added
 
--    Adicionados testes para diversas situações
--    Adicionadas novas informações na documentação
+-   Adicionados testes para diversas situações
+-   Adicionadas novas informações na documentação
 
 ### Changed
 
@@ -46,16 +46,16 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ### Added
 
--    Adicionados testes para diversas situações
--    Criação do conteiner para armazenar os parâmetros de cálculo
--    Criação de método exclusivo para preenchimentos acumulativos
+-   Adicionados testes para diversas situações
+-   Criação do conteiner para armazenar os parâmetros de cálculo
+-   Criação de método exclusivo para preenchimentos acumulativos
 
 ## \[0.7.0] - 2020-11-25
 
 ### Added
 
--    Criação do objeto para encapsulamento de dias específicos
--    Atualização na documentação
+-   Criação do objeto para encapsulamento de dias específicos
+-   Atualização na documentação
 
 ### Fixed
 

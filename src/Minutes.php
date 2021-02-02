@@ -32,7 +32,7 @@ class Minutes
         $this->end   = $end;
 
         $vector = array_fill(0, $this->beetwen($start, $end), self::UNUSED);
-        $this->rangeVector = SplFixedArray::fromArray($vector);
+        $this->rangeVector = $this->makeArray($vector);
     }
 
     public function startRange(): DateTime
@@ -53,7 +53,7 @@ class Minutes
     {
         $list = $this->range(Minutes::ALL);
         $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
-        return SplFixedArray::fromArray($list);
+        return $this->makeArray($list);
     }
 
     /**
@@ -64,7 +64,7 @@ class Minutes
     {
         $list = $this->range(Minutes::UNUSED);
         $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
-        return SplFixedArray::fromArray($list);
+        return $this->makeArray($list);
     }
 
     /**
@@ -75,7 +75,7 @@ class Minutes
     {
         $list = $this->range(Minutes::ALLOWED);
         $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
-        return SplFixedArray::fromArray($list);
+        return $this->makeArray($list);
     }
 
     /**
@@ -86,7 +86,7 @@ class Minutes
     {
         $list = $this->range(Minutes::FILLED);
         $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
-        return SplFixedArray::fromArray($list);
+        return $this->makeArray($list);
     }
 
     /**
@@ -105,7 +105,7 @@ class Minutes
                 $onlyStatus[] = $index;
             }
         }
-        return SplFixedArray::fromArray($onlyStatus);
+        return $this->makeArray($onlyStatus);
     }
 
     /**
@@ -216,5 +216,10 @@ class Minutes
         $moment = clone $this->start;
         $moment->modify("+ {$minute} minutes");
         return $moment;
+    }
+
+    private function makeArray(array $vector): SplFixedArray
+    {
+        return SplFixedArray::fromArray($vector);
     }
 }

@@ -8,7 +8,7 @@ use Time\Collision;
 use DateTime;
 use Time\Exceptions\InvalidDateTimeException;
 
-class CollisionfittingsBetweenTest extends TestCase
+class CollisionFittingsBetweenTest extends TestCase
 {
     /** @test */
     public function fittingsBetween()

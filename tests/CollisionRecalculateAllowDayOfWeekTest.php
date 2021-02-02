@@ -8,7 +8,7 @@ use DateTime;
 use Time\Collision;
 use Time\WeekDay;
 
-class CollisionRecalculateallowDayOfWeekTest extends TestCase
+class CollisionRecalculateAllowDayOfWeekTest extends TestCase
 {
     /** @test */
     public function specificDayToAllDays()

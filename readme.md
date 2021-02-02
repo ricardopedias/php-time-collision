@@ -32,7 +32,7 @@ O resultado será um array contendo todos os períodos disponíveis onde
 1h30m podem ser alocados.
 No exemplo acima, a variável *"$fittings"* terá o seguinte conteúdo:
 
-```
+```php
 [
     0 => [
         0 => DateTime("2020-01-10 15:00:00"),
