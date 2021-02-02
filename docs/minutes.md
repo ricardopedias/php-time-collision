@@ -1,4 +1,4 @@
-# 6. Algoritmo da classe Minutes 
+# 6. Algoritmo da classe Minutes
 
 As colisões são tratadas no momento onde os minutos são marcados para uso ou bloqueados.
 Nesse processo, usa-se os métodos mark() ou markCumulative(), cujos comportamentos são explicados
@@ -6,8 +6,8 @@ a seguir.
 
 ## 6.1 Preenchimento comum
 
-O preenchimento comum usa os minutos não-disponiveis (Minutes::UNUSED), contabilizando-os 
-juntamente com os minutos liberados (Minutes::ALLOWED). No entanto, são preenchidos apenas 
+O preenchimento comum usa os minutos não-disponiveis (Minutes::UNUSED), contabilizando-os
+juntamente com os minutos liberados (Minutes::ALLOWED). No entanto, são preenchidos apenas
 os minutos liberados.
 
 Por exemplo:
@@ -21,7 +21,7 @@ $minutes = new Minutes(
 );
 ```
 
-Internamente, significa que serão contabilizados 20 minutos. 
+Internamente, significa que serão contabilizados 20 minutos.
 Na forma de uma linha do tempo ficaria com a seguinte aparência:
 
 ```php
@@ -52,8 +52,7 @@ __ __ __ __ __ ■■ ■■ ■■ ■■ __ __ __ __ __ __ ■■ ■■ ■�
 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20
 ```
 
-Suponha que seja necessário preencher 8 minutos, em um período 
-de 12:00 a 12:08:
+Suponha que seja necessário preencher 8 minutos, em um período de 12:00 a 12:08:
 
 ```php
 $minutes->mark(
@@ -71,17 +70,17 @@ A linha do tempo ficaria com a seguinte aparência:
 ```
 
 Perceba que os minutos 06, 07 e 08 foram ignorados, pois não
-coincidem com lacunas disponíveis para uso. Ou seja, no período 
+coincidem com lacunas disponíveis para uso. Ou seja, no período
 de 12:00 a 12:08, apenas 5 minutos foram efetivamente usados.
 
 ## 6.2 Preenchimento acumulativo
 
 No preenchimento comum, os minutos não-disponiveis (Minutes::UNUSED) são 
-simplesmente ignorados. Já no preenchimento acumulativo, o processo pula 
-os minutos não-disponiveis (Minutes::UNUSED), contando os próximos 
+simplesmente ignorados. Já no preenchimento acumulativo, o processo pula
+os minutos não-disponiveis (Minutes::UNUSED), contando os próximos
 minutos liberados (Minutes::ALLOWED).
 
-### Exemplo 1:
+### Exemplo 1
 
 Considerando que o construtor receba um intervalo de 12:00 a 12:20:
 
@@ -92,7 +91,7 @@ $minutes = new Minutes(
 );
 ```
 
-Internamente, significa que serão contabilizados 20 minutos. 
+Internamente, significa que serão contabilizados 20 minutos.
 Na forma de uma linha do tempo ficaria com a seguinte aparência:
 
 ```php
@@ -123,7 +122,7 @@ __ __ __ __ __ ■■ ■■ ■■ ■■ __ __ __ __ __ __ ■■ ■■ ■�
 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20
 ```
 
-Dessa forma, preenchendo o minutos de 12:00 a 12:08, seriam 
+Dessa forma, preenchendo o minutos de 12:00 a 12:08, seriam
 necessários 8 minutos:
 
 ```php
@@ -141,11 +140,11 @@ A linha do tempo ficaria com a seguinte aparência:
 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20
 ```
 
-Diferente do preenchimento comum, os minutos 06, 07 e 08 não 
-se perderam, mas foram alocados no próximo período disponível 
+Diferente do preenchimento comum, os minutos 06, 07 e 08 não
+se perderam, mas foram alocados no próximo período disponível
 (12:10 a 12:15), de forma que todos os 8 minutos foram utilizados.
 
-### Exemplo 2:
+### Exemplo 2
 
 Suponha que, se no último exemplo, fossem preenchidos os
 minutos de 12:00 a 12:15. Seriam necessários 15 minutos:
@@ -165,7 +164,7 @@ A linha do tempo ficaria com a seguinte aparência:
 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20
 ```
 
-Note que a linha do tempo comleta possui apenas 10 minutos 
+Note que a linha do tempo comleta possui apenas 10 minutos
 disponíveis para uso. Ou seja, os outros 5 minutos que faltaram
 foram ignorados pois não couberam no intervalo completo da linha do tempo:
 

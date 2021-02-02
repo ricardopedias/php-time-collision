@@ -15,9 +15,11 @@ de configuração.
 ### 5.2.1. Day
 
 Representação contendo os dados de um dia específico do mês (1, 2, 3, 4...).
+
 ### 5.2.2. WeekDay
 
 Representação contendo os dados de um dia da semana (segunda, terça, ...).
+
 ## 5.3. RangeMaker
 
 É responsável pela criação de uma instância da classe Minutes, usando os parâmetros especificados pelo usuario.

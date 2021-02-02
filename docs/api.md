@@ -93,7 +93,6 @@ $object->allowDate('2020-07-08')
     ->withPeriod('08:00', '12:00');
 ```
 
-
 ## 7.6. Encontrando períodos por minutos
 
 Para encontrar um horário vago de 30 minutos dentro do intervalo:
@@ -105,7 +104,7 @@ $fittings = $object->fittingsFor(90);
 
 O resultado será um array contendo todos os períodos disponíveis:
 
-```
+```php
 [
     0 => [
         0 => DateTime("2020-01-10 15:00:00"),
