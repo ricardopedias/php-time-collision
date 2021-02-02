@@ -29,7 +29,6 @@
         "squizlabs/php_codesniffer": "3.*",
         "phpmd/phpmd" : "@stable",
         "ext-mbstring": "*",
-        "ext-xdebug": "*",
         "codacy/coverage": "dev-master"
     },
     "config": {
