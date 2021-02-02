@@ -1,10 +1,10 @@
 # PHP Time Collision
 
-![PHP Version](https://img.shields.io/badge/PHP->=7.4.0-blue)
-![License](https://img.shields.io/badge/License-MIT-blue)
-![TDD](https://img.shields.io/badge/TDD-Tested%20100%25-blue)
-![GitHub Actions](https://github.com/ricardopedias/php-time-collision/workflows/CodeQuality/badge.svg)
-![GitHub Actions](https://github.com/ricardopedias/php-time-collision/workflows/Documentation/badge.svg)
+![PHP Version](https://img.shields.io/badge/php->=7.4.0-blue)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![GitHub Actions](https://github.com/ricardopedias/php-time-collision/workflows/code-analysis/badge.svg)
+![GitHub Actions](https://github.com/ricardopedias/php-time-collision/workflows/docs-analysis/badge.svg)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/8656013c42c74dfeaf34cdfcd310a7b1)](https://www.codacy.com/gh/ricardopedias/php-time-collision/dashboard?utm_source=github.com&utm_medium=referral&utm_content=ricardopedias/php-time-collision&utm_campaign=Badge_Coverage)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/8656013c42c74dfeaf34cdfcd310a7b1)](https://www.codacy.com/gh/ricardopedias/php-time-collision/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ricardopedias/php-time-collision&amp;utm_campaign=Badge_Grade)
 [![Follow](https://img.shields.io/github/followers/ricardopedias?label=Siga%20no%20GitHUB&style=social)](https://github.com/ricardopedias)
 [![Twitter](https://img.shields.io/twitter/follow/ricardopedias?label=Siga%20no%20Twitter)](https://twitter.com/ricardopedias)
