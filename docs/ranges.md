@@ -2,9 +2,9 @@
 
 ## 1.1. O que é um intervalo
 
-A primeira coisa a fazer é definir um **intervalo**, ou seja, o início e o fim do período onde serão manipuladas as colisões de tempo. Estabelecer um intervalo é necessário para que o algoritmo defina as margens necessárias para os cálculos de tempo. 
+A primeira coisa a fazer é definir um **intervalo**, ou seja, o início e o fim do período onde serão manipuladas as colisões de tempo. Estabelecer um intervalo é necessário para que o algoritmo defina as margens necessárias para os cálculos de tempo.
 
-Suponha que seja preciso manipular os horários de uma agenda que contemple 7 dias. Neste caso, deverá ser especificado um intervalo que possa abranger uma semana inteira. 
+Suponha que seja preciso manipular os horários de uma agenda que contemple 7 dias. Neste caso, deverá ser especificado um intervalo que possa abranger uma semana inteira.
 
 Por exemplo, de 22/11/2020 a 29/11/2020.
 
@@ -51,10 +51,10 @@ $object = new Collision('2020-01-10 08:00', '2020-01-15 18:00');
 
 ## Sumário
 
-1.   [Criando intervalos para manipulação](ranges.md)
-2.   [Disponibilizando dias e horários utilizáveis](allowance.md)
-3.   [Encontrando horários disponíveis](search.md)
-4.   [Usando horários disponíveis](fitting.md)
-5.   [Arquitetura da biblioteca](architecture.md)
-6.   [Algoritmo de colisão](minutes.md)
-7.   [Direto ao ponto - API](api.md)
+1. [Criando intervalos para manipulação](ranges.md)
+2. [Disponibilizando dias e horários utilizáveis](allowance.md)
+3. [Encontrando horários disponíveis](search.md)
+4. [Usando horários disponíveis](fitting.md)
+5. [Arquitetura da biblioteca](architecture.md)
+6. [Algoritmo de colisão](minutes.md)
+7. [Direto ao ponto - API](api.md)

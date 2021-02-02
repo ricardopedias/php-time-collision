@@ -27,7 +27,7 @@ Tudo o que não estiver dentro desses períodos será considerado como "horário
 
 Além de especificar períodos de tempo, muitas vezes é necessário definir os dias onde estes períodos estarão liberados, tornando alguns dias disponíveis e outros não.
 
-Por padrão todos os dias da semana são liberados como "utilizáveis". Mas existem casos, na vida real, onde não será interessante usar os finais de semana. 
+Por padrão todos os dias da semana são liberados como "utilizáveis". Mas existem casos, na vida real, onde não será interessante usar os finais de semana.
 
 Isso pode ser feito desativando apenas os dias indesejados da seguinte forma:
 
@@ -69,8 +69,8 @@ Além dos dias da semana, em muitos casos, será preciso definir dias especiais,
 
 Na vida real isso pode ser aplicado em duas situações:
 
-1.  Os dias úteis foram definidos de Segunda a Sexta-feira, mas um determinado Sábado deverá ser liberado para um expediente excepcional;
-2.  Um feriado caiu num dia útil, que deverá ser desabilitado, pois não haverá expediente neste dia.
+1. Os dias úteis foram definidos de Segunda a Sexta-feira, mas um determinado Sábado deverá ser liberado para um expediente excepcional;
+2. Um feriado caiu num dia útil, que deverá ser desabilitado, pois não haverá expediente neste dia.
 
 No primeiro caso (expediente excepcional), é preciso liberar um dia específico:
 
@@ -88,8 +88,7 @@ $object->disableDate('2020-07-09');
 
 ## 2.3. Disponibilizando horários para os dias desejados
 
-Existem casos onde é necessário definir um período de trabalho diferente para um dia específico. Seja por ser um Sábado ou um feriado facultativo como Quarta-feira de cinzas que algumas empresas costumam liberar meio 
-período de folga.
+Existem casos onde é necessário definir um período de trabalho diferente para um dia específico. Seja por ser um Sábado ou um feriado acultativo como Quarta-feira de cinzas que algumas empresas costumam liberar meio período de folga.
 
 Isso pode ser feito na invocação de allowDayOfWeek() ou allowDate():
 
@@ -115,10 +114,10 @@ $object->allowDate('2020-07-08')
 
 ## Sumário
 
-1.   [Criando intervalos para manipulação](ranges.md)
-2.   [Disponibilizando dias e horários utilizáveis](allowance.md)
-3.   [Encontrando horários disponíveis](search.md)
-4.   [Usando horários disponíveis](fitting.md)
-5.   [Arquitetura da biblioteca](architecture.md)
-6.   [Algoritmo de colisão](minutes.md)
-7.   [Direto ao ponto - API](api.md)
+1. [Criando intervalos para manipulação](ranges.md)
+2. [Disponibilizando dias e horários utilizáveis](allowance.md)
+3. [Encontrando horários disponíveis](search.md)
+4. [Usando horários disponíveis](fitting.md)
+5. [Arquitetura da biblioteca](architecture.md)
+6. [Algoritmo de colisão](minutes.md)
+7. [Direto ao ponto - API](api.md)

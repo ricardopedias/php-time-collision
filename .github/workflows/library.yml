@@ -72,7 +72,7 @@ jobs:
 
             - run: vendor/bin/phpstan analyse src --level 8 --no-progress
 
-    phpstan:
+    phpmd:
       name: PHPMessDetector
       runs-on: ubuntu-latest
 

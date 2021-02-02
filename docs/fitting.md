@@ -12,7 +12,7 @@ Esta forma de preenchimento exige que se saiba com antecedência [onde os horár
 
 Suponhamos que o método [fittingsFor()](search.md) tenha devolvido as seguintes informações:
 
-```
+```php
 [
     0 => [
         0 => DateTime("2020-01-10 15:00:00"),
@@ -98,7 +98,6 @@ Neste novo exemplo, como o algoritmo ignora as colisões com horários indispon�
 
 **Resultado:** 2h preenchidas e 1h ignorada.
 
-
 ## 4.3. Preenchendo horários acumulativos
 
 Outra forma de preencher as lacunas disponíveis é usando acumulação de tempo. Nesta modalidade, os minutos que colidirem com espaços indisponíveis **não serão ignorados**, mas usados para preencher as próximas lacunas até que todos os minutos acabem.
@@ -129,10 +128,10 @@ Neste exemplo, como o algoritmo não ignora as colisões com horários indispon�
 
 ## Sumário
 
-1.   [Criando intervalos para manipulação](ranges.md)
-2.   [Disponibilizando dias e horários utilizáveis](allowance.md)
-3.   [Encontrando horários disponíveis](search.md)
-4.   [Usando horários disponíveis](fitting.md)
-5.   [Arquitetura da biblioteca](architecture.md)
-6.   [Algoritmo de colisão](minutes.md)
-7.   [Direto ao ponto - API](api.md)
+1. [Criando intervalos para manipulação](ranges.md)
+2. [Disponibilizando dias e horários utilizáveis](allowance.md)
+3. [Encontrando horários disponíveis](search.md)
+4. [Usando horários disponíveis](fitting.md)
+5. [Arquitetura da biblioteca](architecture.md)
+6. [Algoritmo de colisão](minutes.md)
+7. [Direto ao ponto - API](api.md)

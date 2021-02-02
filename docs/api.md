@@ -26,7 +26,7 @@ $object = new Collision('2020-01-10 11:35', '2020-01-10 12:00');
 
 ## 7.2. Disponibilizando horários
 
-Para manipular o tempo é preciso disponibilizar períodos, marcando-os como "liberados" para uso. 
+Para manipular o tempo é preciso disponibilizar períodos, marcando-os como "liberados" para uso.
 O horário comercial de uma empresa pode ser especificada da seguinte forma:
 
 ```php
@@ -72,8 +72,7 @@ $object->disableDate('2020-07-09');
 
 ## 7.5. Disponibilizando horários para os dias desejados
 
-Existem casos onde é necessário definir um período de trabalho diferente 
-do padrão setado com o método allowDefaultPeriod(). 
+Existem casos onde é necessário definir um período de trabalho diferente do padrão setado com o método allowDefaultPeriod().
 
 ```php
 // Na Quarta-feira, libera apenas meio período
@@ -117,7 +116,7 @@ O resultado será um array contendo todos os períodos disponíveis:
 
 ## 7.7. Encontrando períodos por extenção
 
-Também é possível buscar os periodos disponíveis em uma extenção específica de tempo dentro do intervalo: 
+Também é possível buscar os periodos disponíveis em uma extenção específica de tempo dentro do intervalo:
 
 ```php
 // Obtém os períodos não preenchidos entre a data inicial e a data final
@@ -157,7 +156,6 @@ Outra forma de preencher as lacunas disponíveis é usando acumulação de tempo
 $fittings = $object->fillCumulative('2020-01-10 13:00', '2020-01-10 16:00');
 ```
 
-
 ## 7.10. Obtendo informações de minutos
 
 Para obter as informações armazenadas em cada minuto do intervalo:
@@ -196,10 +194,10 @@ Minutes::ALL;
 
 ## Sumário
 
-1.   [Criando intervalos para manipulação](ranges.md)
-2.   [Disponibilizando dias e horários utilizáveis](allowance.md)
-3.   [Encontrando horários disponíveis](search.md)
-4.   [Usando horários disponíveis](fitting.md)
-5.   [Arquitetura da biblioteca](architecture.md)
-6.   [Algoritmo de colisão](minutes.md)
-7.   [Direto ao ponto - API](api.md)
+1. [Criando intervalos para manipulação](ranges.md)
+2. [Disponibilizando dias e horários utilizáveis](allowance.md)
+3. [Encontrando horários disponíveis](search.md)
+4. [Usando horários disponíveis](fitting.md)
+5. [Arquitetura da biblioteca](architecture.md)
+6. [Algoritmo de colisão](minutes.md)
+7. [Direto ao ponto - API](api.md)

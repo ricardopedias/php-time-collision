@@ -23,7 +23,7 @@ $fittings = $object->fittingsFor(90);
 O resultado será um array contendo todos os períodos disponíveis onde
 1h30m, ou seja, 90 minutos podem ser alocados. A variável *$fittings*, do exemplo acima, devolverá o seguinte conteúdo:
 
-```
+```php
 [
     0 => [
         0 => DateTime("2020-01-10 15:00:00"),
@@ -36,7 +36,7 @@ Ou seja, apenas o período das 15:00 às 18:00 pode alocar 01h30m. O valor, cons
 
 ## 3.2. Encontrando períodos por extenção
 
-Também é possível buscar os periodos disponíveis em uma extenção específica de tempo dentro do intervalo. Isso é feito passando um horário de inicio e fim para o método fittingsBetween(). 
+Também é possível buscar os periodos disponíveis em uma extenção específica de tempo dentro do intervalo. Isso é feito passando um horário de inicio e fim para o método fittingsBetween().
 
 ```php
 // Obtém os períodos não preenchidos entre a data inicial e a data final
@@ -45,7 +45,7 @@ $fittings = $object->fittingsBetween('2020-10-01 12:00', '2020-10-01 16:00');
 
 A variável *$fittings*, do exemplo acima, devolverá o seguinte conteúdo:
 
-```
+```php
 [
     0 => [
         0 => DateTime("2020-01-10 12:00:00"),
@@ -58,13 +58,12 @@ A variável *$fittings*, do exemplo acima, devolverá o seguinte conteúdo:
 ]
 ```
 
-
 ## Sumário
 
-1.   [Criando intervalos para manipulação](ranges.md)
-2.   [Disponibilizando dias e horários utilizáveis](allowance.md)
-3.   [Encontrando horários disponíveis](search.md)
-4.   [Usando horários disponíveis](fitting.md)
-5.   [Arquitetura da biblioteca](architecture.md)
-6.   [Algoritmo de colisão](minutes.md)
-7.   [Direto ao ponto - API](api.md)
+1. [Criando intervalos para manipulação](ranges.md)
+2. [Disponibilizando dias e horários utilizáveis](allowance.md)
+3. [Encontrando horários disponíveis](search.md)
+4. [Usando horários disponíveis](fitting.md)
+5. [Arquitetura da biblioteca](architecture.md)
+6. [Algoritmo de colisão](minutes.md)
+7. [Direto ao ponto - API](api.md)
