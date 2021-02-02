@@ -16,8 +16,9 @@ jobs:
           tools: composer:v2
 
       - run: composer update --no-progress
-      - run: vendor/bin/phpunit --coverage-clover clover.xml
+      - run: vendor/bin/phpunit -coverage-clover clover.xml
 
+      - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@master
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
