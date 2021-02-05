@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Time;
+namespace TimeCollision\Ranges;
 
 use DateTime;
 use Exception;
 use SplFixedArray;
-use Time\Exceptions\InvalidDateTimeException;
+use TimeCollision\Days\Interval;
+use TimeCollision\Days\Period;
+use TimeCollision\Exceptions\InvalidDateTimeException;
 
 /**
  * Esta classe é responsável pela extração de lacunas dentro
@@ -27,17 +29,17 @@ class Chunks
     public function __construct(Minutes $minutes)
     {
         $this->minutes = $minutes;
-        $this->start   = $minutes->startRange();
-        $this->end     = $minutes->endRange();
-        $this->range   = $minutes->range();
+        $this->start   = $minutes->getStartRange();
+        $this->end     = $minutes->getEndRange();
+        $this->range   = $minutes->getRangeVector();
     }
 
     /**
      * Obtém os breakpoints para o inicio de novos dias dentro do range.
      * @return array<int, DateTime>
-     * @see Time\RangeMaker::allowDayOfWeeks()
+     * @see TimeCollision\RangeMaker::allowDayOfWeeks()
      */
-    public function days(): array
+    public function getDays(): array
     {
         $walk = clone $this->start;
 
@@ -52,7 +54,7 @@ class Chunks
             if ($walk > $this->end) {
                 break;
             }
-            $minute = $this->minutes->beetwen($days[1], $walk);
+            $minute = $this->minutes->getMinutesBetween($days[1], $walk);
             $days[$minute] = clone $walk;
         }
 
@@ -61,16 +63,16 @@ class Chunks
 
     /**
      * Obtém as lacunas disponiveis para a quantidade de minutos especificada.
-     * @return array<int, array<\DateTime>>
+     * @return array<int, \TimeCollision\Days\Interval>
      */
-    public function fittings(int $minutes): array
+    public function getFittings(int $minutes): array
     {
         $chunks = $this->extractFillablesChunks($this->start, $this->end);
 
         $chunksDateTime = [];
         foreach ($chunks as $minuteIndex => $minutesAmount) {
             if ($minutesAmount >= $minutes) {
-                $chunksDateTime[] = $this->makeDateTimeChunks($minuteIndex, $minutesAmount);
+                $chunksDateTime[] = $this->makePeriodChunks($minuteIndex, $minutesAmount);
             }
         }
 
@@ -79,9 +81,9 @@ class Chunks
 
     /**
      * Obtém os períodos disponiveis entre a data inicial e a final
-     * @return array<int, array<\DateTime>>
+     * @return array<int, \TimeCollision\Days\Interval>
      */
-    public function fillables(string $start, string $end): array
+    public function getFillables(string $start, string $end): array
     {
         $start  = $this->createDateTimeParam($start);
         $end    = $this->createDateTimeParam($end);
@@ -89,24 +91,24 @@ class Chunks
 
         $chunksDateTime = [];
         foreach ($chunks as $minuteIndex => $minutesAmount) {
-            $chunksDateTime[] = $this->makeDateTimeChunks($minuteIndex, $minutesAmount);
+            $chunksDateTime[] = $this->makePeriodChunks($minuteIndex, $minutesAmount);
         }
 
         return $chunksDateTime;
     }
 
     /**
-     * @return array<\DateTime>
+     * @return \TimeCollision\Days\Interval
      */
-    private function makeDateTimeChunks(int $minuteIndex, int $minutesAmount): array
+    private function makePeriodChunks(int $minuteIndex, int $minutesAmount): Interval
     {
         $startMinute = $minuteIndex === 0 ? 0 : $minuteIndex + 1;
         $endMinute   = $minuteIndex + $minutesAmount;
 
-        return [
-            $this->minutes->getDateTimeFromMinute($startMinute),
-            $this->minutes->getDateTimeFromMinute($endMinute)
-        ];
+        return new Interval(
+            $this->minutes->getDateTimeFromMinute($startMinute)->format('Y-m-d H:i:s'),
+            $this->minutes->getDateTimeFromMinute($endMinute)->format('Y-m-d H:i:s')
+        );
     }
 
     private function isFillable(int $minuteIndex, int $minuteType, DateTime $start, DateTime $end): bool
@@ -192,20 +194,6 @@ class Chunks
         $withMinutes = $this->computeMinutesFromCheckpoints($minutesList, $checkpoints);
 
         return $withMinutes;
-    }
-
-    /**
-     * Obtém os períodos preenchidos entre a data inicial e a final
-     * @todo Ainda não está implementado
-     * @return array<int, array>
-     */
-    public function filleds(string $start, string $end): array
-    {
-        $start = $this->createDateTimeParam($start);
-        $end = $this->createDateTimeParam($end);
-
-        return [];
-        //return $this->chunksByType($this->range, Minutes::ALLOWED, $start, $end);
     }
 
     private function createDateTimeParam(string $date): DateTime

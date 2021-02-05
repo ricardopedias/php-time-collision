@@ -6,7 +6,7 @@ namespace TimeCollision\Exceptions;
 
 use InvalidArgumentException;
 
-class InvalidDateTimeException extends InvalidArgumentException
+class InvalidPeriodException extends InvalidArgumentException
 {
     // ...
 }

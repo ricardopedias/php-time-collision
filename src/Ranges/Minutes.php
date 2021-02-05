@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Time;
+namespace TimeCollision\Ranges;
 
 use DateTime;
 use SplFixedArray;
@@ -34,16 +34,16 @@ class Minutes
         $this->start = $start;
         $this->end   = $end;
 
-        $vector = array_fill(0, $this->beetwen($start, $end), self::UNUSED);
+        $vector = array_fill(0, $this->getMinutesBetween($start, $end), self::UNUSED);
         $this->rangeVector = SplFixedArray::fromArray($vector);
     }
 
-    public function startRange(): DateTime
+    public function getStartRange(): DateTime
     {
         return $this->start;
     }
 
-    public function endRange(): DateTime
+    public function getEndRange(): DateTime
     {
         return $this->end;
     }
@@ -52,9 +52,9 @@ class Minutes
      * Devolve o range de minutos, começando com zero.
      * @return SplFixedArray<\DateTime>
      */
-    public function rangeInDateTime(int $type = Minutes::ALL): SplFixedArray
+    public function getRangeInDateTime(int $type = Minutes::ALL): SplFixedArray
     {
-        $list = $this->range($type);
+        $list = $this->getRange($type);
         $list = array_map(fn($minute) => $this->getDateTimeFromMinute($minute), $list->toArray());
         return $this->makeDateTimeArray($list);
     }
@@ -63,15 +63,20 @@ class Minutes
      * Devolve o range de minutos, começando com zero.
      * @return SplFixedArray<int>
      */
-    public function range(int $status = self::ALL): SplFixedArray
+    public function getRangeVector(): SplFixedArray
     {
-        if ($status === self::ALL) {
-            return $this->rangeVector;
-        }
+        return $this->rangeVector;
+    }
 
+    /**
+     * Devolve o range de minutos, começando com zero.
+     * @return SplFixedArray<int>
+     */
+    public function getRange(int $status = self::ALL): SplFixedArray
+    {
         $onlyStatus = [];
         foreach ($this->rangeVector as $index => $currentStatus) {
-            if ($status === $currentStatus) {
+            if ($status === $currentStatus || $status === self::ALL) {
                 $onlyStatus[] = $index;
             }
         }
@@ -98,8 +103,8 @@ class Minutes
             $end = $this->end;
         }
 
-        $startIn = $this->beetwen($this->start, $start) - 1;
-        $endIn   = $this->beetwen($this->start, $end) - 1;
+        $startIn = $this->getMinutesBetween($this->start, $start) - 1;
+        $endIn   = $this->getMinutesBetween($this->start, $end) - 1;
 
         // Se não houver minutos, não há nada a fazer
         if ($endIn === -1) {
@@ -137,8 +142,8 @@ class Minutes
         }
 
         $settedCount = 0;
-        $settedLimit = $this->beetwen($start, $end);
-        $startIn     = $this->beetwen($this->start, $start);
+        $settedLimit = $this->getMinutesBetween($start, $end);
+        $startIn     = $this->getMinutesBetween($this->start, $start);
 
         foreach ($this->rangeVector as $index => $currentBit) {
             $minute = $index + 1;
@@ -160,12 +165,12 @@ class Minutes
         }
     }
 
-    public function chunks(): Chunks
+    public function getChunks(): Chunks
     {
         return new Chunks($this);
     }
 
-    public function beetwen(DateTime $start, Datetime $end): int
+    public function getMinutesBetween(DateTime $start, Datetime $end): int
     {
         // Voltar para o passado é impossível
         if ($end < $start) {
