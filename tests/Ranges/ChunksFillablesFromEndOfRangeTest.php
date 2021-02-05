@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Tests\Ranges;
 
 use DateTime;
-use Time\Chunks;
-use Time\Minutes;
+use Tests\TestCase;
+use TimeCollision\Days\Interval;
+use TimeCollision\Ranges\Chunks;
+use TimeCollision\Ranges\Minutes;
 
 class ChunksFillablesFromEndOfRangeTest extends TestCase
 {
@@ -102,16 +104,15 @@ class ChunksFillablesFromEndOfRangeTest extends TestCase
      */
     public function fillables($from, $result)
     {
-        $range_1200_1300 = $this->makeRangeObject();
+        $range12001300 = $this->makeRangeObject();
 
-        $chunksObject = new Chunks($range_1200_1300);
-        $extractedAll = $chunksObject->fillables($from[0], $from[1]);
+        $chunksObject = new Chunks($range12001300);
+        $extractedAll = $chunksObject->getFillables($from[0], $from[1]);
 
-        // Transforma os itens de $result em DateTimes
-        array_walk($result, function(&$chunk){
-            $chunk[0] = new DateTime($chunk[0]);
-            $chunk[1] = new DateTime($chunk[1]);
-        });
+        // Transforma os itens de $result em Interval
+        $result = array_map(function($chunk){
+            return new Interval($chunk[0], $chunk[1]);
+        }, $result);
 
         $this->assertEquals($result, $extractedAll);
     }

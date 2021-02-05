@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Time\Collision;
+use TimeCollision\Collision;
 use DateTime;
 use PHPUnit\Framework\TestCase as PhpUnitTestCase;
 use SplFixedArray;
-use Time\Minutes;
+use TimeCollision\Minutes;
 
 class TestCase extends PhpUnitTestCase
 {
@@ -151,5 +151,11 @@ class TestCase extends PhpUnitTestCase
         $minutes += $amount->i;
 
         return $minutes;
+    }
+
+    protected function dd(...$mixed): void
+    {
+        var_dump($mixed);
+        die();
     }
 }

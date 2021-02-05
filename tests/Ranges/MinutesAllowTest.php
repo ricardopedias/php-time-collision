@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Tests\Ranges;
 
 use DateTime;
-use Time\Minutes;
+use Tests\TestCase;
+use TimeCollision\Ranges\Minutes;
 
 class MinutesAllowTest extends TestCase
 {
@@ -82,6 +83,6 @@ class MinutesAllowTest extends TestCase
         $minutes->mark($markStart, $markEnd, Minutes::ALLOWED);
 
         $result = $this->makeRange($result);
-        $this->assertEquals($result, $minutes->range(Minutes::ALLOWED));
+        $this->assertEquals($result, $minutes->getRange(Minutes::ALLOWED));
     }
 }

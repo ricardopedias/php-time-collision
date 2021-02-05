@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Tests\Ranges;
 
 use DateTime;
-use Time\Minutes;
+use Tests\TestCase;
+use TimeCollision\Ranges\Minutes;
 
-class MinutesFillCumulativeTest extends TestCase
+class MinutesMarkTest extends TestCase
 {
     public function rangeProvider()
     {
         return [
-            // DENTRO DO RANGE: PREENCHE TODOS OS MINUTOS
+            // PREENCHE PARCIAMENTE
             [
                 // range
                 [
@@ -26,21 +27,13 @@ class MinutesFillCumulativeTest extends TestCase
                 ],
                 // filleds
                 [
-                    // 10 minutos
-                    [new DateTime('2020-11-01 12:25:00'), new DateTime('2020-11-01 12:32:00')],
+                    [new DateTime('2020-11-01 12:25:00'), new DateTime('2020-11-01 12:34:00')],
                 ],
                 // result
-                $this->makeRange(
-                    '24..29', // libera até 12:30
-                    '34..35' // e continua de 12:35
-                )
-                // function($minutes) {
-                //     var_dump($minutes->range(Minutes::FILLED));
-                //     die;
-                // }
+                $this->makeRange('24..29') // Só libera até 12:30
             ],
 
-            // DENTRO DO RANGE: NÃO PREENCHE, POIS NÃO HÁ MINUTOS LIBERADOS APÓS 12:40
+            // NÃO PREENCHE, QUANDO DENTRO DO RANGE
             [
                 // range
                 [
@@ -61,7 +54,7 @@ class MinutesFillCumulativeTest extends TestCase
                 $this->makeRange('0..0') // não preenche nada
             ],
 
-            // FORA DO RANGE:  NÃO PREENCHE A PARTE QUE ESTIVER ANTES DO INICIO DO RANGE
+            // NÃO PREENCHE A PARTE QUE ESTIVER ANTES DO INICIO DO RANGE
             [
                 // range
                 [
@@ -76,18 +69,14 @@ class MinutesFillCumulativeTest extends TestCase
                 // filleds
                 [
                     // fora das lacunas liberadas
-                    [new DateTime('2020-11-01 11:00:00'), new DateTime('2020-11-01 12:10:00')],
+                    [new DateTime('2020-11-01 11:00:00'), new DateTime('2020-11-01 12:50:00')],
                 ],
                 // result
-                // Ignora das 11:00 às 11:59, sobrando 10 minutos
-                $this->makeRange('19..29'), // libera até 12:30
-                // function($minutes) {
-                //     var_dump($minutes->range(Minutes::FILLED), $this->period('20..30', Minutes::FILLED));
-                //     die;
-                // }
+                // Ignora das 11:00 às 12:00
+                $this->makeRange('19..29', '34..39')
             ],
 
-            // FORA DO RANGE: NÃO PREENCHE A PARTE QUE ESTIVER DEPOIS DO TÉRMINO DO RANGE
+            // NÃO PREENCHE ANTES DO INICIO DO RANGE
             [
                 // range
                 [
@@ -102,15 +91,55 @@ class MinutesFillCumulativeTest extends TestCase
                 // filleds
                 [
                     // fora das lacunas liberadas
-                    [new DateTime('2020-11-01 12:32:00'), new DateTime('2020-11-01 13:10:00')],
+                    [new DateTime('2020-11-01 10:00:00'), new DateTime('2020-11-01 11:00:00')],
                 ],
                 // result
-                // Ignora das 13:01 às 13:10, sobrando 10 minutos
-                $this->makeRange('34..39'),
-                // function($minutes) {
-                //     var_dump($minutes->range(Minutes::FILLED), $this->period('30..40', Minutes::FILLED));
-                //     die;
-                // }
+                // Ignora antes das 12:00
+                $this->makeRange('0..0')
+            ],
+
+            // NÃO PREENCHE A PARTE QUE ESTIVER DEPOIS DO TÉRMINO DO RANGE
+            [
+                // range
+                [
+                    new DateTime('2020-11-01 12:00:00'),
+                    new DateTime('2020-11-01 13:00:00'),
+                ],
+                // alloweds
+                [
+                    [new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')],
+                    [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')],
+                ],
+                // filleds
+                [
+                    // fora das lacunas liberadas
+                    [new DateTime('2020-11-01 12:31:00'), new DateTime('2020-11-01 14:00:00')],
+                ],
+                // result
+                // Ignora das 13:00 às 14:00
+                $this->makeRange('34..39')
+            ],
+
+            // NÃO PREENCHE DEPOIS DO TÉRMINO DO RANGE
+            [
+                // range
+                [
+                    new DateTime('2020-11-01 12:00:00'),
+                    new DateTime('2020-11-01 13:00:00'),
+                ],
+                // alloweds
+                [
+                    [new DateTime('2020-11-01 12:20:00'), new DateTime('2020-11-01 12:30:00')],
+                    [new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:40:00')],
+                ],
+                // filleds
+                [
+                    // fora das lacunas liberadas
+                    [new DateTime('2020-11-01 14:00:00'), new DateTime('2020-11-01 15:00:00')],
+                ],
+                // result
+                // Ignora das 13:00 às 14:00
+                $this->makeRange('0..0')
             ],
         ];
     }
@@ -118,7 +147,7 @@ class MinutesFillCumulativeTest extends TestCase
     /** @test 
       * @dataProvider rangeProvider
      */
-    public function fillMinutes($range, $alloweds, $filleds, $result, $debug = null)
+    public function fillMinutes($range, $alloweds, $filleds, $result)
     {
         $minutes = new Minutes($range[0], $range[1]);
 
@@ -127,13 +156,9 @@ class MinutesFillCumulativeTest extends TestCase
         }
         
         foreach ($filleds as $date) {
-            $minutes->markCumulative($date[0], $date[1], Minutes::FILLED);
+            $minutes->mark($date[0], $date[1], Minutes::FILLED);
         }
 
-        if ($debug !== null) {
-            $debug($minutes);
-        }
-
-        $this->assertEquals($result, $minutes->range(Minutes::FILLED));
+        $this->assertEquals($result, $minutes->getRange(Minutes::FILLED));
     }
 }

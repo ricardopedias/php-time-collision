@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Tests\Ranges;
 
 use DateTime;
-use Time\Chunks;
-use Time\Minutes;
+use Tests\TestCase;
+use TimeCollision\Days\Interval;
+use TimeCollision\Ranges\Chunks;
+use TimeCollision\Ranges\Minutes;
 
 class ChunksFillablesFromStartOfRangeTest extends TestCase
 {
@@ -102,16 +104,15 @@ class ChunksFillablesFromStartOfRangeTest extends TestCase
      */
     public function fillables($from, $result)
     {
-        $range_1200_1300 = $this->makeRangeObject();
+        $range12001300 = $this->makeRangeObject();
 
-        $chunksObject = new Chunks($range_1200_1300);
-        $extractedAll = $chunksObject->fillables($from[0], $from[1]);
+        $chunksObject = new Chunks($range12001300);
+        $extractedAll = $chunksObject->getFillables($from[0], $from[1]);
 
-        // Transforma os itens de $result em DateTimes
-        array_walk($result, function(&$chunk){
-            $chunk[0] = new DateTime($chunk[0]);
-            $chunk[1] = new DateTime($chunk[1]);
-        });
+        // Transforma os itens de $result em Interval
+        $result = array_map(function($chunk){
+            return new Interval($chunk[0], $chunk[1]);
+        }, $result);
 
         $this->assertEquals($result, $extractedAll);
     }
@@ -187,20 +188,19 @@ class ChunksFillablesFromStartOfRangeTest extends TestCase
      */
     public function fillablesFromZeroIndex($from, $result)
     {
-        $range_1201_1300 = new Minutes(new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 13:00:00'));
+        $range12011300 = new Minutes(new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 13:00:00'));
 
         // Libera no inicio do range
-        $range_1201_1300->mark(new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:25:00'), Minutes::ALLOWED);
-        $range_1201_1300->mark(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:50:00'), Minutes::ALLOWED);
+        $range12011300->mark(new DateTime('2020-11-01 12:01:00'), new DateTime('2020-11-01 12:25:00'), Minutes::ALLOWED);
+        $range12011300->mark(new DateTime('2020-11-01 12:35:00'), new DateTime('2020-11-01 12:50:00'), Minutes::ALLOWED);
 
-        $chunksObject = new Chunks($range_1201_1300);
-        $extractedAll = $chunksObject->fillables($from[0], $from[1]);
+        $chunksObject = new Chunks($range12011300);
+        $extractedAll = $chunksObject->getFillables($from[0], $from[1]);
 
-        // Transforma os itens de $result em DateTimes
-        array_walk($result, function(&$chunk){
-            $chunk[0] = new DateTime($chunk[0]);
-            $chunk[1] = new DateTime($chunk[1]);
-        });
+        // Transforma os itens de $result em Interval
+        $result = array_map(function($chunk){
+            return new Interval($chunk[0], $chunk[1]);
+        }, $result);
 
         $this->assertEquals($result, $extractedAll);
     }
