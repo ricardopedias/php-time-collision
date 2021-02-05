@@ -9,7 +9,7 @@
 [![Follow](https://img.shields.io/github/followers/ricardopedias?label=Siga%20no%20GitHUB&style=social)](https://github.com/ricardopedias)
 [![Twitter](https://img.shields.io/twitter/follow/ricardopedias?label=Siga%20no%20Twitter)](https://twitter.com/ricardopedias)
 
-> **Atenção:** Esta biblioteca está em fase de desenvolvimento. Use-a por sua conta e risco.
+> **Atenção:** Esta biblioteca está em fase "alfa" de desenvolvimento. Use-a por sua conta e risco.
 
 PHP Time Collision é uma biblioteca para lidar com colisão temporal, podendo identificar horários livres em um período especificado. Útil especialmente para gerenciamento de horários em agendas, onde é preciso encaixar um determinado tempo em um horário disponível.
 
@@ -24,23 +24,19 @@ Existem várias formas de trabalhar com colisões de tempo dentro da biblioteca 
 $object = new Collision('2020-01-10');
 
 // Libera dois períodos dentro do range
-$object->allowDefaultPeriod('13:00', '14:00');
-$object->allowDefaultPeriod('15:00', '18:00');
+$object->fromDefaults()->enablePeriod('13:00', '14:00');
+$object->fromDefaults()->enablePeriod('15:00', '18:00');
 
 // Obtém os períodos onde 01h30m pode se encaixar
-$fittings = $object->fittingsFor(90);
+$fittings = $object->fromFillings()->getFittingsFor(90);
 ```
 
-O resultado será um array contendo todos os períodos disponíveis onde
-1h30m podem ser alocados.
+O resultado será um array contendo todos os períodos disponíveis onde 1h30m podem ser alocados.
 No exemplo acima, a variável *"$fittings"* terá o seguinte conteúdo:
 
 ```php
 [
-    0 => [
-        0 => DateTime("2020-01-10 15:00:00"),
-        1 => DateTime("2020-01-10 18:00:00")
-    ]
+    0 => Interval("2020-01-10 15:00:00","2020-01-10 18:00:00")
 ]
 ```
 

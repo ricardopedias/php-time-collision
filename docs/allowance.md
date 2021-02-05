@@ -90,15 +90,15 @@ $object->disableDate('2020-07-09');
 
 Existem casos onde é necessário definir um período de trabalho diferente para um dia específico. Seja por ser um Sábado ou um feriado acultativo como Quarta-feira de cinzas que algumas empresas costumam liberar meio período de folga.
 
-Isso pode ser feito na invocação de allowDayOfWeek() ou allowDate():
+Isso pode ser feito das seguintes formas:
 
 ```php
 // Libera apenas meio período na Quarta-feira
-$object->allowDayOfWeek(WeekDay::WEDNESDAY)
+$object->fromWeek()->enableDay(WeekDay::WEDNESDAY)
     ->withPeriod('08:00', '12:00');
 
 // Libera um período diferente para o Sábado
-$object->allowDayOfWeek(WeekDay::SATURDAY)
+$object->fromWeek()->enableDay(WeekDay::SATURDAY)
     ->withPeriod('08:00', '11:00')
     ->withPeriod('12:00', '15:00');
 ```
@@ -108,7 +108,7 @@ Para definir os horários em um dia específico:
 ```php
 
 // Libera apenas meio período na Quarta-feira
-$object->allowDate('2020-07-08')
+$object->fromYear()->enableDay('2020-07-08')
     ->withPeriod('08:00', '12:00');
 ```
 

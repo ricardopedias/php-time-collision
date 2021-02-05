@@ -24,15 +24,16 @@ $object = new Collision('2020-01-10 11:35');
 $object = new Collision('2020-01-10 11:35', '2020-01-10 12:00');
 ```
 
-## 7.2. Disponibilizando horários
+## 7.2. Informações padrões
 
-Para manipular o tempo é preciso disponibilizar períodos, marcando-os como "liberados" para uso.
-O horário comercial de uma empresa pode ser especificada da seguinte forma:
+As informações padrões são aplicadas para períodos de forma global.
+Em outras palavras, ao setar períodos padrões, eles serão usados para todos os dias
+das semana.
 
 ```php
 // Libera dois períodos para todos os dias da semana
-$object->allowDefaultPeriod('08:00', '12:00');
-$object->allowDefaultPeriod('13:00', '18:00');
+$object->fromDefaults()->enablePeriod('08:00', '12:00');
+$object->fromDefaults()->enablePeriod('13:00', '18:00');
 ```
 
 ## 7.3. Disponibilizando dias da semana
@@ -42,18 +43,18 @@ pode ser mudado da seguinte forma:
 
 ```php
 // Restringe os períodos apenas para os dias úteis
-$object->disableDayOfWeek(WeekDay::SATURDAY);
-$object->disableDayOfWeek(WeekDay::SUNDAY);
+$object->fromWeek()->disableDay(WeekDay::SATURDAY);
+$object->fromWeek()->disableDay(WeekDay::SUNDAY);
 ```
 
 ```php
 // Libera o Sábado para uso
-$object->allowDayOfWeek(WeekDay::SATURDAY);
+$object->fromWeek()->enableDay(WeekDay::SATURDAY);
 ```
 
 ```php
 // Libera a semana toda, ou seja, reativa o Sábado e o Domingo
-$object->allowAllWeekDays();
+$object->fromWeek()->enableAllDays();
 ```
 
 ## 7.4. Disponibilizando dias específicos
@@ -62,12 +63,12 @@ Além dos dias da semana, em muitos casos, será preciso definir dias especiais,
 
 ```php
 // Libera o dia 11, Sábado
-$object->allowDate('2020-07-11');
+$object->fromYear()->enableDay('2020-07-11');
 ```
 
 ```php
 // Bloqueia o dia 09, Quinta-feira
-$object->disableDate('2020-07-09');
+$object->fromYear()->disableDay('2020-07-09');
 ```
 
 ## 7.5. Disponibilizando horários para os dias desejados
@@ -76,20 +77,20 @@ Existem casos onde é necessário definir um período de trabalho diferente do p
 
 ```php
 // Na Quarta-feira, libera apenas meio período
-$object->allowDayOfWeek(WeekDay::WEDNESDAY)
+$object->fromWeek()->enableDay(WeekDay::WEDNESDAY)
     ->withPeriod('08:00', '12:00');
 ```
 
 ```php
 // Libera um período diferente para o Sábado
-$object->allowDayOfWeek(WeekDay::SATURDAY)
+$object->fromWeek()->enableDay(WeekDay::SATURDAY)
     ->withPeriod('08:00', '11:00')
     ->withPeriod('12:00', '15:00');
 ```
 
 ```php
 // Na Quarta-feira, dia 08/07/2020, libera apenas meio período
-$object->allowDate('2020-07-08')
+$object->fromYear()->enableDay('2020-07-08')
     ->withPeriod('08:00', '12:00');
 ```
 
@@ -99,17 +100,14 @@ Para encontrar um horário vago de 30 minutos dentro do intervalo:
 
 ```php
 // Obtém os períodos onde 01h30m (90 minutos) pode se encaixar
-$fittings = $object->fittingsFor(90);
+$fittings = $object->fromFillings()->getFittingsFor(90);
 ```
 
 O resultado será um array contendo todos os períodos disponíveis:
 
 ```php
 [
-    0 => [
-        0 => DateTime("2020-01-10 15:00:00"),
-        1 => DateTime("2020-01-10 18:00:00")
-    ]
+    0 => Interval("2020-01-10 15:00:00","2020-01-10 18:00:00")
 ]
 ```
 
@@ -119,21 +117,15 @@ Também é possível buscar os periodos disponíveis em uma extenção específi
 
 ```php
 // Obtém os períodos não preenchidos entre a data inicial e a data final
-$fittings = $object->fittingsBetween('2020-10-01 12:00', '2020-10-01 16:00');
+$fittings = $object->fromFillings()->getFittingsBetween('2020-10-01 12:00', '2020-10-01 16:00');
 ```
 
 A variável *$fittings*, do exemplo acima, devolverá o seguinte conteúdo:
 
 ```php
 [
-    0 => [
-        0 => DateTime("2020-01-10 12:00:00"),
-        1 => DateTime("2020-01-10 12:40:00")
-    ],
-    1 => [
-        0 => DateTime("2020-01-10 15:30:00"),
-        1 => DateTime("2020-01-10 16:00:00")
-    ]
+    0 => Interval("2020-01-10 12:00:00","2020-01-10 12:40:00"),
+    1 => Interval("2020-01-10 15:30:00","2020-01-10 16:00:00")
 ]
 ```
 
@@ -143,7 +135,7 @@ Pode-se preencher os horários da seguinte forma:
 
 ```php
 // Preenche os períodos com base nos dados de $object->fittingsFor()
-$fittings = $object->fill('2020-01-10 15:00:00', '2020-01-10 18:00:00');
+$fittings = $object->fromFillings()->fill('2020-01-10 15:00:00', '2020-01-10 18:00:00');
 ```
 
 ## 7.9. Preenchendo horários acumulativos
@@ -152,7 +144,7 @@ Outra forma de preencher as lacunas disponíveis é usando acumulação de tempo
 
 ```php
 // Tenta preencher das 13h às 16h do dia 10/01/2020
-$fittings = $object->fillCumulative('2020-01-10 13:00', '2020-01-10 16:00');
+$fittings = $object->fromFillings()->fillCumulative('2020-01-10 13:00', '2020-01-10 16:00');
 ```
 
 ## 7.10. Obtendo informações de minutos
@@ -161,12 +153,12 @@ Para obter as informações armazenadas em cada minuto do intervalo:
 
 ```php
 // Devolve um array contendo todos os minutos em valores numéricos
-$object->minutes()->range(Minutes::ALL);
+$object->fromMinutes()->getRange(Minutes::ALL);
 ```
 
 ```php
 // Devolve um array contendo todos os minutos em valores de Data e Hora
-$object->minutes()->rangeInDateTime(Minutes::ALL);
+$object->fromMinutes()->getRangeInDateTime(Minutes::ALL);
 ```
 
 As seguintes constantes podem ser usadas para devolver tipos específicos de minutos:

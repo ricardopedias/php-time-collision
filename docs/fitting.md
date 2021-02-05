@@ -10,14 +10,11 @@ Existem duas maneiras de usar o horários disponíveis do intervalo, preenchendo
 
 Esta forma de preenchimento exige que se saiba com antecedência [onde os horários disponíveis estão](search.md).
 
-Suponhamos que o método [fittingsFor()](search.md) tenha devolvido as seguintes informações:
+Suponhamos que o método [getFittingsFor()](search.md) tenha devolvido as seguintes informações:
 
 ```php
 [
-    0 => [
-        0 => DateTime("2020-01-10 15:00:00"),
-        1 => DateTime("2020-01-10 18:00:00")
-    ]
+    0 => Interval("2020-01-10 15:00:00","2020-01-10 18:00:00")
 ]
 ```
 
@@ -28,18 +25,18 @@ Com esses dados, pode-se usar os horários da seguinte forma:
 $object = new Collision('2020-01-10');
 
 // Libera dois períodos dentro do range
-$object->allowDefaultPeriod('13:00', '14:00'); // 60 minutos
-$object->allowDefaultPeriod('15:00', '18:00'); // 180 minutos
+$object->fromDefaults()->enablePeriod('13:00', '14:00'); // 60 minutos
+$object->fromDefaults()->enablePeriod('15:00', '18:00'); // 180 minutos
 
 // Preenche os períodos com base nos dados de $object->fittingsFor()
-$fittings = $object->fill('2020-01-10 15:00:00', '2020-01-10 18:00:00');
+$fittings = $object->fromFillings()->fill('2020-01-10 15:00:00', '2020-01-10 18:00:00');
 ```
 
 A implementação acima irá marcar o horário das 15h as 18h do dia 10/01/2020 como preenchidos, ficando eles indisponíveis para os próximos preenchimentos.
 
 ## 4.2. Estouro de horários preenchidos explicitamente
 
-No item anterior, como foi usado o retorno do método [fittingsFor()](search.md), os horários setados foram definidos exatamente e nenhum minuto se perdeu.
+No item anterior, como foi usado o retorno do método [getFittingsFor()](search.md), os horários setados foram definidos exatamente e nenhum minuto se perdeu.
 
 Mas podem existir casos onde se queira alocar um horário maior dentro de uma lacuna menor disponivel no range.
 
@@ -52,11 +49,11 @@ Imagine que, no período das 15h às 18h do exemplo anterior, se tente alocar da
 $object = new Collision('2020-01-10');
 
 // Libera dois períodos dentro do range
-$object->allowDefaultPeriod('13:00', '14:00'); // 60 minutos
-$object->allowDefaultPeriod('15:00', '18:00'); // 180 minutos
+$object->fromDefaults()->enablePeriod('13:00', '14:00'); // 60 minutos
+$object->fromDefaults()->enablePeriod('15:00', '18:00'); // 180 minutos
 
 // Tenta preencher das 15h às 19h do dia 10/01/2020
-$fittings = $object->fill('2020-01-10 15:00', '2020-01-10 18:30');
+$fittings = $object->fromFillings()->fill('2020-01-10 15:00', '2020-01-10 18:30');
 ```
 
 Por padrão, os tempos definidos são alocados ignorando as colisões com horários indisponíveis. Em outras palavras, a implementação acima irá ignorar os 30 minutos excedentes depois das 18h, porque a partir das 18h não existem lacunas disponíveis.
@@ -80,11 +77,11 @@ Ainda no mesmo cenário, imagine que, no período das 13h às 14h se tente aloca
 $object = new Collision('2020-01-10');
 
 // Libera dois períodos dentro do range
-$object->allowDefaultPeriod('13:00', '14:00'); // 60 minutos
-$object->allowDefaultPeriod('15:00', '18:00'); // 180 minutos
+$object->fromDefaults()->enablePeriod('13:00', '14:00'); // 60 minutos
+$object->fromDefaults()->enablePeriod('15:00', '18:00'); // 180 minutos
 
 // Tenta preencher das 13h às 16h do dia 10/01/2020
-$fittings = $object->fill('2020-01-10 13:00', '2020-01-10 16:00');
+$fittings = $object->fromFillings()->fill('2020-01-10 13:00', '2020-01-10 16:00');
 ```
 
 Neste novo exemplo, como o algoritmo ignora as colisões com horários indisponíveis, a implementação acima irá considerar o seguinte:
@@ -109,11 +106,11 @@ Imagine o mesmo exemplo anterior, onde se tenta alocar das 13h às 16h. A implem
 $object = new Collision('2020-01-10');
 
 // Libera dois períodos dentro do range
-$object->allowDefaultPeriod('13:00', '14:00'); // 60 minutos
-$object->allowDefaultPeriod('15:00', '18:00'); // 180 minutos
+$object->fromDefaults()->enablePeriod('13:00', '14:00'); // 60 minutos
+$object->fromDefaults()->enablePeriod('15:00', '18:00'); // 180 minutos
 
 // Tenta preencher das 13h às 16h do dia 10/01/2020
-$fittings = $object->fillCumulative('2020-01-10 13:00', '2020-01-10 16:00');
+$fittings = $object->fromFillings()->fillCumulative('2020-01-10 13:00', '2020-01-10 16:00');
 ```
 
 Neste exemplo, como o algoritmo não ignora as colisões com horários indisponíveis, a implementação acima irá considerar o seguinte:

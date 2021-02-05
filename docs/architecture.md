@@ -6,15 +6,13 @@
 
 Uma fachada que encapsula todas as funcionalidades interessantes para o usuário.
 
-## 5.2. Parameters
+## 5.2. Defaults
 
-Guarda os parâmetros setados pelo usuário, ao usar a instância de Collision.
-Uma instância de Parameters é passada para RangeMaker, permitindo acesso padronizado aos dados
-de configuração.
+Guarda os parâmetros padrões e globais.
 
-### 5.2.1. Day
+### 5.2.1. YearDay
 
-Representação contendo os dados de um dia específico do mês (1, 2, 3, 4...).
+Representação contendo os dados de um dia específico do ano (1980-01-10, 1980-01-11, ...).
 
 ### 5.2.2. WeekDay
 

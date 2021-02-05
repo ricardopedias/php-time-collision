@@ -6,18 +6,18 @@ Mas antes de utilizar espaços de tempo disponíveis no intervalo, pode ser nece
 
 ## 3.1. Encontrando períodos por minutos
 
-Suponha que seja necessário encontrar um horário vago de 30 minutos dentro do intervalo. Isso pode ser feito com o método fittingsFor():
+Suponha que seja necessário encontrar um horário vago de 30 minutos dentro do intervalo. Isso pode ser feito da seguinte forma:
 
 ```php
 // Gera um range de 24 horas no dia 10/01/2020
 $object = new Collision('2020-01-10');
 
 // Libera dois períodos dentro do range
-$object->allowDefaultPeriod('13:00', '14:00'); // 60 minutos
-$object->allowDefaultPeriod('15:00', '18:00'); // 180 minutos
+$object->fromDefaults()->enablePeriod('13:00', '14:00'); // 60 minutos
+$object->fromDefaults()->enablePeriod('15:00', '18:00'); // 180 minutos
 
 // Obtém os períodos onde 01h30m (90 minutos) pode se encaixar
-$fittings = $object->fittingsFor(90);
+$fittings = $object->fromFillings()->getFittingsFor(90);
 ```
 
 O resultado será um array contendo todos os períodos disponíveis onde
@@ -25,10 +25,7 @@ O resultado será um array contendo todos os períodos disponíveis onde
 
 ```php
 [
-    0 => [
-        0 => DateTime("2020-01-10 15:00:00"),
-        1 => DateTime("2020-01-10 18:00:00")
-    ]
+    0 => Interval("2020-01-10 15:00:00","2020-01-10 18:00:00")
 ]
 ```
 
@@ -40,21 +37,15 @@ Também é possível buscar os periodos disponíveis em uma extenção específi
 
 ```php
 // Obtém os períodos não preenchidos entre a data inicial e a data final
-$fittings = $object->fittingsBetween('2020-10-01 12:00', '2020-10-01 16:00');
+$fittings = $object->fromFillings()->getFittingsBetween('2020-10-01 12:00', '2020-10-01 16:00');
 ```
 
 A variável *$fittings*, do exemplo acima, devolverá o seguinte conteúdo:
 
 ```php
 [
-    0 => [
-        0 => DateTime("2020-01-10 12:00:00"),
-        1 => DateTime("2020-01-10 12:40:00")
-    ],
-    1 => [
-        0 => DateTime("2020-01-10 15:30:00"),
-        1 => DateTime("2020-01-10 16:00:00")
-    ]
+    0 => Interval("2020-01-10 12:00:00","2020-01-10 12:40:00"),
+    1 => Interval("2020-01-10 15:30:00","2020-01-10 16:00:00")
 ]
 ```
 
