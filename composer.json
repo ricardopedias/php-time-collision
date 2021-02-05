@@ -38,7 +38,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Time\\": "src/"
+            "TimeCollision\\": "src/"
         }
     },
     "autoload-dev": {
@@ -49,8 +49,8 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts":{
-        "test":"vendor/bin/phpunit --testdox $1",
-        "coverage-html":"vendor/bin/phpunit --coverage-html coverage",
+        "test":"vendor/bin/phpunit --coverage-html coverage --testdox $1",
+        "coverage-html":"vendor/bin/phpunit --coverage-html coverage; x-www-browser coverage/index.html & ",
         "coverage-xml":"vendor/bin/phpunit --coverage-clover clover.xml",
         "psr": "vendor/bin/phpcs --standard=PSR1,PSR12 src",
         "fixer": "vendor/bin/phpcbf --standard=PSR1,PSR12 src",
