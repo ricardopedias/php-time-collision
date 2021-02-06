@@ -6,6 +6,8 @@ A seguir, uma breve explicação sobre as responsabilidades de cada módulo.
 
 ![Diagrama de Classes](images/class-diagram.png)
 
+> Diagrama feito com [StarUML](https://staruml.io).
+
 ## 5.1. TimeCollision\Collision
 
 Uma fachada que encapsula todas as funcionalidades interessantes para o usuário. Esta é a única classe que o usuário final irá utilizar.

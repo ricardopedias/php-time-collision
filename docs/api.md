@@ -36,7 +36,6 @@ $object->getStartOfRange();
 $object->getEndOfRange();
 ```
 
-
 ## 7.2. Informações padrões
 
 As informações padrões são aplicadas para períodos de forma global.
@@ -62,7 +61,6 @@ O resultado será um array contendo todos os períodos padrões setados anterior
     1 => Period('13:00', '18:00')
 ]
 ```
-
 
 ## 7.3. Disponibilizando dias da semana
 
