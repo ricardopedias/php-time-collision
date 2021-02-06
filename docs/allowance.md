@@ -16,8 +16,8 @@ Por exemplo, para determinar uma agenda semanal de uma empresa é preciso especi
 $object = new Collision('2020-07-05', '2020-07-11');
 
 // Libera dois períodos para todos os dias da semana
-$object->allowDefaultPeriod('08:00', '12:00');
-$object->allowDefaultPeriod('13:00', '18:00');
+$object->fromDefaults()->enablePeriod('08:00', '12:00');
+$object->fromDefaults()->enablePeriod('13:00', '18:00');
 ```
 
 O exemplo especifica que, dentro do intervalo, todos os dias terão dois períodos disponíveis para uso: das 8h às 12h e das 13h às 18h.
@@ -32,9 +32,9 @@ Por padrão todos os dias da semana são liberados como "utilizáveis". Mas exis
 Isso pode ser feito desativando apenas os dias indesejados da seguinte forma:
 
 ```php
-// Restringe os períodos apenas para os dias úteis
-$object->disableDayOfWeek(WeekDay::SATURDAY);
-$object->disableDayOfWeek(WeekDay::SUNDAY);
+// Desativa os finais de semana
+$object->fromWeek()->disableDay(WeekDay::SATURDAY);
+$object->fromWeek()->disableDay(WeekDay::SUNDAY);
 ```
 
 No exemplo anterior, os dois períodos estarão disponíveis apenas para os dias úteis, determinando o Sábado e o Domingo como "não utilizáveis".
@@ -46,12 +46,12 @@ Isso pode ser feito da seguinte forma:
 ...
 
 // Libera o Sábado para uso
-$object->allowDayOfWeek(WeekDay::SATURDAY);
+$object->fromWeek()->enableDay(WeekDay::SATURDAY);
 
 // ou 
 
 // Libera a semana toda, ou seja, reativa o Sábado e o Domingo
-$object->allowAllWeekDays();
+$object->fromWeek()->enableAllDays();
 ```
 
 Se por algum motivo for necessário, é possível também desativar todos os dias da semana de uma vez:
@@ -60,7 +60,7 @@ Se por algum motivo for necessário, é possível também desativar todos os dia
 ...
 
 // Desativa a semana inteira
-$object->disableAllWeekDays();
+$object->fromWeek()->disableAllDays();
 ```
 
 ## 2.3. Definindo dias explicitamente
@@ -76,14 +76,14 @@ No primeiro caso (expediente excepcional), é preciso liberar um dia específico
 
 ```php
 // Libera o dia 11, Sábado
-$object->allowDate('2020-07-11');
+$object->->fromYear()->enableDay('2020-07-11');
 ```
 
 No segundo caso (feriado), é preciso bloquear um dia específico:
 
 ```php
 // Bloqueia o dia 09, Quinta-feira
-$object->disableDate('2020-07-09');
+$object->fromYear()->enableDay('2020-07-09');
 ```
 
 ## 2.3. Disponibilizando horários para os dias desejados

@@ -24,6 +24,19 @@ $object = new Collision('2020-01-10 11:35');
 $object = new Collision('2020-01-10 11:35', '2020-01-10 12:00');
 ```
 
+Para obter as informações setadas no construtor:
+
+```php
+// Devolve um objeto DateTime contendo o inicio do intervalo
+$object->getStartOfRange();
+```
+
+```php
+// Devolve um objeto DateTime contendo o final do intervalo
+$object->getEndOfRange();
+```
+
+
 ## 7.2. Informações padrões
 
 As informações padrões são aplicadas para períodos de forma global.
@@ -36,15 +49,35 @@ $object->fromDefaults()->enablePeriod('08:00', '12:00');
 $object->fromDefaults()->enablePeriod('13:00', '18:00');
 ```
 
+```php
+// Libera dois períodos para todos os dias da semana
+$object->fromDefaults()->getPeriods();
+```
+
+O resultado será um array contendo todos os períodos padrões setados anteriormente:
+
+```php
+[
+    0 => Period('08:00', '12:00'),
+    1 => Period('13:00', '18:00')
+]
+```
+
+
 ## 7.3. Disponibilizando dias da semana
 
 Por padrão, todos os dias da semana são definidos como "utilizáveis", mas isso
 pode ser mudado da seguinte forma:
 
 ```php
-// Restringe os períodos apenas para os dias úteis
+// Desativa os finais de semana
 $object->fromWeek()->disableDay(WeekDay::SATURDAY);
 $object->fromWeek()->disableDay(WeekDay::SUNDAY);
+```
+
+```php
+// Desativa todos os dias da semana
+$object->fromWeek()->disableAllDays();
 ```
 
 ```php
@@ -56,6 +89,27 @@ $object->fromWeek()->enableDay(WeekDay::SATURDAY);
 // Libera a semana toda, ou seja, reativa o Sábado e o Domingo
 $object->fromWeek()->enableAllDays();
 ```
+
+```php
+// Obtém os dias de semana liberados
+$object->fromWeek()->getAllDays();
+```
+
+```php
+// Obtém os dias de semana desativados
+$object->fromWeek()->getAllDisabledDays();
+```
+
+O resultado de getAllDays() e getAllDisabledDays() terão o seguinte formato:
+
+```php
+[
+    0 => new WeekDay(0), // Domingo no PHP
+    6 => new WeekDay(6) // Sábado no PHP
+]
+```
+
+Onde os índices são os [dias da semana no PHP](https://www.php.net/manual/pt_BR/function.date.php) e os valores, objetos WeekDay.
 
 ## 7.4. Disponibilizando dias específicos
 
@@ -71,9 +125,28 @@ $object->fromYear()->enableDay('2020-07-11');
 $object->fromYear()->disableDay('2020-07-09');
 ```
 
+```php
+// Obtém os dias de semana liberados
+$object->fromYear()->getAllDays();
+```
+
+```php
+// Obtém os dias de semana desativados
+$object->fromYear()->getAllDisabledDays();
+```
+
+O resultado de getAllDays() e getAllDisabledDays() terão o seguinte formato:
+
+```php
+[
+    '2020-10-05' => new YearDay('2020-10-05'),
+    '2020-10-09' => new YearDay('2020-10-09')
+]
+```
+
 ## 7.5. Disponibilizando horários para os dias desejados
 
-Existem casos onde é necessário definir um período de trabalho diferente do padrão setado com o método allowDefaultPeriod().
+Existem casos onde é necessário definir um período de trabalho específico para aquele dia desejado:
 
 ```php
 // Na Quarta-feira, libera apenas meio período
@@ -103,11 +176,11 @@ Para encontrar um horário vago de 30 minutos dentro do intervalo:
 $fittings = $object->fromFillings()->getFittingsFor(90);
 ```
 
-O resultado será um array contendo todos os períodos disponíveis:
+O resultado será um array contendo todos os intervalos que cabem 30 minutos:
 
 ```php
 [
-    0 => Interval("2020-01-10 15:00:00","2020-01-10 18:00:00")
+    0 => Interval('2020-01-10 15:00:00', '2020-01-10 18:00:00')
 ]
 ```
 
@@ -120,7 +193,7 @@ Também é possível buscar os periodos disponíveis em uma extenção específi
 $fittings = $object->fromFillings()->getFittingsBetween('2020-10-01 12:00', '2020-10-01 16:00');
 ```
 
-A variável *$fittings*, do exemplo acima, devolverá o seguinte conteúdo:
+O resultado será um array contendo todos os intervalos disponíveis:
 
 ```php
 [
@@ -148,8 +221,6 @@ $fittings = $object->fromFillings()->fillCumulative('2020-01-10 13:00', '2020-01
 ```
 
 ## 7.10. Obtendo informações de minutos
-
-Para obter as informações armazenadas em cada minuto do intervalo:
 
 ```php
 // Devolve um array contendo todos os minutos em valores numéricos
