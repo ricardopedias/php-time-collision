@@ -9,13 +9,22 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ## \[Unreleased]
 
+Nada implementado ainda.
+
+## \[1.0.0]
+
 ### Added
 
+-   Acrescentado o analisador de cobertura de testes dos scripts do composer
 -   Acrescentado o PHP Mess detector nos scripts do composer
 -   Adicionada CI do GitHub
+-   Configurado envio de dados de cobertura de testes para o Codacy
 
 ### Changed
 
+-   Criação dos pacotes Days e Ranges para separação de interesses
+-   Criação das classes Period e Interval para encapsular os valores retornados
+-   Refatoração da classe Collision para design definitivo
 -   Atualização do changelog
 -   Ajustes e pendências detectadas pelo PHP Mess Detector
 
@@ -129,7 +138,8 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ## Releases
 
--   Unreleased <https://github.com/ricardopedias/php-reliability/compare/v0.10.0...HEAD>
+-   Unreleased <https://github.com/ricardopedias/php-reliability/compare/v1.0.0...HEAD>
+-   1.0.0 <https://github.com/ricardopedias/php-reliability/compare/v0.10.0...v1.0.0>
 -   0.10.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.9.0...v0.10.0>
 -   0.9.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.8.0...v0.9.0>
 -   0.8.0 <https://github.com/ricardopedias/php-time-collision/releases/tag/v0.7.0...v0.8.0>
