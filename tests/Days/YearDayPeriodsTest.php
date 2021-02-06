@@ -6,7 +6,6 @@ namespace Tests\Days;
 
 use Tests\TestCase;
 use TimeCollision\Days\Period;
-use TimeCollision\Days\Time;
 use TimeCollision\Days\YearDay;
 use TimeCollision\Exceptions\InvalidPeriodException;
 use TimeCollision\Exceptions\InvalidTimeException;

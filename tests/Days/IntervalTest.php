@@ -6,7 +6,7 @@ namespace Tests\Days;
 
 use DateTime;
 use Tests\TestCase;
-use TimeCollision\Days\Interval;
+use TimeCollision\Ranges\Interval;
 use TimeCollision\Exceptions\InvalidDateTimeException;
 
 class IntervalTest extends TestCase

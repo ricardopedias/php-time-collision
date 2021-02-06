@@ -115,7 +115,7 @@ class DaysDisableTest extends TestCase
     }
 
     /** @test */
-    public function disableMonthDayAndEnable()
+    public function disableYearDayAndEnable()
     {
         $collision = new Collision('2020-11-01 00:00:00', '2020-11-03 08:30:00');
         $bag = new Year($collision);
@@ -143,7 +143,7 @@ class DaysDisableTest extends TestCase
     }
 
     /** @test */
-    public function disableMonthDayException()
+    public function disableYearDayException()
     {
         $this->expectException(InvalidYearDayException::class);
 

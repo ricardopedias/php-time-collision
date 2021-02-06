@@ -7,7 +7,7 @@ namespace Tests\Ranges;
 use TimeCollision\Collision;
 use DateTime;
 use Tests\TestCase;
-use TimeCollision\Days\Interval;
+use TimeCollision\Ranges\Interval;
 use TimeCollision\Exceptions\InvalidDateTimeException;
 
 class FillsFittingsBetweenTest extends TestCase

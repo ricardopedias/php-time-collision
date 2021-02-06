@@ -6,7 +6,7 @@ namespace Tests\Ranges;
 
 use DateTime;
 use Tests\TestCase;
-use TimeCollision\Days\Interval;
+use TimeCollision\Ranges\Interval;
 use TimeCollision\Ranges\Chunks;
 use TimeCollision\Ranges\Minutes;
 

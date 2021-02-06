@@ -19,8 +19,8 @@ class RangeMaker
         $this->collision  = $collision;
 
         $this->minutes = new Minutes(
-            $this->collision->getRangeStart(),
-            $this->collision->getRangeEnd()
+            $this->collision->getStartOfRange(),
+            $this->collision->getEndOfRange()
         );
     }
 
@@ -83,7 +83,7 @@ class RangeMaker
             // marca somente dias da semana liberados
             $weekDay = $day->getDayOfWeek();
             if (isset($weekDaysList[$weekDay]) === true) {
-                $current = clone $this->collision->getRangeStart();
+                $current = clone $this->collision->getStartOfRange();
                 $current->modify("+ {$minute} minutes");
                 $dayObject = new YearDay($current->format('Y-m-d H:i'));
                 $this->allowPeriodsInSpecificDay($dayObject, $weekDaysList[$weekDay]);

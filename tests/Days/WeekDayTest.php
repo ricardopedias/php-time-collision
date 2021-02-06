@@ -6,7 +6,6 @@ namespace Tests\Days;
 
 use Tests\TestCase;
 use TimeCollision\Days\WeekDay;
-use TimeCollision\Exceptions\InvalidTimeException;
 use TimeCollision\Exceptions\InvalidWeekDayException;
 
 class WeekDayTest extends TestCase

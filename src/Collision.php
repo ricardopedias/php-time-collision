@@ -66,6 +66,16 @@ class Collision
         $this->defaults = new Defaults($this);
     }
 
+    public function getStartOfRange(): DateTime
+    {
+        return $this->rangeStart;
+    }
+
+    public function getEndOfRange(): DateTime
+    {
+        return $this->rangeEnd;
+    }
+
     public function fromWeek(): Week
     {
         return $this->week;
@@ -107,15 +117,5 @@ class Collision
     public function forceMinutesRecalculation(): void
     {
         $this->minutesObject = null;
-    }
-
-    public function getRangeStart(): DateTime
-    {
-        return $this->rangeStart;
-    }
-
-    public function getRangeEnd(): DateTime
-    {
-        return $this->rangeEnd;
     }
 }

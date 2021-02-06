@@ -77,7 +77,7 @@ class Fillings
 
     /**
      * Obtém as lacunas onde os minutos especificados se encaixam
-     * @return array<int, \TimeCollision\Days\Interval>
+     * @return array<int, \TimeCollision\Ranges\Interval>
      */
     public function getFittingsFor(int $amountMinutes): array
     {
@@ -86,7 +86,7 @@ class Fillings
 
     /**
      * Obtém as lacunas disponíveis entre a data inicial e a final
-     * @return array<int, \TimeCollision\Days\Interval>
+     * @return array<int, \TimeCollision\Ranges\Interval>
      */
     public function getFittingsBetween(string $start, string $end): array
     {

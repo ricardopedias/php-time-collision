@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TimeCollision\Days;
+namespace TimeCollision\Ranges;
 
 use DateTime;
 use Exception;
 use TimeCollision\Exceptions\InvalidDateTimeException;
-use TimeCollision\Exceptions\InvalidPeriodException;
-use TimeCollision\Exceptions\InvalidTimeException;
 
 class Interval
 {

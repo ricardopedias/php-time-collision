@@ -7,8 +7,7 @@ namespace TimeCollision\Ranges;
 use DateTime;
 use Exception;
 use SplFixedArray;
-use TimeCollision\Days\Interval;
-use TimeCollision\Days\Period;
+use TimeCollision\Ranges\Interval;
 use TimeCollision\Exceptions\InvalidDateTimeException;
 
 /**
@@ -29,8 +28,8 @@ class Chunks
     public function __construct(Minutes $minutes)
     {
         $this->minutes = $minutes;
-        $this->start   = $minutes->getStartRange();
-        $this->end     = $minutes->getEndRange();
+        $this->start   = $minutes->getStartOfRange();
+        $this->end     = $minutes->getEndOfRange();
         $this->range   = $minutes->getRangeVector();
     }
 
@@ -63,7 +62,7 @@ class Chunks
 
     /**
      * Obtém as lacunas disponiveis para a quantidade de minutos especificada.
-     * @return array<int, \TimeCollision\Days\Interval>
+     * @return array<int, \TimeCollision\Ranges\Interval>
      */
     public function getFittings(int $minutes): array
     {
@@ -72,7 +71,7 @@ class Chunks
         $chunksDateTime = [];
         foreach ($chunks as $minuteIndex => $minutesAmount) {
             if ($minutesAmount >= $minutes) {
-                $chunksDateTime[] = $this->makePeriodChunks($minuteIndex, $minutesAmount);
+                $chunksDateTime[] = $this->makeIntervalChunks($minuteIndex, $minutesAmount);
             }
         }
 
@@ -81,7 +80,7 @@ class Chunks
 
     /**
      * Obtém os períodos disponiveis entre a data inicial e a final
-     * @return array<int, \TimeCollision\Days\Interval>
+     * @return array<int, \TimeCollision\Ranges\Interval>
      */
     public function getFillables(string $start, string $end): array
     {
@@ -91,16 +90,16 @@ class Chunks
 
         $chunksDateTime = [];
         foreach ($chunks as $minuteIndex => $minutesAmount) {
-            $chunksDateTime[] = $this->makePeriodChunks($minuteIndex, $minutesAmount);
+            $chunksDateTime[] = $this->makeIntervalChunks($minuteIndex, $minutesAmount);
         }
 
         return $chunksDateTime;
     }
 
     /**
-     * @return \TimeCollision\Days\Interval
+     * @return \TimeCollision\Ranges\Interval
      */
-    private function makePeriodChunks(int $minuteIndex, int $minutesAmount): Interval
+    private function makeIntervalChunks(int $minuteIndex, int $minutesAmount): Interval
     {
         $startMinute = $minuteIndex === 0 ? 0 : $minuteIndex + 1;
         $endMinute   = $minuteIndex + $minutesAmount;

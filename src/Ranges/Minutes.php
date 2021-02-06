@@ -38,12 +38,12 @@ class Minutes
         $this->rangeVector = SplFixedArray::fromArray($vector);
     }
 
-    public function getStartRange(): DateTime
+    public function getStartOfRange(): DateTime
     {
         return $this->start;
     }
 
-    public function getEndRange(): DateTime
+    public function getEndOfRange(): DateTime
     {
         return $this->end;
     }
